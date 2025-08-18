@@ -1,6 +1,7 @@
 let utils;
 let currentJobId = null;
 
+// Initialize util function for extracting job descriptions from tables
 async function initializeModules() {
   const [tableModule] = await Promise.all([
     import(chrome.runtime.getURL("utils/tableUtils.js")),
@@ -8,6 +9,7 @@ async function initializeModules() {
   return { extractAllTablesData: tableModule.extractAllTablesData };
 }
 
+// Inject additional CSS to job posting page
 function injectStyles() {
   const style = document.createElement("style");
   style.textContent = `
@@ -25,7 +27,7 @@ function injectStyles() {
   document.head.appendChild(style);
 }
 
-// This listener is added only once.
+// Listen for content height adjustment messages from iframes and adjust iframe height accordingly
 function handleMessage(event) {
   if (event.data && event.data.type === "adjustHeight") {
     const iframe = document.querySelector('iframe[src^="chrome-extension://"]');
@@ -66,6 +68,7 @@ function createPanel(contentDiv) {
 // Load the job posting into the iframe(s).
 function loadPosting(contentDiv) {
   let fullDescription = "";
+  // Find job ID
   const jobIdSpan = document.querySelector(
     ".doc-viewer__document-content .dashboard-header__posting-title .tag-label"
   );
@@ -74,12 +77,14 @@ function loadPosting(contentDiv) {
     jobId = jobIdSpan.textContent.replace(/\D+/g, "");
   }
 
+  // Get full job description
   if (contentDiv) {
     fullDescription = contentDiv.textContent.trim();
   }
 
   console.log("Loading new job posting:", jobId);
 
+  // Send job description to iframe
   const iframes = document.querySelectorAll(
     'iframe[src^="chrome-extension://"]'
   );
@@ -93,14 +98,11 @@ function loadPosting(contentDiv) {
         `chrome-extension://${chrome.runtime.id}`
       );
     };
-    if (iframe.contentDocument.readyState === "complete") {
-      postMessage();
-    }
     iframe.addEventListener("load", postMessage);
   });
 }
 
-// Process DOM changes only if the job ID has changed.
+// Call function loadPosting only if the job ID has changed.
 async function processPageChanges() {
   try {
     const jobIdSpan = document.querySelector(
