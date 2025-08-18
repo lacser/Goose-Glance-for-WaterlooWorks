@@ -108,7 +108,10 @@ async function processPageChanges() {
     const jobIdSpan = document.querySelector(
       ".doc-viewer__document-content .dashboard-header__posting-title .tag-label"
     );
-    if (!jobIdSpan) return;
+    if (!jobIdSpan) {
+      currentJobId = null;
+      return;
+    }
     const newJobId = jobIdSpan.textContent.trim();
 
     if (newJobId === currentJobId) return;
@@ -131,7 +134,7 @@ async function processPageChanges() {
   }
 }
 
-// Set up a MutationObserver to debounce and trigger processPageChanges.
+// MutationObserver for page DOM changes and call processPageChanges.
 function setupMutationObserver() {
   const config = {
     childList: true,
@@ -139,6 +142,7 @@ function setupMutationObserver() {
     attributes: true,
     attributeFilter: ["class", "style", "id"],
   };
+  // Debounce to limit the rate of processPageChanges calls
   const callback = () => {
     if (callback.timeout) clearTimeout(callback.timeout);
     callback.timeout = setTimeout(processPageChanges, 500);
