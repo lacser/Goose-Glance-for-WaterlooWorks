@@ -66,7 +66,7 @@ function createPanel(contentDiv) {
 }
 
 // Load the job posting into the iframe(s).
-function loadPosting(contentDiv) {
+function loadPosting(staticContentDiv) {
   let fullDescription = "";
   // Find job ID
   const jobIdSpan = document.querySelector(
@@ -78,8 +78,8 @@ function loadPosting(contentDiv) {
   }
 
   // Get full job description
-  if (contentDiv) {
-    fullDescription = contentDiv.textContent.trim();
+  if (staticContentDiv) {
+    fullDescription = staticContentDiv.textContent.trim();
   }
 
   console.log("Loading new job posting:", jobId);
@@ -126,9 +126,10 @@ async function processPageChanges() {
       child.classList.contains("panel")
     );
     if (panelDivs.length < 1) return;
+    const staticContentDiv = contentDiv.cloneNode(true);
 
     createPanel(contentDiv);
-    loadPosting(contentDiv);
+    loadPosting(staticContentDiv);
   } catch (error) {
     console.error("Processing page changes failed:", error);
   }
