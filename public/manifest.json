@@ -30,7 +30,8 @@
         "utils/tableUtils.js",
         "content/index.html",
         "content/assets/*",
-        "content/src/*"
+        "content/fonts/*",
+        "content/icons/*"
       ],
       "matches": ["*://*.waterlooworks.uwaterloo.ca/*"]
     }

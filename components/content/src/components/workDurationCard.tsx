@@ -32,7 +32,7 @@ function MonthsGrid({ startMonth, endMonth, acrossYear }: MonthsGridProps) {
   startMonth = startMonth.toLowerCase();
   endMonth = endMonth.toLowerCase();
   return (
-    <div className="bg-[--colorNeutralBackground6] rounded-md p-1">
+    <div className="bg-[--colorNeutralBackground6] rounded-md p-1 flex flex-col gap-1">
       {[0, 6].map((startIndex) => (
         <div key={startIndex} className={`grid grid-cols-6`}>
           {Object.values(monthMap)

@@ -1,105 +1,173 @@
 let utils;
+let currentJobId = null;
 
+// Initialize util function for extracting job descriptions from tables
 async function initializeModules() {
   const [tableModule] = await Promise.all([
     import(chrome.runtime.getURL("utils/tableUtils.js")),
   ]);
-
-  return {
-    extractAllTablesData: tableModule.extractAllTablesData,
-  };
+  return { extractAllTablesData: tableModule.extractAllTablesData };
 }
 
-const style = document.createElement("style");
-style.textContent = `
-  .goose-glance-panel {
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .goose-glance-panel .panel-heading {
-    background-color: #D8E7F0;
-    color: black;
-    padding: 10px 15px;
-  }
-  .goose-glance-panel .panel-body {
-    padding: 0;
-    min-height: 300px;
-    display: flex;
-  }
-`;
-document.head.appendChild(style);
+// Inject additional CSS to job posting page
+function injectStyles() {
+  const style = document.createElement("style");
+  style.textContent = `
+      .goose-glance-panel {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .goose-glance-panel .panel-body {
+        padding: 0;
+        min-height: 300px;
+        display: flex;
+      }
+    `;
+  document.head.appendChild(style);
+}
 
-async function createPanel() {
-  const postingDiv = document.getElementById("postingDiv");
-  if (!postingDiv) return null;
+// Listen for content height adjustment messages from iframes and adjust iframe height accordingly
+function handleMessage(event) {
+  if (event.data && event.data.type === "adjustHeight") {
+    const iframe = document.querySelector('iframe[src^="chrome-extension://"]');
+    if (iframe) {
+      iframe.style.height = event.data.height + "px";
+    }
+  }
+}
+
+function createPanel(contentDiv) {
+  // Check for existing panel in the content div
+  const existingPanel = contentDiv.querySelector(".goose-glance-panel");
+  if (existingPanel) existingPanel.remove();
 
   const container = document.createElement("div");
-  container.className = "panel panel-default goose-glance-panel";
-
+  container.className = "panel goose-glance-panel";
   const iframeSrc = chrome.runtime.getURL("content/index.html");
   container.innerHTML = `
-    <div class="panel-heading">
-      <strong>Goose Glance Insight</strong>
-    </div>
-    <div class="panel-body">
-      <iframe style="border:none; width:100%" src="${iframeSrc}"></iframe>
-    </div>
-  `;
+      <div class="heading--banner">
+        <strong>Goose Glance Insight</strong>
+      </div>
+      <div class="panel-body">
+        <iframe style="border:none; width:100%" src="${iframeSrc}"></iframe>
+      </div>
+    `;
 
-  window.addEventListener("message", (event) => {
-    if (event.data && event.data.type === "adjustHeight") {
-      const iframe = document.querySelector('iframe[src^="chrome-extension://"]');
-      if (iframe) {
-        iframe.style.height = event.data.height + "px";
-      }
-    }
-  });
+  const firstPanelChild = Array.from(contentDiv.children).find((child) =>
+    child.classList.contains("panel")
+  );
 
-  const firstPanel = postingDiv.querySelector(".panel");
-  firstPanel.parentNode.insertBefore(container, firstPanel);
-  return postingDiv;
+  if (firstPanelChild) {
+    contentDiv.insertBefore(container, firstPanelChild);
+  } else {
+    throw new Error("No panel child found");
+  }
 }
 
-async function loadPosting(postingDiv) {
-  const fullDescription = utils.extractAllTablesData(postingDiv);
-  
-  // Get job ID from the header
-  const jobHeader = document.querySelector('.dashboard-header__profile-information-name');
+// Load the job posting into the iframe(s).
+function loadPosting(contentDiv) {
+  let fullDescription = "";
+  // Find job ID
+  const jobIdSpan = document.querySelector(
+    ".doc-viewer__document-content .dashboard-header__posting-title .tag-label"
+  );
   let jobId = null;
-  if (jobHeader) {
-    const headerText = jobHeader.textContent.trim();
-    const match = headerText.match(/(\d+)/);
-    if (match) {
-      jobId = match[1];
-    }
+  if (jobIdSpan) {
+    jobId = jobIdSpan.textContent.replace(/\D+/g, "");
   }
 
-  const iframes = document.querySelectorAll('iframe[src^="chrome-extension://"]');
+  // Get full job description
+  if (contentDiv) {
+    fullDescription = contentDiv.textContent.trim();
+  }
 
-  iframes.forEach(iframe => {
-    iframe.addEventListener('load', () => {
-      iframe.contentWindow.postMessage({
-        type: "SET_JOB_DESCRIPTION",
-        payload: {
-          id: jobId,
-          description: fullDescription
+  console.log("Loading new job posting:", jobId);
+
+  // Send job description to iframe
+  const iframes = document.querySelectorAll(
+    'iframe[src^="chrome-extension://"]'
+  );
+  iframes.forEach((iframe) => {
+    const postMessage = () => {
+      iframe.contentWindow.postMessage(
+        {
+          type: "SET_JOB_DESCRIPTION",
+          payload: { id: jobId, description: fullDescription },
         },
-      }, `chrome-extension://${chrome.runtime.id}`);
-    });
+        `chrome-extension://${chrome.runtime.id}`
+      );
+    };
+    iframe.addEventListener("load", postMessage);
   });
+}
+
+// Call function loadPosting only if the job ID has changed.
+async function processPageChanges() {
+  try {
+    const jobIdSpan = document.querySelector(
+      ".doc-viewer__document-content .dashboard-header__posting-title .tag-label"
+    );
+    if (!jobIdSpan) {
+      currentJobId = null;
+      return;
+    }
+    const newJobId = jobIdSpan.textContent.trim();
+
+    if (newJobId === currentJobId) return;
+    currentJobId = newJobId;
+
+    const longFormDiv = document.querySelector(".is--long-form-reading");
+    if (!longFormDiv) return;
+
+    const contentDivWrapper = longFormDiv.querySelector("div");
+    const contentDiv = contentDivWrapper.querySelector("div");
+    const panelDivs = Array.from(contentDiv.children).filter((child) =>
+      child.classList.contains("panel")
+    );
+    if (panelDivs.length < 1) return;
+
+    createPanel(contentDiv);
+    loadPosting(contentDiv);
+  } catch (error) {
+    console.error("Processing page changes failed:", error);
+  }
+}
+
+// MutationObserver for page DOM changes and call processPageChanges.
+function setupMutationObserver() {
+  const config = {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class", "style", "id"],
+  };
+  // Debounce to limit the rate of processPageChanges calls
+  const callback = () => {
+    if (callback.timeout) clearTimeout(callback.timeout);
+    callback.timeout = setTimeout(processPageChanges, 500);
+  };
+  const observer = new MutationObserver(callback);
+  observer.observe(document.body, config);
+  console.log("MutationObserver set up");
 }
 
 async function initialize() {
   try {
     utils = await initializeModules();
-    const postingDiv = await createPanel();
-    if (!postingDiv) return;
-
-    await loadPosting(postingDiv);
+    injectStyles();
+    window.addEventListener("message", handleMessage);
+    await processPageChanges();
+    setupMutationObserver();
   } catch (error) {
-    console.error("Goose Glance initialization failed:", error);
+    console.error("Initialization failed:", error);
   }
 }
 
 window.addEventListener("load", initialize);
+if (
+  document.readyState === "complete" ||
+  document.readyState === "interactive"
+) {
+  initialize();
+}
