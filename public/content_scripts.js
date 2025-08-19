@@ -1,13 +1,4 @@
-let utils;
 let currentJobId = null;
-
-// Initialize util function for extracting job descriptions from tables
-async function initializeModules() {
-  const [tableModule] = await Promise.all([
-    import(chrome.runtime.getURL("utils/tableUtils.js")),
-  ]);
-  return { extractAllTablesData: tableModule.extractAllTablesData };
-}
 
 // Inject additional CSS to job posting page
 function injectStyles() {
@@ -77,9 +68,13 @@ function loadPosting(staticContentDiv) {
     jobId = jobIdSpan.textContent.replace(/\D+/g, "");
   }
 
+  const td = new TurndownService({ headingStyle: "atx" });
+  const md = td.turndown(staticContentDiv);
+  console.log(md);
+
   // Get full job description
   if (staticContentDiv) {
-    fullDescription = staticContentDiv.textContent.trim();
+    fullDescription = md;
   }
 
   console.log("Loading new job posting:", jobId);
@@ -155,7 +150,6 @@ function setupMutationObserver() {
 
 async function initialize() {
   try {
-    utils = await initializeModules();
     injectStyles();
     window.addEventListener("message", handleMessage);
     await processPageChanges();

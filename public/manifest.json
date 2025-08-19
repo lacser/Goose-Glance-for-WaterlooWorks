@@ -20,7 +20,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.waterlooworks.uwaterloo.ca/*"],
-      "js": ["content_scripts.js"],
+      "js": ["utils/turndown.js", "content_scripts.js"],
       "type": "module"
     }
   ],
