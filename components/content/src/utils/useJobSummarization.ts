@@ -42,10 +42,7 @@ export const useJobSummarization = (jobId: string | null) => {
               json_schema: llmConfig.output_schema,
             },
             temperature: llmConfig.model_config.temperature,
-            max_tokens: llmConfig.model_config.max_tokens,
             top_p: llmConfig.model_config.top_p,
-            frequency_penalty: llmConfig.model_config.frequency_penalty,
-            presence_penalty: llmConfig.model_config.presence_penalty,
           }),
         }
       );
