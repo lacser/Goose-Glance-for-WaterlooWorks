@@ -1,4 +1,4 @@
-[
+const techIconNames = [
   "aarch64.svg",
   "adonisjs.svg",
   "aftereffects.svg",
@@ -472,4 +472,6 @@
   "yunohost.svg",
   "zend.svg",
   "zig.svg"
-]
+];
+
+export default techIconNames;

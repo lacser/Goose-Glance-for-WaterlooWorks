@@ -31,7 +31,8 @@
         "content/index.html",
         "content/assets/*",
         "content/fonts/*",
-        "content/icons/*"
+        "content/icons/*",
+        "content/techIcons/*"
       ],
       "matches": ["*://*.waterlooworks.uwaterloo.ca/*"]
     }

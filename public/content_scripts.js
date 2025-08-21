@@ -70,7 +70,6 @@ function loadPosting(staticContentDiv) {
 
   const td = new TurndownService({ headingStyle: "atx" });
   const md = td.turndown(staticContentDiv);
-  console.log(md);
 
   // Get full job description
   if (staticContentDiv) {

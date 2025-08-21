@@ -1,15 +1,19 @@
-### Technologies used by the extension
+# Goose Glance
+
+### What is Goose Glance
+Goose Glance is a Chrome browser extension powered by LLM (Large Language Model) designed for Waterloo Works. It automatically extracts job posting content from Waterloo Works pages and leverages AI capabilities to summarize key information including job responsibilities, required qualifications, work term duration, and location. This information is then seamlessly injected into the job posting page, enabling quick review and efficient filtering of opportunities.
+
+### Technologies used by Goose Glance
 
 - TypeScript
 - React
 - Redux
 - Vite
 - Tailwind CSS
-- Yarn
-- IndexedDB
+- Indexed DB
 - Fluent UI components
 
-### Extension structure and build
+### Dev and build
 
 The extension consists of two parts: 
 
