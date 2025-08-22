@@ -36,7 +36,7 @@ export default function SkillRequirementsCard({
     }
   });
 
-  // 特殊技术名称映射
+  // Special technology name mappings
   const specialMappings: { [key: string]: string } = {
     js: "javascript",
     ts: "typescript",
@@ -74,21 +74,21 @@ export default function SkillRequirementsCard({
     antd: "antdesign",
   };
 
-  // 处理技术技能并匹配图标
+  // Process technical skills and match icons
   const processedTechnicalSkills = useMemo((): TechSkillWithIcon[] => {
     const result: TechSkillWithIcon[] = [];
 
     technicalSkills.forEach((skill: string) => {
-      // 处理包含斜杠的技能（如 "C/C++"）
+      // Process skills with slashes (e.g., "C/C++")
       const skillParts = skill.split("/").map((part) => part.trim());
 
       skillParts.forEach((skillPart) => {
         const normalizedSkill = skillPart.toLowerCase().trim();
 
-        // 检查特殊映射
+        // Check for special mappings
         let iconName = specialMappings[normalizedSkill];
 
-        // 如果没有特殊映射，尝试直接匹配
+        // If no special mapping, try direct matching
         if (!iconName) {
           const matchedIcon = techIconNames.find(
             (icon) => icon.toLowerCase().replace(".svg", "") === normalizedSkill

@@ -97,6 +97,10 @@ export function DevContent() {
                 <strong>Work Type:</strong>{" "}
                 {summaryData.work_type?.replace("_", " ") || "Not specified"}
               </p>
+              <p className="whitespace-normal">
+                <strong>Country:</strong>{" "}
+                {summaryData.working_country_iso3166_alpha2 || "Not specified"}
+              </p>
               {summaryData.work_term_year && (
                 <p className="whitespace-normal">
                   <strong>Term Year:</strong>{" "}
