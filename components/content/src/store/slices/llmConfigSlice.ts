@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface ModelConfig {
   model: string;
@@ -9,6 +9,7 @@ export interface ModelConfig {
 export interface SchemaProperty {
   type: string | string[] | number[] | boolean;
   description: string;
+  pattern?: string;
   items?: {
     type: string | number;
     enum?: string[];
@@ -28,6 +29,7 @@ export interface OutputSchema {
       work_term_month: SchemaProperty;
       work_term_date: SchemaProperty;
       work_type: SchemaProperty;
+      working_country_iso3166_alpha2: SchemaProperty;
       working_location: SchemaProperty;
       company_name: SchemaProperty;
       technical_skills: SchemaProperty;
@@ -54,39 +56,44 @@ const initialState: LLMConfigState = {
   model_config: {
     model: "gpt-4o",
     temperature: 0.6,
-    top_p: 0.95
+    top_p: 0.95,
   },
-  system_message: "Summarize the provided job posting with concise language while following the specified JSON schema. Consider the context provided below when generating your summary.\n\n# Context\n\n- The job posting provided is from Waterloo Works, designed for university students seeking co-op opportunities.\n- You may assume the user holds a work visa for legal employment in Canada. This does not imply the user is a Citizen, holds a PR or is a refugee protected by Canada.\n\n# Notes\n\n- Focus the summarization on information that is most relevant and appealing to university students.",
+  system_message:
+    "Summarize the provided job posting with concise language while following the specified JSON schema. Consider the context provided below when generating your summary.\n\n# Context\n\n- The job posting provided is from Waterloo Works, designed for university students seeking co-op opportunities.\n- You may assume the user holds a work visa for legal employment in Canada. This does not imply the user is a Citizen, holds a PR or is a refugee protected by Canada.\n\n# Notes\n\n- Focus the summarization on information that is most relevant and appealing to university students.",
   output_schema: {
-    "name": "job_info_insight",
-    "strict": true,
-    "schema": {
-      "type": "object",
-      "properties": {
-        "job_title": {
-          "type": "string",
-          "description": "A descriptive job title according to main roles of the job position. This can be different from the job title from the original posting."
+    name: "job_info_insight",
+    strict: true,
+    schema: {
+      type: "object",
+      properties: {
+        job_title: {
+          type: "string",
+          description:
+            "A descriptive job title according to main roles of the job position. This can be different from the job title from the original posting.",
         },
-        "key_roles": {
-          "type": "array",
-          "description": "1-3 key responsibilities of the role with <mark>helighted keywords</mark>.",
-          "items": {
-            "type": "string"
-          }
+        key_roles: {
+          type: "array",
+          description:
+            "1-3 key responsibilities of the role with <mark>helighted keywords</mark>.",
+          items: {
+            type: "string",
+          },
         },
-        "work_term_year": {
-          "type": ["array", "null"],
-          "description": "Start and end year of the work term (e.g. [2024, 2025])",
-          "items": {
-            "type": "number"
-          }
+        work_term_year: {
+          type: ["array", "null"],
+          description:
+            "Start and end year of the work term (e.g. [2024, 2025])",
+          items: {
+            type: "number",
+          },
         },
-        "work_term_month": {
-          "type": ["array", "null"],
-          "description": "Start and end months of the work term (e.g. ['May', 'August'])",
-          "items": {
-            "type": "string",
-            "enum": [
+        work_term_month: {
+          type: ["array", "null"],
+          description:
+            "Start and end months of the work term (e.g. ['May', 'August'])",
+          items: {
+            type: "string",
+            enum: [
               "January",
               "February",
               "March",
@@ -98,82 +105,92 @@ const initialState: LLMConfigState = {
               "September",
               "October",
               "November",
-              "December"
-            ]
-          }
+              "December",
+            ],
+          },
         },
-        "work_term_date": {
-          "type": ["array", "null"],
-          "description": "Start and end date of the work term (e.g. [1, 31])",
-          "items": {
-            "type": "number"
-          }
+        work_term_date: {
+          type: ["array", "null"],
+          description: "Start and end date of the work term (e.g. [1, 31])",
+          items: {
+            type: "number",
+          },
         },
-        "work_type": {
-          "type": ["string", "null"],
-          "enum": ["on_site", "hybrid", "fully_remote"],
-          "description": "Work arrangement type"
+        work_type: {
+          type: ["string", "null"],
+          enum: ["on_site", "hybrid", "fully_remote"],
+          description: "Work arrangement type",
         },
-        "working_location": {
-          "type": ["string", "null"],
-          "description": "Working location formatted as 'City, Province' for Canada, 'City, Province, Country' for international, 'null' for fully remote position"
+        working_country_iso3166_alpha2: {
+          type: ["string", "null"],
+          pattern: "^[A-Z]{2}$",
+          description:
+            "Working country in ISO 3166-1 alpha-2, 'null' for fully remote position",
         },
-        "company_name": {
-          "type": "string",
-          "description": "Official company/organization name"
+        working_location: {
+          type: ["string", "null"],
+          description:
+            "Working location formatted as 'City, Province', 'null' for fully remote position",
         },
-        "technical_skills": {
-          "type": "array",
-          "description": "Programming languages, frameworks, and technical tools",
-          "items": {
-            "type": "string"
-          }
+        company_name: {
+          type: "string",
+          description: "Official company/organization name",
         },
-        "soft_skills": {
-          "type": "array",
-          "description": "Non-technical skills like communication or teamwork",
-          "items": {
-            "type": "string"
-          }
+        technical_skills: {
+          type: "array",
+          description: "Programming languages, frameworks, and technical tools",
+          items: {
+            type: "string",
+          },
         },
-        "speak_french": {
-          "type": "string",
-          "description": "Requirement for French language proficiency",
-          "enum": ["Not required", "Preferred", "Required"]
+        soft_skills: {
+          type: "array",
+          description: "Non-technical skills like communication or teamwork",
+          items: {
+            type: "string",
+          },
         },
-        "driver_license": {
-          "type": "string",
-          "description": "Requirement for a valid driver's license",
-          "enum": ["Not required", "Preferred", "Required"]
+        speak_french: {
+          type: "string",
+          description: "Requirement for French language proficiency",
+          enum: ["Not required", "Preferred", "Required"],
         },
-        "background_check": {
-          "type": "boolean",
-          "description": "Requires criminal background check"
+        driver_license: {
+          type: "string",
+          description: "Requirement for a valid driver's license",
+          enum: ["Not required", "Preferred", "Required"],
         },
-        "canadian_citizen_or_pr": {
-          "type": "string",
-          "description": "Requirement for Canadian citizenship/PR status",
-          "enum": ["Not required", "Preferred", "Required"]
+        background_check: {
+          type: "boolean",
+          description: "Requires criminal background check",
         },
-        "work_visa": {
-          "type": "boolean",
-          "description": "This ONLY applies to jobs outsied of Canada. Select true if the job requires a work visa"
+        canadian_citizen_or_pr: {
+          type: "string",
+          description: "Requirement for Canadian citizenship/PR status",
+          enum: ["Not required", "Preferred", "Required"],
         },
-        "other_special_requirements": {
-          "type": "array",
-          "description": "Additional special requirements (e.g. certifications, licenses, health clearances)",
-          "items": {
-            "type": "string"
-          }
-        }
+        work_visa: {
+          type: "boolean",
+          description:
+            "This ONLY applies to jobs outsied of Canada. Select true if the job requires a work visa",
+        },
+        other_special_requirements: {
+          type: "array",
+          description:
+            "Additional special requirements (e.g. certifications, licenses, health clearances)",
+          items: {
+            type: "string",
+          },
+        },
       },
-      "required": [
+      required: [
         "job_title",
         "key_roles",
         "work_term_year",
         "work_term_month",
         "work_term_date",
         "work_type",
+        "working_country_iso3166_alpha2",
         "working_location",
         "company_name",
         "technical_skills",
@@ -183,15 +200,15 @@ const initialState: LLMConfigState = {
         "background_check",
         "canadian_citizen_or_pr",
         "work_visa",
-        "other_special_requirements"
+        "other_special_requirements",
       ],
-      "additionalProperties": false
-    }
-  }  
+      additionalProperties: false,
+    },
+  },
 };
 
 export const llmConfigSlice = createSlice({
-  name: 'llmConfig',
+  name: "llmConfig",
   initialState,
   reducers: {
     updateModelConfig: (state, action: PayloadAction<Partial<ModelConfig>>) => {
@@ -203,5 +220,6 @@ export const llmConfigSlice = createSlice({
   },
 });
 
-export const { updateModelConfig, updateSystemMessage } = llmConfigSlice.actions;
+export const { updateModelConfig, updateSystemMessage } =
+  llmConfigSlice.actions;
 export default llmConfigSlice.reducer;
