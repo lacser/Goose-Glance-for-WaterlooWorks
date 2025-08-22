@@ -21,13 +21,25 @@ function App() {
   }
   return (
     <>
-      <div className="flex gap-2 p-2 flex-wrap">
-        <RoleSummaryCard />
-        <IdentityRequirementsCard />
-        <WorkDurationCard />
-        <SkillRequirementsCard />
-        <WorkLocationCard />
-        <CompanyInfoCard />
+      <div className="columns-[300px] gap-2 p-2">
+        <div className="break-inside-avoid mb-2">
+          <RoleSummaryCard />
+        </div>
+        <div className="break-inside-avoid mb-2">
+          <IdentityRequirementsCard />
+        </div>
+        <div className="break-inside-avoid mb-2">
+          <WorkLocationCard />
+        </div>
+        <div className="break-inside-avoid mb-2">
+          <WorkDurationCard />
+        </div>
+        <div className="break-inside-avoid mb-2">
+          <SkillRequirementsCard />
+        </div>
+        <div className="break-inside-avoid mb-2">
+          <CompanyInfoCard />
+        </div>
       </div>
     </>
   );

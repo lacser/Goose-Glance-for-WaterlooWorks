@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useAppSelector } from "../store/hooks";
+import { Tooltip } from "@fluentui/react-components";
 import Symbols from "./symbols";
 import techIconNames from "./techIconNames";
 
@@ -128,17 +129,21 @@ export default function SkillRequirementsCard({
             {processedTechnicalSkills
               .filter((skill) => skill.iconPath)
               .map((skill, index) => (
-                <div
-                  key={`icon-${index}`}
-                  className="flex flex-col items-center justify-center w-[40px] h-[40px] border-gray-200 border bg-white rounded-md hover:bg-gray-100 transition-colors shadow-[0px_1px_5px_1px_#D6D6D6]"
-                  title={skill.name}
+                <Tooltip
+                  content={skill.name}
+                  relationship="label"
                 >
-                  <img
-                    src={skill.iconPath}
-                    alt={skill.name}
-                    className="w-8 h-8 rounded-md"
-                  />
-                </div>
+                  <div
+                    key={`icon-${index}`}
+                    className="flex flex-col items-center justify-center w-[40px] h-[40px] border-gray-200 border bg-white rounded-md hover:bg-gray-100 transition-colors shadow-[0px_1px_5px_1px_#D6D6D6]"
+                  >
+                    <img
+                      src={skill.iconPath}
+                      alt={skill.name}
+                      className="w-8 h-8 rounded-md"
+                    />
+                  </div>
+                </Tooltip>
               ))}
           </div>
 
