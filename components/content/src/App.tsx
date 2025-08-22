@@ -7,6 +7,7 @@ import {
   IdentityRequirementsCard,
   WorkDurationCard,
   SkillRequirementsCard,
+  WorkLocationCard,
 } from "./components";
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <IdentityRequirementsCard />
         <WorkDurationCard />
         <SkillRequirementsCard />
+        <WorkLocationCard />
       </div>
     </>
   );
