@@ -130,7 +130,7 @@ export default function SkillRequirementsCard({
               .map((skill, index) => (
                 <div
                   key={`icon-${index}`}
-                  className="flex flex-col items-center justify-center w-[40px] h-[40px] border-gray-200 border bg-white rounded-md hover:bg-gray-100 transition-colors shadow-[0px_2px_8px_0px_#CFCFCF]"
+                  className="flex flex-col items-center justify-center w-[40px] h-[40px] border-gray-200 border bg-white rounded-md hover:bg-gray-100 transition-colors shadow-[0px_1px_5px_1px_#D6D6D6]"
                   title={skill.name}
                 >
                   <img
