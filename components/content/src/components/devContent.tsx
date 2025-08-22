@@ -97,14 +97,22 @@ export function DevContent() {
                 <strong>Work Type:</strong>{" "}
                 {summaryData.work_type?.replace("_", " ") || "Not specified"}
               </p>
-              <p className="whitespace-normal">
-                <strong>Term Length:</strong> {summaryData.work_term_length}{" "}
-                months
-              </p>
+              {summaryData.work_term_year && (
+                <p className="whitespace-normal">
+                  <strong>Term Year:</strong>{" "}
+                  {summaryData.work_term_year.join(" - ")}
+                </p>
+              )}
               {summaryData.work_term_month && (
                 <p className="whitespace-normal">
-                  <strong>Term Period:</strong>{" "}
+                  <strong>Term Month:</strong>{" "}
                   {summaryData.work_term_month.join(" - ")}
+                </p>
+              )}
+              {summaryData.work_term_date && (
+                <p className="whitespace-normal">
+                  <strong>Term Date:</strong>{" "}
+                  {summaryData.work_term_date.join(" - ")}
                 </p>
               )}
             </div>

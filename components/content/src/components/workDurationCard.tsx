@@ -111,8 +111,6 @@ export default function WorkDurationCard({
       yearDiff = endYear - startYear;
     }
 
-    console.log("startMonth", startMonth);
-    console.log("endMonth", endMonth);
     const startMonthIndex = monthMap[startMonth.toLowerCase()].index;
     const endMonthIndex = monthMap[endMonth.toLowerCase()].index;
     let monthDiff;
@@ -120,7 +118,7 @@ export default function WorkDurationCard({
       monthDiff = endMonthIndex - startMonthIndex;
     } else {
       monthDiff = 12 - startMonthIndex + endMonthIndex;
-      if (!workTermYears) yearDiff = 1;
+      if (yearDiff >= 1) yearDiff -= 1;
     }
 
     let dayDiff = 0;
