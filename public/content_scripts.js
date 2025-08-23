@@ -132,7 +132,7 @@ function setupMutationObserver() {
   // Debounce to limit the rate of processPageChanges calls
   const callback = () => {
     if (callback.timeout) clearTimeout(callback.timeout);
-    callback.timeout = setTimeout(processPageChanges, 500);
+    callback.timeout = setTimeout(processPageChanges, 200);
   };
   const observer = new MutationObserver(callback);
   observer.observe(document.body, config);
