@@ -1,45 +1,13 @@
 import { Button, Card, Spinner } from "@fluentui/react-components";
-import { useState } from "react";
 import { useAppSelector } from "../store/hooks";
-import { useJobSummarization } from "../utils/useJobSummarization";
+import { useJobAnalysis } from "../hooks/useJobAnalysis";
 
 export function DevContent() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const jobID = useAppSelector((state) => state.waterlooworks.onJobId);
-
-  const jobData = useAppSelector((state) => {
-    const data = state.waterlooworks.jobData;
-    return jobID && data[jobID]
-      ? {
-          description: data[jobID].description,
-          summary: data[jobID].summary,
-          id: jobID,
-        }
-      : null;
-  });
-
   const { openaiApiKey, autoAnalysis, language } = useAppSelector(
     (state) => state.settings
   );
 
-  const { summarizeJob } = useJobSummarization(jobData?.id || null);
-
-  const handleAnalyze = async () => {
-    if (!jobData?.description) return;
-
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      await summarizeJob(jobData.description);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { isLoading, error, handleAnalyze, jobData } = useJobAnalysis();
 
   const renderSummary = (summary: string) => {
     try {
