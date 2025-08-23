@@ -9,15 +9,6 @@ function injectStyles() {
         padding: 0;
         min-height: 300px;
       }
-      .goose-glance-panel-banner {
-        background-color: #e4e4e4;
-        height: 36px;
-        padding-left: 10px;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-      }
     `;
   document.head.appendChild(style);
 }
@@ -41,9 +32,6 @@ function createPanel(contentDiv) {
   container.className = "panel goose-glance-panel";
   const iframeSrc = chrome.runtime.getURL("content/index.html");
   container.innerHTML = `
-      <div class="goose-glance-panel-banner">
-        <strong>GOOSE GLANCE INSIGHT</strong>
-      </div>
       <div class="panel-body">
         <iframe style="border:none; width:100%" src="${iframeSrc}"></iframe>
       </div>

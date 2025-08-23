@@ -9,6 +9,7 @@ import {
   SkillRequirementsCard,
   WorkLocationCard,
   CompanyInfoCard,
+  GooseGlanceBanner,
 } from "./components";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
   }
   return (
     <>
+      <GooseGlanceBanner />
       <div className="columns-[300px] gap-2 p-2">
         <div className="break-inside-avoid mb-2">
           <RoleSummaryCard />
