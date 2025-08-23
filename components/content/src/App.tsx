@@ -1,5 +1,6 @@
 import { useContextService } from "./utils/useContextService";
 import { useIndexedDB } from "./utils/useIndexedDB";
+import { useSettingsSync } from "./utils/useSettingsSync";
 import { useAppSelector } from "./store/hooks";
 import { DevContent } from "./components/devContent";
 import {
@@ -15,6 +16,7 @@ import {
 function App() {
   useContextService();
   useIndexedDB();
+  useSettingsSync();
   const devMode = useAppSelector((state) => state.settings.devMode);
 
   if (devMode) {
