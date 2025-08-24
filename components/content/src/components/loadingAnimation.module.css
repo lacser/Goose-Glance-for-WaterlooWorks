@@ -1,0 +1,44 @@
+.loadingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.625rem;
+}
+
+.dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #0f6cbd;
+  border-radius: 50%;
+  animation: bounce 2s ease-in-out infinite both;
+}
+
+.dot1 {
+  animation-delay: -0.32s;
+}
+
+.dot2 {
+  animation-delay: -0.16s;
+}
+
+.dot3 {
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scaleY(1) translateY(0);
+  }
+  25% {
+    transform: scaleY(1.08) translateY(-0.25rem);
+  }
+  50% {
+    transform: scaleY(0.92) translateY(0.25rem);
+  }
+  75% {
+    transform: scaleY(1.04) translateY(-0.125rem);
+  }
+}
+
+

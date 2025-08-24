@@ -5,14 +5,9 @@ function injectStyles() {
   const style = document.createElement("style");
   style.textContent = `
       .goose-glance-panel {
-        border: 1px solid #ddd;
-        border-radius: 4px;
         overflow: hidden;
-      }
-      .goose-glance-panel .panel-body {
         padding: 0;
         min-height: 300px;
-        display: flex;
       }
     `;
   document.head.appendChild(style);
@@ -37,9 +32,6 @@ function createPanel(contentDiv) {
   container.className = "panel goose-glance-panel";
   const iframeSrc = chrome.runtime.getURL("content/index.html");
   container.innerHTML = `
-      <div class="heading--banner">
-        <strong>Goose Glance Insight</strong>
-      </div>
       <div class="panel-body">
         <iframe style="border:none; width:100%" src="${iframeSrc}"></iframe>
       </div>
@@ -140,7 +132,7 @@ function setupMutationObserver() {
   // Debounce to limit the rate of processPageChanges calls
   const callback = () => {
     if (callback.timeout) clearTimeout(callback.timeout);
-    callback.timeout = setTimeout(processPageChanges, 500);
+    callback.timeout = setTimeout(processPageChanges, 200);
   };
   const observer = new MutationObserver(callback);
   observer.observe(document.body, config);
