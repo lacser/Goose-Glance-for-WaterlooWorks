@@ -1,13 +1,9 @@
 import { useAppSelector } from "../store/hooks";
-import { useDispatch } from "react-redux";
-import { setJobSummary } from "../store/slices/waterlooworksSlice";
+import { setJobSummary as setJobSummaryDB } from "../utils/useIndexedDB";
+import { useJobData } from "../hooks/useJobData";
 
 export const useJobSummarization = (jobId: string | null) => {
-  const dispatch = useDispatch();
-
-  const existingSummary = useAppSelector((state) =>
-    jobId ? state.waterlooworks.jobData[jobId]?.summary : null
-  );
+  const { rawSummary: existingSummary } = useJobData(jobId ?? undefined);
 
   const openaiApiKey = useAppSelector((state) => state.settings.openaiApiKey);
   const language = useAppSelector((state) => state.settings.language);
@@ -55,11 +51,11 @@ export const useJobSummarization = (jobId: string | null) => {
       const summary = data.choices[0]?.message?.content;
 
       if (summary) {
-        dispatch(setJobSummary({ id: jobId, summary }));
+        await setJobSummaryDB(jobId, summary);
         return {
           status: "success",
           source: "openai",
-        };
+        } as const;
       } else {
         throw new Error("No summary returned from OpenAI");
       }
@@ -68,7 +64,7 @@ export const useJobSummarization = (jobId: string | null) => {
         status: "error",
         source: "openai",
         error: error instanceof Error ? error.message : "An unknown error occurred",
-      }
+      } as const;
     }
   };
 

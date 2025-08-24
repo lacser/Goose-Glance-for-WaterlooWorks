@@ -1,6 +1,5 @@
-import { useAppSelector } from "../store/hooks";
+import { useJobSummary } from "../hooks/useJobData";
 import Symbols from "./symbols";
-// import { useState } from "react";
 import { ProgressBar } from "@fluentui/react-components";
 
 export interface WorkTermDurationCardProps {
@@ -74,27 +73,12 @@ function MonthsGrid({ startMonth, endMonth, acrossYear }: MonthsGridProps) {
 export default function WorkDurationCard({
   className = "",
 }: WorkTermDurationCardProps) {
-  const jobId = useAppSelector((state) => state.waterlooworks.onJobId);
+  const { summary } = useJobSummary();
+  if (!summary) return null;
 
-  const jobData = useAppSelector((state) => {
-    if (!jobId) return null;
-    return state.waterlooworks.jobData[jobId] || null;
-  });
-  if (!jobData || !jobData.summary) {
-    return null;
-  }
-
-  let jobInfo;
-  try {
-    jobInfo = JSON.parse(jobData.summary);
-  } catch (e) {
-    console.error("Error parsing job info:", e);
-    return null;
-  }
-
-  const workTermYears = jobInfo.work_term_year;
-  const workTermMonths = jobInfo.work_term_month;
-  const workTermDates = jobInfo.work_term_date;
+  const workTermYears = summary.work_term_year;
+  const workTermMonths = summary.work_term_month;
+  const workTermDates = summary.work_term_date;
 
   if (!workTermMonths) return null;
 

@@ -1,4 +1,4 @@
-import { useAppSelector } from "../store/hooks";
+import { useJobSummary } from "../hooks/useJobData";
 import Symbols from "./symbols";
 import { Button, Tooltip } from "@fluentui/react-components";
 import { SparkleRegular, SearchRegular } from "@fluentui/react-icons";
@@ -10,23 +10,9 @@ export interface CompanyInfoCardProps {
 export default function CompanyInfoCard({
   className = "",
 }: CompanyInfoCardProps) {
-  const companyName = useAppSelector((state) => {
-    const jobID = state.waterlooworks.onJobId;
-    if (!jobID) return null;
+  const { summary } = useJobSummary();
+  const companyName = summary?.company_name ?? null;
 
-    const jobData = state.waterlooworks.jobData[jobID];
-    if (!jobData?.summary) return null;
-
-    try {
-      const summaryData = JSON.parse(jobData.summary);
-      return summaryData.company_name || null;
-    } catch (e) {
-      console.error("Error parsing summary:", e);
-      return null;
-    }
-  });
-
-  // If no data, don't render the component
   if (!companyName) {
     return null;
   }

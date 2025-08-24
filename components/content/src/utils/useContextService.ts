@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../store/hooks";
-import {
-  setJobDescription,
-  setOnJobId,
-} from "../store/slices/waterlooworksSlice";
+import { setOnJobId } from "../store/slices/waterlooworksSlice";
 import {
   setOpenAiApiKey,
   setAutoAnalysis,
   setLanguage,
   setDevMode,
 } from "../store/slices/settingsSlice";
+import { setJobDescription as setJobDescriptionDB } from "../utils/useIndexedDB";
 import { Dispatch } from "@reduxjs/toolkit";
 
 export const useContextService = () => {
@@ -29,13 +27,20 @@ export const useContextService = () => {
 };
 
 const setupJobDescriptionListener = (dispatch: Dispatch) => {
-  const messageListener = (event: MessageEvent) => {
+  const messageListener = async (event: MessageEvent) => {
     if (
       event.data &&
-      event.data.payload.id &&
+      event.data.payload?.id &&
       event.data.type === "SET_JOB_DESCRIPTION"
     ) {
-      dispatch(setJobDescription(event.data.payload));
+      try {
+        await setJobDescriptionDB(
+          event.data.payload.id,
+          event.data.payload.description
+        );
+      } catch (e) {
+        console.error("Failed saving job description to IndexedDB:", e);
+      }
       dispatch(setOnJobId(event.data.payload.id));
     }
   };

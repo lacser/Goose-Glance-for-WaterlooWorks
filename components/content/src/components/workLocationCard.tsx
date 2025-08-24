@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useJobSummary } from "../hooks/useJobData";
 import Symbols from "./symbols";
 import countryNames from "./countryNames";
 
@@ -10,29 +10,10 @@ export interface WorkLocationCardProps {
 export default function WorkLocationCard({
   className = "",
 }: WorkLocationCardProps) {
-  const { workType, workingCountry, workingLocation } = useAppSelector(
-    (state) => {
-      const jobID = state.waterlooworks.onJobId;
-      if (!jobID)
-        return { workType: null, workingCountry: null, workingLocation: null };
-
-      const jobData = state.waterlooworks.jobData[jobID];
-      if (!jobData?.summary)
-        return { workType: null, workingCountry: null, workingLocation: null };
-
-      try {
-        const summaryData = JSON.parse(jobData.summary);
-        return {
-          workType: summaryData.work_type || null,
-          workingCountry: summaryData.working_country_iso3166_alpha2 || null,
-          workingLocation: summaryData.working_location || null,
-        };
-      } catch (e) {
-        console.error("Error parsing summary:", e);
-        return { workType: null, workingCountry: null, workingLocation: null };
-      }
-    }
-  );
+  const { summary } = useJobSummary();
+  const workType = summary?.work_type ?? null;
+  const workingCountry = summary?.working_country_iso3166_alpha2 ?? null;
+  const workingLocation = summary?.working_location ?? null;
 
   // Find country flag image path
   const countryFlagPath = useMemo(() => {

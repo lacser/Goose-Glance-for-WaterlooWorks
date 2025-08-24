@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useJobSummary } from "../hooks/useJobData";
 import Symbols from "./symbols";
 
 export interface IdentityRequirementsCardProps {
@@ -16,21 +16,8 @@ export default function IdentityRequirementsCard({
 }: IdentityRequirementsCardProps) {
   const [showNotRequiredItems, setShowNotRequiredItems] = useState(true);
 
-  const jobSummary = useAppSelector((state) => {
-    const jobID = state.waterlooworks.onJobId;
-    if (!jobID) return null;
-    const jobData = state.waterlooworks.jobData[jobID];
-    return jobData?.summary || null;
-  });
-  if (!jobSummary) {
-    return null;
-  }
-
-  let summaryData;
-  try {
-    summaryData = JSON.parse(jobSummary);
-  } catch (e) {
-    console.error("Error parsing summary:", e);
+  const { summary } = useJobSummary();
+  if (!summary) {
     return null;
   }
 
@@ -66,26 +53,26 @@ export default function IdentityRequirementsCard({
   const allRequirements: Requirement[] = [
     {
       name: "Driver's License",
-      status: summaryData.driver_license || "Not Required",
+      status: summary.driver_license || "Not Required",
     },
     {
       name: "Work Visa",
       status:
-        summaryData.canadian_citizen_or_pr === "Required"
+        summary.canadian_citizen_or_pr === "Required"
           ? "Required"
           : "Not Required",
     },
     {
       name: "French Fluency",
-      status: summaryData.speak_french || "Not Required",
+      status: summary.speak_french || "Not Required",
     },
     {
       name: "Background Check",
-      status: summaryData.background_check ? "Required" : "Not Required",
+      status: summary.background_check ? "Required" : "Not Required",
     },
     {
       name: "Citizenship",
-      status: summaryData.canadian_citizen_or_pr || "Not Required",
+      status: summary.canadian_citizen_or_pr || "Not Required",
     },
   ];
 
@@ -99,7 +86,7 @@ export default function IdentityRequirementsCard({
     (req) => req.status.toLowerCase() === "not required"
   );
 
-  const otherRequirements = summaryData.other_special_requirements || [];
+  const otherRequirements = summary.other_special_requirements || [];
 
   const renderRequirementItem = (requirement: Requirement) => {
     const style = getStatusStyle(requirement.status);

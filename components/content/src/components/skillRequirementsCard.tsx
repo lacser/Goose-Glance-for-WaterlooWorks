@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useJobSummary } from "../hooks/useJobData";
 import { Tooltip } from "@fluentui/react-components";
 import Symbols from "./symbols";
 import techIconNames from "./techIconNames";
@@ -18,24 +18,9 @@ export default function SkillRequirementsCard({
 }: SkillRequirementsCardProps) {
   const [showSoftSkills, setShowSoftSkills] = useState(true);
 
-  const { technicalSkills, softSkills } = useAppSelector((state) => {
-    const jobID = state.waterlooworks.onJobId;
-    if (!jobID) return { technicalSkills: [], softSkills: [] };
-
-    const jobData = state.waterlooworks.jobData[jobID];
-    if (!jobData?.summary) return { technicalSkills: [], softSkills: [] };
-
-    try {
-      const summaryData = JSON.parse(jobData.summary);
-      return {
-        technicalSkills: summaryData.technical_skills || [],
-        softSkills: summaryData.soft_skills || [],
-      };
-    } catch (e) {
-      console.error("Error parsing summary:", e);
-      return { technicalSkills: [], softSkills: [] };
-    }
-  });
+  const { summary } = useJobSummary();
+  const technicalSkills = summary?.technical_skills ?? [];
+  const softSkills = summary?.soft_skills ?? [];
 
   // Special technology name mappings
   const specialMappings: { [key: string]: string } = {
