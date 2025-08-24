@@ -7,16 +7,16 @@ export const useSettingsSync = () => {
   const prevSettingsRef = useRef<SettingsState | null>(null);
 
   useEffect(() => {
-    // 检查是否是初次加载或者值真正发生了变化
+    // Check if this is the initial load or the values actually changed
     const prevSettings = prevSettingsRef.current;
     
     if (prevSettings === null) {
-      // 初次加载，不更新 chrome.storage，只记录当前值
+      // Initial load: don't update chrome.storage, just record current values
       prevSettingsRef.current = { ...settings };
       return;
     }
 
-    // 检查每个字段是否真正发生了变化
+    // Check whether each field actually changed
     const hasChanged = 
       prevSettings.openaiApiKey !== settings.openaiApiKey ||
       prevSettings.autoAnalysis !== settings.autoAnalysis ||
@@ -24,7 +24,7 @@ export const useSettingsSync = () => {
       prevSettings.devMode !== settings.devMode;
 
     if (hasChanged) {
-      // 只有在值真正发生变化时才更新 chrome.storage
+      // Update chrome.storage only when values truly changed
       chrome.storage.sync.set({
         openaiApiKey: settings.openaiApiKey,
         autoAnalysis: settings.autoAnalysis,
@@ -32,7 +32,7 @@ export const useSettingsSync = () => {
         devMode: settings.devMode,
       });
 
-      // 更新上一次的值
+      // Update the previous settings reference
       prevSettingsRef.current = { ...settings };
     }
   }, [settings]);

@@ -22,11 +22,6 @@ export default function GooseGlanceBanner() {
         {isLoading && <LoadingAnimation />}
       </div>
       <div className="flex items-center gap-2">
-        <Switch
-          label="Auto Analysis"
-          checked={autoAnalysisEnabled}
-          onChange={handleAutoAnalysisToggle}
-        />
         {!autoAnalysisEnabled && (
           <Button
             appearance="primary"
@@ -36,6 +31,11 @@ export default function GooseGlanceBanner() {
             Analyze
           </Button>
         )}
+        <Switch
+          label="Auto Analysis"
+          checked={autoAnalysisEnabled}
+          onChange={handleAutoAnalysisToggle}
+        />
       </div>
     </div>
   );
