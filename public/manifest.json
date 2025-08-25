@@ -3,7 +3,10 @@
   "name": "Goose Glance",
   "version": "0.1",
   "description": "AI-powered job description analyzer for WaterlooWorks",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "tabs"],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
   "action": {
     "default_popup": "popup/index.html",
     "default_icon": {
@@ -33,7 +36,9 @@
         "content/fonts/*",
         "content/icons/*",
         "content/techIcons/*",
-        "content/countryFlags/*"
+        "content/countryFlags/*",
+        "welcome/index.html",
+        "welcome/assets/*"
       ],
       "matches": ["*://*.waterlooworks.uwaterloo.ca/*"]
     }
