@@ -21,6 +21,10 @@ function handleMessage(event) {
       iframe.style.height = event.data.height + "px";
     }
   }
+  
+  if (event.data && event.data.type === "refreshPage") {
+    window.location.reload();
+  }
 }
 
 function createPanel(contentDiv) {

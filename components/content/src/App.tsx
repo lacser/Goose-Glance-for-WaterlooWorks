@@ -11,6 +11,7 @@ import {
   WorkLocationCard,
   CompanyInfoCard,
   GooseGlanceBanner,
+  ErrorPage,
 } from "./components";
 
 function App() {
@@ -18,10 +19,20 @@ function App() {
   useIndexedDB();
   useSettingsSync();
   const devMode = useAppSelector((state) => state.settings.devMode);
+  const onJobId = useAppSelector((state) => state.waterlooworks.onJobId);
 
   if (devMode) {
     return <DevContent />;
   }
+  if (!onJobId) {
+    return (
+      <>
+        <GooseGlanceBanner />
+        <ErrorPage />
+      </>
+    );
+  }
+
   return (
     <>
       <GooseGlanceBanner />
