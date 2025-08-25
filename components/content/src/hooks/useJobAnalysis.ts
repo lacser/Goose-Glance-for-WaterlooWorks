@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useJobSummarization } from "./useJobSummarization";
 import { useJobData } from "./useJobData";
+import { useAppSelector, useAppDispatch } from "../store/hooks";
+import { setIsLoading } from "../store/slices/waterlooworksSlice";
 
 export const useJobAnalysis = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
   const [error, setError] = useState<string | null>(null);
 
   const job = useJobData();
@@ -20,7 +23,7 @@ export const useJobAnalysis = () => {
   const handleAnalyze = async () => {
     if (!jobData?.description) return;
 
-    setIsLoading(true);
+    dispatch(setIsLoading(true));
     setError(null);
 
     try {
@@ -28,7 +31,7 @@ export const useJobAnalysis = () => {
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
-      setIsLoading(false);
+      dispatch(setIsLoading(false));
     }
   };
 

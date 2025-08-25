@@ -2,6 +2,7 @@ import { useContextService } from "./hooks/useContextService";
 import { useIndexedDB } from "./hooks/useIndexedDB";
 import { useSettingsSync } from "./hooks/useSettingsSync";
 import { useAppSelector } from "./store/hooks";
+import { useJobSummary } from "./hooks/useJobData";
 import { DevContent } from "./components/devContent";
 import {
   RoleSummaryCard,
@@ -12,6 +13,7 @@ import {
   CompanyInfoCard,
   GooseGlanceBanner,
   ErrorPage,
+  NoAnalysisPage,
 } from "./components";
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
   useSettingsSync();
   const devMode = useAppSelector((state) => state.settings.devMode);
   const onJobId = useAppSelector((state) => state.waterlooworks.onJobId);
+  const { summary } = useJobSummary();
 
   if (devMode) {
     return <DevContent />;
@@ -29,6 +32,14 @@ function App() {
       <>
         <GooseGlanceBanner />
         <ErrorPage />
+      </>
+    );
+  }
+  if (!summary) {
+    return (
+      <>
+        <GooseGlanceBanner />
+        <NoAnalysisPage />
       </>
     );
   }

@@ -6,3 +6,4 @@ export { default as WorkLocationCard } from "./analysisCards/workLocationCard";
 export { default as CompanyInfoCard } from "./analysisCards/companyInfoCard";
 export { default as GooseGlanceBanner } from "./gooseGlanceBanner";
 export { default as ErrorPage } from "./errorPage";
+export { default as NoAnalysisPage } from "./noAnalysisPage";

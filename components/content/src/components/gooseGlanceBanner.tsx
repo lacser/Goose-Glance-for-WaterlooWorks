@@ -6,7 +6,8 @@ import { setAutoAnalysis } from "../store/slices/settingsSlice";
 import LoadingAnimation from "./loadingAnimation";
 
 export default function GooseGlanceBanner() {
-  const { isLoading, handleAnalyze } = useJobAnalysis();
+  const { handleAnalyze } = useJobAnalysis();
+  const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
   const autoAnalysisEnabled = useAppSelector(
     (state) => state.settings.autoAnalysis
   );
@@ -27,6 +28,7 @@ export default function GooseGlanceBanner() {
             appearance="primary"
             onClick={handleAnalyze}
             icon={<DataUsageSparkleRegular />}
+            disabled={isLoading}
           >
             Analyze
           </Button>

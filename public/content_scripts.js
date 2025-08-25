@@ -115,7 +115,10 @@ async function processPageChanges() {
     const panelDivs = Array.from(contentDiv.children).filter((child) =>
       child.classList.contains("panel")
     );
-    if (panelDivs.length < 1) return;
+    if (panelDivs.length < 1) {
+      currentJobId = null;
+      return;
+    }
     const staticContentDiv = contentDiv.cloneNode(true);
 
     createPanel(contentDiv);
@@ -136,11 +139,10 @@ function setupMutationObserver() {
   // Debounce to limit the rate of processPageChanges calls
   const callback = () => {
     if (callback.timeout) clearTimeout(callback.timeout);
-    callback.timeout = setTimeout(processPageChanges, 200);
+    callback.timeout = setTimeout(processPageChanges, 100);
   };
   const observer = new MutationObserver(callback);
   observer.observe(document.body, config);
-  console.log("MutationObserver set up");
 }
 
 async function initialize() {

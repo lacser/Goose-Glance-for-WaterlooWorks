@@ -7,7 +7,8 @@ export function DevContent() {
     (state) => state.settings
   );
 
-  const { isLoading, error, handleAnalyze, jobData } = useJobAnalysis();
+  const { error, handleAnalyze, jobData } = useJobAnalysis();
+  const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
 
   const renderSummary = (summary: string) => {
     try {

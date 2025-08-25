@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface WaterlooWorksState {
   onJobId: string | null;
+  isLoading: boolean;
 }
 
 const initialState: WaterlooWorksState = {
-  onJobId: null
+  onJobId: null,
+  isLoading: false
 };
 
 export const waterlooworksSlice = createSlice({
@@ -14,10 +16,13 @@ export const waterlooworksSlice = createSlice({
   reducers: {
     setOnJobId: (state, action: PayloadAction<string | null>) => {
       state.onJobId = action.payload;
+    },
+    setIsLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     }
   }
 });
 
-export const { setOnJobId } = waterlooworksSlice.actions;
+export const { setOnJobId, setIsLoading } = waterlooworksSlice.actions;
 
 export default waterlooworksSlice.reducer;
