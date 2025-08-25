@@ -1,5 +1,5 @@
-import { useJobSummary } from "../hooks/useJobData";
-import Symbols from "./symbols";
+import { useJobSummary } from "../../hooks/useJobData";
+import Symbols from "../symbols";
 import { Button, Tooltip } from "@fluentui/react-components";
 import { SparkleRegular, SearchRegular } from "@fluentui/react-icons";
 

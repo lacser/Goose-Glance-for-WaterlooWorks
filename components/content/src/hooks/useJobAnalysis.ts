@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useJobSummarization } from "../utils/useJobSummarization";
+import { useJobSummarization } from "./useJobSummarization";
 import { useJobData } from "./useJobData";
 
 export const useJobAnalysis = () => {

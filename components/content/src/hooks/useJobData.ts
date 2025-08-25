@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAppSelector } from "../store/hooks";
-import { getJob, subscribeJob, JobRecord } from "../utils/useIndexedDB";
+import { getJob, subscribeJob, JobRecord } from "./useIndexedDB";
 
 export type SummaryData = {
   job_title?: string;

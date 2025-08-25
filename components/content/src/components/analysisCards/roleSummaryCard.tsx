@@ -1,5 +1,5 @@
-import { useJobSummary } from "../hooks/useJobData";
-import Symbols from "./symbols";
+import { useJobSummary } from "../../hooks/useJobData";
+import Symbols from "../symbols";
 
 export interface RoleSummaryCardProps {
   className?: string;

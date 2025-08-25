@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @font-face {
+  font-family: 'Dot';
+  src: url('/fonts/Minecart.ttf');
+}
+
+@font-face {
   font-family: 'Poppins-Thin';
   src: url('/fonts/Poppins-Thin.ttf') format('truetype');
   font-weight: 100;

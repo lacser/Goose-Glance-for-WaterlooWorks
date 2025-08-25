@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useJobSummary } from "../hooks/useJobData";
-import Symbols from "./symbols";
+import { useJobSummary } from "../../hooks/useJobData";
+import Symbols from "../symbols";
 
 export interface IdentityRequirementsCardProps {
   className?: string;

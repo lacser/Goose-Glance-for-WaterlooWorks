@@ -1,5 +1,5 @@
 import { useAppSelector } from "../store/hooks";
-import { setJobSummary as setJobSummaryDB } from "../utils/useIndexedDB";
+import { setJobSummary as setJobSummaryDB } from "./useIndexedDB";
 import { useJobData } from "../hooks/useJobData";
 
 export const useJobSummarization = (jobId: string | null) => {

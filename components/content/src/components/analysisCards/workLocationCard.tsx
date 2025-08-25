@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useJobSummary } from "../hooks/useJobData";
-import Symbols from "./symbols";
+import { useJobSummary } from "../../hooks/useJobData";
+import Symbols from "../symbols";
 import countryNames from "./countryNames";
 
 export interface WorkLocationCardProps {

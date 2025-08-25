@@ -1,6 +1,6 @@
-import { useContextService } from "./utils/useContextService";
-import { useIndexedDB } from "./utils/useIndexedDB";
-import { useSettingsSync } from "./utils/useSettingsSync";
+import { useContextService } from "./hooks/useContextService";
+import { useIndexedDB } from "./hooks/useIndexedDB";
+import { useSettingsSync } from "./hooks/useSettingsSync";
 import { useAppSelector } from "./store/hooks";
 import { DevContent } from "./components/devContent";
 import {

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
-import { useJobSummary } from "../hooks/useJobData";
+import { useJobSummary } from "../../hooks/useJobData";
 import { Tooltip } from "@fluentui/react-components";
-import Symbols from "./symbols";
+import Symbols from "../symbols";
 import techIconNames from "./techIconNames";
 
 export interface SkillRequirementsCardProps {

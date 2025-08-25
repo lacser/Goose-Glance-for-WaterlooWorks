@@ -7,7 +7,7 @@ import {
   setLanguage,
   setDevMode,
 } from "../store/slices/settingsSlice";
-import { setJobDescription as setJobDescriptionDB } from "../utils/useIndexedDB";
+import { setJobDescription as setJobDescriptionDB } from "./useIndexedDB";
 import { Dispatch } from "@reduxjs/toolkit";
 
 export const useContextService = () => {
