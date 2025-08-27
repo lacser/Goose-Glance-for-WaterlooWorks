@@ -79,7 +79,8 @@ function App() {
           >
             <Option value="English">English</Option>
             <Option value="French">French</Option>
-            <Option value="Chinese">Chinese (Simplified)</Option>
+            <Option value="Chinese (Simplified)">Chinese (Simplified)</Option>
+            <Option value="Chinese (Traditional)">Chinese (Traditional)</Option>
           </Combobox>
         </div>
 

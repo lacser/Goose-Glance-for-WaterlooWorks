@@ -27,6 +27,11 @@ export const useJobSummarization = (jobId: string | null) => {
     if (!jobId || !openaiApiKey) return;
 
     try {
+      // Create a deep copy of the schema and replace ${response_language} with the actual language
+      const schemaString = JSON.stringify(llmConfig.output_schema.schema);
+      const updatedSchemaString = schemaString.replace(/\$\{response_language\}/g, language);
+      const updatedSchema = JSON.parse(updatedSchemaString);
+
       const response = await fetch(
         "https://api.openai.com/v1/responses",
         {
@@ -40,7 +45,7 @@ export const useJobSummarization = (jobId: string | null) => {
             input: [
               {
                 role: "system",
-                content: `${llmConfig.system_message}\nPlease respond in ${language}.`,
+                content: llmConfig.system_message,
               },
               {
                 role: "user",
@@ -52,7 +57,7 @@ export const useJobSummarization = (jobId: string | null) => {
                 type: "json_schema",
                 name: llmConfig.output_schema.name,
                 strict: llmConfig.output_schema.strict,
-                schema: llmConfig.output_schema.schema,
+                schema: updatedSchema,
               },
               verbosity: "low"
             },
@@ -72,7 +77,6 @@ export const useJobSummarization = (jobId: string | null) => {
       }
 
       const data: OpenAIResponse = await response.json();
-      console.log(data);
       const summary = data.output?.find((item: OpenAIResponseOutput) => item.type === 'message')?.content?.[0]?.text;
 
       if (summary) {

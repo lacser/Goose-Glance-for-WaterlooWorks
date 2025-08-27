@@ -55,7 +55,7 @@ const initialState: LLMConfigState = {
     model: "gpt-5-mini",
   },
   system_message:
-    "Summarize the provided job posting with concise language while following the specified JSON schema. Consider the context provided below when generating your summary.\n\n# Context\n\n- The job posting provided is from Waterloo Works, designed for university students seeking co-op opportunities.\n- You may assume the user holds a work visa for legal employment in Canada. This does not imply the user is a Citizen, holds a PR or is a refugee protected by Canada.\n\n# Notes\n\n- Focus the summarization on information that is most relevant and appealing to university students.",
+    "Summarize the provided job posting with concise language while following the specified JSON schema. Consider the context provided below when generating your summary.\n\n# Context\n\n- The job posting provided is from Waterloo Works, designed for university students seeking co-op opportunities.\n- You may assume the user holds a work visa for legal employment in Canada. This does not imply the user is a Citizen, holds a PR or is a refugee protected by Canada.\n\n# Notes\n\n- Focus the summarization on information that is most relevant and appealing to university students. Use English in your response unless specified for certain fields otherwise.",
   output_schema: {
     name: "job_info_insight",
     strict: true,
@@ -65,12 +65,12 @@ const initialState: LLMConfigState = {
         job_title: {
           type: "string",
           description:
-            "A descriptive job title according to main roles of the job position. This can be different from the job title from the original posting.",
+            "A descriptive job title according to main roles of the job position. This can be different from the job title from the original posting. Use ${response_language} for this field.",
         },
         key_roles: {
           type: "array",
           description:
-            "1-3 key responsibilities of the role with <mark>helighted keywords</mark>.",
+            "1-3 key responsibilities of the role with <mark>helighted keywords</mark>. Use ${response_language} for this field.",
           items: {
             type: "string",
           },
@@ -173,7 +173,7 @@ const initialState: LLMConfigState = {
         other_special_requirements: {
           type: "array",
           description:
-            "Additional special requirements (e.g. certifications, licenses, health clearances)",
+            "Additional special requirements (e.g. certifications, licenses, health clearances). Use ${response_language} for this field.",
           items: {
             type: "string",
           },
