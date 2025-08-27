@@ -14,6 +14,7 @@ import {
   GooseGlanceBanner,
   ErrorPage,
   NoAnalysisPage,
+  AnalyzingPage,
 } from "./components";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
   useSettingsSync();
   const devMode = useAppSelector((state) => state.settings.devMode);
   const onJobId = useAppSelector((state) => state.waterlooworks.onJobId);
+  const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
   const { summary } = useJobSummary();
 
   if (devMode) {
@@ -36,12 +38,21 @@ function App() {
     );
   }
   if (!summary) {
-    return (
-      <>
-        <GooseGlanceBanner />
-        <NoAnalysisPage />
-      </>
-    );
+    if (isLoading) {
+      return (
+        <>
+          <GooseGlanceBanner />
+          <AnalyzingPage />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <GooseGlanceBanner />
+          <NoAnalysisPage />
+        </>
+      );
+    }
   }
 
   return (

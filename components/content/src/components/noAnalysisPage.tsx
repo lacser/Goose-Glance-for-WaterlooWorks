@@ -11,7 +11,7 @@ export default function NoAnalysisPage() {
     (state) => state.settings.autoAnalysis
   );
   const dispatch = useAppDispatch();
-  
+
   const handleAutoAnalysisToggle = () => {
     dispatch(setAutoAnalysis(!autoAnalysisEnabled));
   };
@@ -33,10 +33,15 @@ export default function NoAnalysisPage() {
           Not analyzed Yet
         </h2>
 
-        <p className="text-gray-600 mb-6 leading-relaxed">
-          This job posting hasn't been analyzed yet. You can start an analysis 
-          manually using the Analyze button below, or enable Auto Analysis to 
-          automatically analyze job postings when they're detected.
+        <p className="text-gray-600 mb-2 leading-relaxed">
+          You can start an analysis manually using the Analyze button below, or
+          enable Auto Analysis to automatically analyze job postings when
+          they're detected.
+        </p>
+
+        <p className="text-black mb-4 leading-relaxed">
+          Analyized job summaries are always automatically saved locally on your
+          computer.
         </p>
 
         <div className="flex flex-col gap-4">
