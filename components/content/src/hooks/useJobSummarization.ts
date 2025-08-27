@@ -2,6 +2,20 @@ import { useAppSelector } from "../store/hooks";
 import { setJobSummary as setJobSummaryDB } from "./useIndexedDB";
 import { useJobData } from "../hooks/useJobData";
 
+interface OpenAIResponseOutput {
+  id: string;
+  type: "reasoning" | "message";
+  status?: string;
+  content?: Array<{
+    type: string;
+    text: string;
+  }>;
+}
+
+interface OpenAIResponse {
+  output?: OpenAIResponseOutput[];
+}
+
 export const useJobSummarization = (jobId: string | null) => {
   const { rawSummary: existingSummary } = useJobData(jobId ?? undefined);
 
@@ -14,7 +28,7 @@ export const useJobSummarization = (jobId: string | null) => {
 
     try {
       const response = await fetch(
-        "https://api.openai.com/v1/chat/completions",
+        "https://api.openai.com/v1/responses",
         {
           method: "POST",
           headers: {
@@ -23,7 +37,7 @@ export const useJobSummarization = (jobId: string | null) => {
           },
           body: JSON.stringify({
             model: llmConfig.model_config.model,
-            messages: [
+            input: [
               {
                 role: "system",
                 content: `${llmConfig.system_message}\nPlease respond in ${language}.`,
@@ -33,12 +47,22 @@ export const useJobSummarization = (jobId: string | null) => {
                 content: description,
               },
             ],
-            response_format: {
-              type: "json_schema",
-              json_schema: llmConfig.output_schema,
+            text: {
+              format: {
+                type: "json_schema",
+                name: llmConfig.output_schema.name,
+                strict: llmConfig.output_schema.strict,
+                schema: llmConfig.output_schema.schema,
+              },
+              verbosity: "low"
             },
-            temperature: llmConfig.model_config.temperature,
-            top_p: llmConfig.model_config.top_p,
+            reasoning: {
+              effort: "minimal",
+              summary: null
+            },
+            tools: [],
+            store: false,
+            include: []
           }),
         }
       );
@@ -47,8 +71,9 @@ export const useJobSummarization = (jobId: string | null) => {
         throw new Error("Failed to get response from OpenAI");
       }
 
-      const data = await response.json();
-      const summary = data.choices[0]?.message?.content;
+      const data: OpenAIResponse = await response.json();
+      console.log(data);
+      const summary = data.output?.find((item: OpenAIResponseOutput) => item.type === 'message')?.content?.[0]?.text;
 
       if (summary) {
         await setJobSummaryDB(jobId, summary);

@@ -53,11 +53,58 @@ export default function SkillRequirementsCard({
     sass: "sass",
     scss: "sass",
     tailwind: "tailwindcss",
+    "tailwind css": "tailwindcss",
     bootstrap: "bootstrap",
     "material-ui": "materialui",
     mui: "materialui",
     "ant design": "antdesign",
     antd: "antdesign",
+  };
+
+  const findIconForSkill = (skillName: string): string | undefined => {
+    const normalizedSkill = skillName.toLowerCase().trim();
+    
+    // Step 1: Try special mappings with original normalized skill
+    if (specialMappings[normalizedSkill]) {
+      return specialMappings[normalizedSkill];
+    }
+    
+    // Step 2: Process keywords and try special mappings again
+    let processedSkill = normalizedSkill;
+    
+    // Handle suffix keywords like ".js", ".ts", etc.
+    const suffixMatch = processedSkill.match(/^(.*?)[\s.-]+(js|ts|jsx|tsx)$/);
+    if (suffixMatch) {
+      processedSkill = `${suffixMatch[1]}${suffixMatch[2]}`;
+    }
+    
+    // Handle "adobe" prefix removal
+    if (/^adobe[-_\s.]*/.test(processedSkill)) {
+      processedSkill = processedSkill.replace(/^adobe[-_\s.]*/, "").trim();
+    }
+    
+    // Try special mappings with processed skill
+    if (specialMappings[processedSkill]) {
+      return specialMappings[processedSkill];
+    }
+    
+    // Step 3: Try direct matching with techIconNames
+    const directMatch = techIconNames.find(
+      (icon) => icon.toLowerCase().replace(".svg", "") === processedSkill
+    );
+    if (directMatch) {
+      return directMatch.replace(".svg", "");
+    }
+    
+    // If all else fails, try direct matching with original normalized skill
+    const originalDirectMatch = techIconNames.find(
+      (icon) => icon.toLowerCase().replace(".svg", "") === normalizedSkill
+    );
+    if (originalDirectMatch) {
+      return originalDirectMatch.replace(".svg", "");
+    }
+    
+    return undefined;
   };
 
   // Process technical skills and match icons
@@ -69,20 +116,7 @@ export default function SkillRequirementsCard({
       const skillParts = skill.split("/").map((part) => part.trim());
 
       skillParts.forEach((skillPart) => {
-        const normalizedSkill = skillPart.toLowerCase().trim();
-
-        // Check for special mappings
-        let iconName = specialMappings[normalizedSkill];
-
-        // If no special mapping, try direct matching
-        if (!iconName) {
-          const matchedIcon = techIconNames.find(
-            (icon) => icon.toLowerCase().replace(".svg", "") === normalizedSkill
-          );
-          if (matchedIcon) {
-            iconName = matchedIcon.replace(".svg", "");
-          }
-        }
+        const iconName = findIconForSkill(skillPart);
 
         result.push({
           name: skillPart,
