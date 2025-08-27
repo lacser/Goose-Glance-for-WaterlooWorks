@@ -1,4 +1,5 @@
 let currentJobId = null;
+let pendingJobData = null;
 
 // Inject additional CSS to job posting page
 function injectStyles() {
@@ -24,6 +25,13 @@ function handleMessage(event) {
   
   if (event.data && event.data.type === "refreshPage") {
     window.location.reload();
+  }
+
+  if (event.data && event.data.type === "IFRAME_HOOK_READY") {
+    if (pendingJobData) {
+      sendJobDescriptionToIframe(pendingJobData.jobId, pendingJobData.description);
+      pendingJobData = null;
+    }
   }
 }
 
@@ -52,6 +60,23 @@ function createPanel(contentDiv) {
   }
 }
 
+function sendJobDescriptionToIframe(jobId, description) {
+  const iframes = document.querySelectorAll(
+    'iframe[src^="chrome-extension://"]'
+  );
+  iframes.forEach((iframe) => {
+    if (iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
+        {
+          type: "SET_JOB_DESCRIPTION",
+          payload: { id: jobId, description: description },
+        },
+        `chrome-extension://${chrome.runtime.id}`
+      );
+    }
+  });
+}
+
 // Load the job posting into the iframe(s).
 function loadPosting(staticContentDiv) {
   let fullDescription = "";
@@ -73,23 +98,10 @@ function loadPosting(staticContentDiv) {
   }
 
   console.log("Loading new job posting:", jobId);
-
-  // Send job description to iframe
-  const iframes = document.querySelectorAll(
-    'iframe[src^="chrome-extension://"]'
-  );
-  iframes.forEach((iframe) => {
-    const postMessage = () => {
-      iframe.contentWindow.postMessage(
-        {
-          type: "SET_JOB_DESCRIPTION",
-          payload: { id: jobId, description: fullDescription },
-        },
-        `chrome-extension://${chrome.runtime.id}`
-      );
-    };
-    iframe.addEventListener("load", postMessage);
-  });
+  pendingJobData = {
+    jobId: jobId,
+    description: fullDescription
+  };
 }
 
 // Call function loadPosting only if the job ID has changed.

@@ -17,6 +17,7 @@ export const useContextService = () => {
     const cleanupMessageListener = setupJobDescriptionListener(dispatch);
     const cleanupHeightObserver = setupHeightObserver();
     const cleanupStorageListener = setupChromeStorageListener(dispatch);
+    notifyContentScriptReady();
 
     return () => {
       cleanupMessageListener();
@@ -24,6 +25,13 @@ export const useContextService = () => {
       cleanupStorageListener();
     };
   }, [dispatch]);
+};
+
+const notifyContentScriptReady = () => {
+  window.parent.postMessage(
+    { type: "IFRAME_HOOK_READY" },
+    "https://waterlooworks.uwaterloo.ca"
+  );
 };
 
 const setupJobDescriptionListener = (dispatch: Dispatch) => {
