@@ -171,7 +171,7 @@ const initialState: LLMConfigState = {
             "This ONLY applies to jobs outsied of Canada. Select true if the job requires a work visa",
         },
         other_special_requirements: {
-          type: "array",
+          type: ["array", "null"],
           description:
             "Additional special requirements (e.g. certifications, licenses, health clearances). Use ${response_language} for this field.",
           items: {
