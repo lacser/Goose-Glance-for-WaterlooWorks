@@ -30,7 +30,7 @@ export function usePopupLogic() {
   const handleAiProviderChange = (newProvider: AiProvider) => {
     setAiProvider(newProvider);
     resetTest();
-    setProviderSwitchMessage(`API for ${newProvider} loaded`);
+    setProviderSwitchMessage(`API Key for ${newProvider} loaded`);
     setTimeout(() => {
       setProviderSwitchMessage('');
     }, 2000);
@@ -49,28 +49,9 @@ export function usePopupLogic() {
   // Load saved settings on mount
   useEffect(() => {
     chrome.storage.sync.get(['apiKeys', 'autoAnalysis', 'language', 'devMode', 'aiProvider'], (result) => {
-      // Handle legacy migration from single openaiApiKey to apiKeys object
       if (result.apiKeys) {
         setApiKeys(result.apiKeys);
-      } else if (result.openaiApiKey) {
-        // Migrate legacy single API key to new structure
-        chrome.storage.sync.get(['openaiApiKey'], (legacyResult) => {
-          if (legacyResult.openaiApiKey) {
-            const newApiKeys = {
-              OpenAI: legacyResult.openaiApiKey,
-              Gemini: '',
-              OpenRouter: '',
-              Local: ''
-            };
-            setApiKeys(newApiKeys);
-            // Save the new format and remove the old key
-            chrome.storage.sync.set({ apiKeys: newApiKeys }, () => {
-              chrome.storage.sync.remove(['openaiApiKey']);
-            });
-          }
-        });
       }
-      
       if (typeof result.autoAnalysis !== 'undefined') {
         setAutoAnalysis(result.autoAnalysis);
       }
