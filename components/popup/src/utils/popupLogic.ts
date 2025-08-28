@@ -1,27 +1,76 @@
 import { useEffect, useState } from 'react';
+import { useApiKeyTest } from '../hooks/useApiKeyTest';
+
+type AiProvider = 'OpenAI' | 'Gemini' | 'OpenRouter' | 'Local';
+
+interface ApiKeys {
+  OpenAI: string;
+  Gemini: string;
+  OpenRouter: string;
+  Local: string;
+}
 
 export function usePopupLogic() {
-  const [apiKey, setApiKeyInternal] = useState('');
+  const [apiKeys, setApiKeys] = useState<ApiKeys>({
+    OpenAI: '',
+    Gemini: '',
+    OpenRouter: '',
+    Local: ''
+  });
+  const [autoAnalysis, setAutoAnalysis] = useState(true);
+  const [aiProvider, setAiProvider] = useState<AiProvider>('OpenAI');
+  const [devMode, setDevMode] = useState(false);
+  const [language, setLanguage] = useState('English');
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle');
+  const [providerSwitchMessage, setProviderSwitchMessage] = useState('');
+
+  const { testStatus, testMessage, testApiKey, resetTest } = useApiKeyTest();
+  
+  // Handle AI Provider change with notification
+  const handleAiProviderChange = (newProvider: AiProvider) => {
+    setAiProvider(newProvider);
+    resetTest();
+    setProviderSwitchMessage(`API for ${newProvider} loaded`);
+    setTimeout(() => {
+      setProviderSwitchMessage('');
+    }, 2000);
+  };
   
   // Reset test status and message when API key changes
   const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setApiKeyInternal(e.target.value);
-    setTestStatus('idle');
-    setTestMessage('');
+    const newValue = e.target.value;
+    setApiKeys(prev => ({
+      ...prev,
+      [aiProvider]: newValue
+    }));
+    resetTest();
   };
-  const [autoAnalysis, setAutoAnalysis] = useState(true);
-  const [devMode, setDevMode] = useState(false);
-  const [language, setLanguage] = useState('English');
-  const [testStatus, setTestStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
-  const [testMessage, setTestMessage] = useState('');
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved'>('idle');
 
   // Load saved settings on mount
   useEffect(() => {
-    chrome.storage.sync.get(['openaiApiKey', 'autoAnalysis', 'language', 'devMode'], (result) => {
-      if (result.openaiApiKey) {
-        setApiKeyInternal(result.openaiApiKey);
+    chrome.storage.sync.get(['apiKeys', 'autoAnalysis', 'language', 'devMode', 'aiProvider'], (result) => {
+      // Handle legacy migration from single openaiApiKey to apiKeys object
+      if (result.apiKeys) {
+        setApiKeys(result.apiKeys);
+      } else if (result.openaiApiKey) {
+        // Migrate legacy single API key to new structure
+        chrome.storage.sync.get(['openaiApiKey'], (legacyResult) => {
+          if (legacyResult.openaiApiKey) {
+            const newApiKeys = {
+              OpenAI: legacyResult.openaiApiKey,
+              Gemini: '',
+              OpenRouter: '',
+              Local: ''
+            };
+            setApiKeys(newApiKeys);
+            // Save the new format and remove the old key
+            chrome.storage.sync.set({ apiKeys: newApiKeys }, () => {
+              chrome.storage.sync.remove(['openaiApiKey']);
+            });
+          }
+        });
       }
+      
       if (typeof result.autoAnalysis !== 'undefined') {
         setAutoAnalysis(result.autoAnalysis);
       }
@@ -31,6 +80,9 @@ export function usePopupLogic() {
       if (typeof result.devMode !== 'undefined') {
         setDevMode(result.devMode);
       }
+      if (result.aiProvider) {
+        setAiProvider(result.aiProvider);
+      }
     });
   }, []);
 
@@ -38,10 +90,11 @@ export function usePopupLogic() {
   const saveSettings = () => {
     chrome.storage.sync.set(
       {
-        openaiApiKey: apiKey.trim(),
+        apiKeys,
         autoAnalysis,
         language,
         devMode,
+        aiProvider,
       },
       () => {
         setSaveStatus('saved');
@@ -52,50 +105,28 @@ export function usePopupLogic() {
     );
   };
 
-  // Test the API key against OpenAI's models endpoint
-  const testApiKey = async () => {
-    if (!apiKey.trim()) {
-      setTestMessage('Please enter an API key');
-      setTestStatus('error');
-      return;
-    }
-
-    try {
-      setTestStatus('testing');
-      setTestMessage('');
-
-      const response = await fetch('https://api.openai.com/v1/models', {
-        headers: {
-          Authorization: `Bearer ${apiKey.trim()}`,
-        },
-      });
-
-      if (response.ok) {
-        setTestStatus('success');
-        setTestMessage('API key is valid');
-      } else {
-        setTestStatus('error');
-        setTestMessage('Invalid API key');
-      }
-    } catch {
-      setTestStatus('error');
-      setTestMessage('Error testing API key');
-    }
+  // Create wrapper function that passes aiProvider to testApiKey
+  const handleTestApiKey = () => {
+    const currentApiKey = apiKeys[aiProvider];
+    testApiKey(currentApiKey, aiProvider);
   };
 
   return {
-    apiKey,
+    apiKey: apiKeys[aiProvider], // Return the current provider's API key
     setApiKey: handleApiKeyChange,
+    aiProvider,
+    setAiProvider: handleAiProviderChange,
     language,
     setLanguage,
     testStatus,
     testMessage,
+    providerSwitchMessage,
     autoAnalysis,
     setAutoAnalysis,
     devMode,
     setDevMode,
     saveStatus,
     saveSettings,
-    testApiKey,
+    testApiKey: handleTestApiKey,
   };
 }

@@ -3,6 +3,9 @@ import { useAppDispatch } from "../store/hooks";
 import { setOnJobId } from "../store/slices/waterlooworksSlice";
 import {
   setOpenAiApiKey,
+  setGeminiApiKey,
+  setOpenRouterApiKey,
+  setAiProvider,
   setAutoAnalysis,
   setLanguage,
   setDevMode,
@@ -100,10 +103,15 @@ const setupHeightObserver = () => {
 
 const setupChromeStorageListener = (dispatch: Dispatch) => {
   chrome.storage.sync.get(
-    ["openaiApiKey", "autoAnalysis", "language", "devMode"],
+    ["apiKeys", "aiProvider", "autoAnalysis", "language", "devMode"],
     (result) => {
-      if (result.openaiApiKey) {
-        dispatch(setOpenAiApiKey(result.openaiApiKey));
+      if (result.apiKeys) {
+        dispatch(setOpenAiApiKey(result.apiKeys.OpenAI || ''));
+        dispatch(setGeminiApiKey(result.apiKeys.Gemini || ''));
+        dispatch(setOpenRouterApiKey(result.apiKeys.OpenRouter || ''));
+      }
+      if (result.aiProvider) {
+        dispatch(setAiProvider(result.aiProvider));
       }
       if (typeof result.autoAnalysis !== "undefined") {
         dispatch(setAutoAnalysis(result.autoAnalysis));
@@ -121,8 +129,16 @@ const setupChromeStorageListener = (dispatch: Dispatch) => {
   const storageListener = (changes: {
     [key: string]: chrome.storage.StorageChange;
   }) => {
-    if (changes.openaiApiKey) {
-      dispatch(setOpenAiApiKey(changes.openaiApiKey.newValue));
+    if (changes.apiKeys) {
+      const apiKeys = changes.apiKeys.newValue;
+      if (apiKeys) {
+        dispatch(setOpenAiApiKey(apiKeys.OpenAI || ''));
+        dispatch(setGeminiApiKey(apiKeys.Gemini || ''));
+        dispatch(setOpenRouterApiKey(apiKeys.OpenRouter || ''));
+      }
+    }
+    if (changes.aiProvider) {
+      dispatch(setAiProvider(changes.aiProvider.newValue));
     }
     if (changes.autoAnalysis) {
       dispatch(setAutoAnalysis(changes.autoAnalysis.newValue));

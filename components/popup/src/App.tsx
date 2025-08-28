@@ -17,10 +17,13 @@ function App() {
   const {
     apiKey,
     setApiKey,
+    aiProvider,
+    setAiProvider,
     language,
     setLanguage,
     testStatus,
     testMessage,
+    providerSwitchMessage,
     autoAnalysis,
     setAutoAnalysis,
     devMode,
@@ -48,14 +51,30 @@ function App() {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Text font="base">OpenAI API Key</Text>
-          <Input
-            type="password"
-            value={apiKey}
-            onChange={setApiKey}
-            placeholder="Enter your OpenAI API key"
-          />
-          {(testStatus === "idle" || testStatus === "testing") && (
+          <Text font="base">AI Provider</Text>
+          <Combobox
+            value={aiProvider}
+            onOptionSelect={(_, data) =>
+              data.optionValue && setAiProvider(data.optionValue as 'OpenAI' | 'Gemini' | 'OpenRouter' | 'Local')
+            }
+          >
+            <Option value="OpenAI">OpenAI</Option>
+            <Option value="Gemini">Gemini</Option>
+            <Option value="OpenRouter">OpenRouter</Option>
+            <Option value="Local">Local</Option>
+          </Combobox>
+          {aiProvider !== 'Local' && (
+            <>
+              <Text font="base">{aiProvider} API Key</Text>
+              <Input
+                type="password"
+                value={apiKey}
+                onChange={setApiKey}
+                placeholder={`Enter your ${aiProvider} API key`}
+              />
+            </>
+          )}
+          {aiProvider !== 'Local' && (testStatus === "idle" || testStatus === "testing") && (
             <Button onClick={testApiKey} disabled={testStatus === "testing"}>
               <div className="flex items-center gap-2">
                 {testStatus === "testing" && <Spinner size="tiny" />}
@@ -63,10 +82,18 @@ function App() {
               </div>
             </Button>
           )}
-          {testMessage && (
-            <MessageBar intent={testStatus === "error" ? "error" : "success"}>
+          {(testMessage || providerSwitchMessage) && (
+            <MessageBar 
+              intent={
+                providerSwitchMessage 
+                  ? "info" 
+                  : (testStatus === "error" ? "error" : "success")
+              }
+            >
               <MessageBarBody>
-                <MessageBarTitle>{testMessage}</MessageBarTitle>
+                <MessageBarTitle>
+                  {providerSwitchMessage || testMessage}
+                </MessageBarTitle>
               </MessageBarBody>
             </MessageBar>
           )}

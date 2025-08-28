@@ -1,99 +1,75 @@
 import { useAppSelector } from "../store/hooks";
-import { setJobSummary as setJobSummaryDB } from "./useIndexedDB";
 import { useJobData } from "../hooks/useJobData";
-
-interface OpenAIResponseOutput {
-  id: string;
-  type: "reasoning" | "message";
-  status?: string;
-  content?: Array<{
-    type: string;
-    text: string;
-  }>;
-}
-
-interface OpenAIResponse {
-  output?: OpenAIResponseOutput[];
-}
+import { useOpenAIAnalysis } from "./providers/useOpenAIAnalysis";
+import { useGeminiAnalysis } from "./providers/useGeminiAnalysis";
+import { useOpenRouterAnalysis } from "./providers/useOpenRouterAnalysis";
 
 export const useJobSummarization = (jobId: string | null) => {
   const { rawSummary: existingSummary } = useJobData(jobId ?? undefined);
 
   const openaiApiKey = useAppSelector((state) => state.settings.openaiApiKey);
+  const geminiApiKey = useAppSelector((state) => state.settings.geminiApiKey);
+  const openRouterApiKey = useAppSelector((state) => state.settings.openRouterApiKey);
+  const aiProvider = useAppSelector((state) => state.settings.aiProvider);
   const language = useAppSelector((state) => state.settings.language);
-  const llmConfig = useAppSelector((state) => state.llmConfig);
+
+  const { analyzeWithOpenAI } = useOpenAIAnalysis();
+  const { analyzeWithGemini } = useGeminiAnalysis();
+  const { analyzeWithOpenRouter } = useOpenRouterAnalysis();
 
   const summarizeJob = async (description: string) => {
-    if (!jobId || !openaiApiKey) return;
-
-    try {
-      // Create a deep copy of the schema and replace ${response_language} with the actual language
-      const schemaString = JSON.stringify(llmConfig.output_schema.schema);
-      const updatedSchemaString = schemaString.replace(/\$\{response_language\}/g, language);
-      const updatedSchema = JSON.parse(updatedSchemaString);
-
-      const response = await fetch(
-        "https://api.openai.com/v1/responses",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${openaiApiKey}`,
-          },
-          body: JSON.stringify({
-            model: llmConfig.model_config.model,
-            input: [
-              {
-                role: "system",
-                content: llmConfig.system_message,
-              },
-              {
-                role: "user",
-                content: description,
-              },
-            ],
-            text: {
-              format: {
-                type: "json_schema",
-                name: llmConfig.output_schema.name,
-                strict: llmConfig.output_schema.strict,
-                schema: updatedSchema,
-              },
-              verbosity: "low"
-            },
-            reasoning: {
-              effort: "minimal",
-              summary: null
-            },
-            tools: [],
-            store: false,
-            include: []
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to get response from OpenAI");
-      }
-
-      const data: OpenAIResponse = await response.json();
-      const summary = data.output?.find((item: OpenAIResponseOutput) => item.type === 'message')?.content?.[0]?.text;
-
-      if (summary) {
-        await setJobSummaryDB(jobId, summary);
-        return {
-          status: "success",
-          source: "openai",
-        } as const;
-      } else {
-        throw new Error("No summary returned from OpenAI");
-      }
-    } catch (error) {
+    if (!jobId) {
       return {
         status: "error",
-        source: "openai",
-        error: error instanceof Error ? error.message : "An unknown error occurred",
+        source: aiProvider.toLowerCase(),
+        error: "No job ID provided",
       } as const;
+    }
+
+    switch (aiProvider) {
+      case 'OpenAI':
+        if (!openaiApiKey) {
+          return {
+            status: "error",
+            source: "openai",
+            error: "OpenAI API key not configured",
+          } as const;
+        }
+        return await analyzeWithOpenAI(jobId, description, openaiApiKey, language);
+
+      case 'Gemini':
+        if (!geminiApiKey) {
+          return {
+            status: "error",
+            source: "gemini",
+            error: "Gemini API key not configured",
+          } as const;
+        }
+        return await analyzeWithGemini(jobId, description, geminiApiKey, language);
+
+      case 'OpenRouter':
+        if (!openRouterApiKey) {
+          return {
+            status: "error",
+            source: "openrouter",
+            error: "OpenRouter API key not configured",
+          } as const;
+        }
+        return await analyzeWithOpenRouter(jobId, description, openRouterApiKey, language);
+
+      case 'Local':
+        return {
+          status: "error",
+          source: "local",
+          error: "Local AI analysis not yet implemented",
+        } as const;
+
+      default:
+        return {
+          status: "error",
+          source: "unknown",
+          error: `Unknown AI provider: ${aiProvider}`,
+        } as const;
     }
   };
 

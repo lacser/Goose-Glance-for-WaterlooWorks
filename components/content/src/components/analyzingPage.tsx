@@ -54,7 +54,7 @@ export default function AnalyzingPage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSentenceIndex(Math.floor(Math.random() * interestingSentences.length));
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [interestingSentences.length]);
