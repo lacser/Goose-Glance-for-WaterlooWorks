@@ -13,13 +13,6 @@ export const useAutoAnalysis = () => {
   const [hasAnalyzed, setHasAnalyzed] = useState(false);
 
   useEffect(() => {
-    console.log("Auto analysis check:", {
-      onJobId,
-      summary,
-      isLoading,
-      autoAnalysis,
-      hasAnalyzed,
-    });
     if (onJobId && !summary && !isLoading && autoAnalysis && !hasAnalyzed) {
       handleAnalyze();
     }

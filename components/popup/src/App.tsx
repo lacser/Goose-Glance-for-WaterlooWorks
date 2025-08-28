@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Combobox,
@@ -28,6 +29,8 @@ function App() {
     saveSettings,
     testApiKey,
   } = usePopupLogic();
+
+  const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-4 w-[300px] p-5 min-h-[300px]">
@@ -94,27 +97,35 @@ function App() {
               />
             </div>
           </div>
-
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <Text font="base">DEV Mode</Text>
-              <Switch
-                checked={devMode}
-                onChange={(e) => setDevMode(e.target.checked)}
-              />
+          {isAdvancedSettingsOpen && (
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <Text font="base">DEV Mode</Text>
+                <Switch
+                  checked={devMode}
+                  onChange={(e) => setDevMode(e.target.checked)}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
-      <Button
-        appearance="primary"
-        className="mt-4 self-end"
-        onClick={saveSettings}
-        disabled={saveStatus === "saved"}
-      >
-        {saveStatus === "saved" ? "Saved" : "Save"}
-      </Button>
+      <div className="flex justify-end items-center gap-2">
+        <Button
+          appearance="secondary"
+          onClick={() => setIsAdvancedSettingsOpen(!isAdvancedSettingsOpen)}
+        >
+          Advanced Settings
+        </Button>
+        <Button
+          appearance="primary"
+          onClick={saveSettings}
+          disabled={saveStatus === "saved"}
+        >
+          {saveStatus === "saved" ? "Saved" : "Save"}
+        </Button>
+      </div>
     </div>
   );
 }
