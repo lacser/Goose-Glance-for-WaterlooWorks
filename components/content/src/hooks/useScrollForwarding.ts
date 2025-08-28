@@ -26,7 +26,6 @@ export const useScrollForwarding = () => {
     };
 
     const onWheel = (e: WheelEvent) => {
-      e.preventDefault();
       sendScroll({
         method: "wheel",
         deltaX: e.deltaX || 0,
