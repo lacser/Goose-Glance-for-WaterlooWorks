@@ -1,6 +1,14 @@
-let currentJobId = null;
-let pendingJobData = null;
-let docViewer = null;
+// Content script (TypeScript)
+// Note: TurndownService is loaded via web_accessible_resources (public/utils/turndown.js)
+// so we declare a minimal global definition here for type-checking without bundling the library.
+declare class TurndownService {
+  constructor(options?: { headingStyle?: string });
+  turndown(input: string | Node): string;
+}
+
+let currentJobId: string | null = null;
+let pendingJobData: { jobId: string | null; description: string } | null = null;
+let docViewer: HTMLElement | null = null;
 
 // Inject additional CSS to job posting page
 function injectStyles() {
@@ -16,14 +24,28 @@ function injectStyles() {
 }
 
 // Listen for content height adjustment messages from iframes and adjust iframe height accordingly
-function handleMessage(event) {
+type AdjustHeightMessage = { type: "adjustHeight"; height: number };
+type RefreshPageMessage = { type: "refreshPage" };
+type IframeScrollPayload =
+  | { method: "wheel" | "touch"; deltaX?: number; deltaY?: number }
+  | { method: "key"; key: string; shiftKey?: boolean };
+type IframeScrollMessage = { type: "IFRAME_SCROLL"; payload: IframeScrollPayload };
+type IframeHookReadyMessage = { type: "IFRAME_HOOK_READY" };
+type MessageData =
+  | AdjustHeightMessage
+  | RefreshPageMessage
+  | IframeScrollMessage
+  | IframeHookReadyMessage
+  | { type: string; [k: string]: unknown };
+
+function handleMessage(event: MessageEvent<MessageData>) {
   if (event.data && event.data.type === "adjustHeight") {
-    const iframe = document.querySelector('iframe[src^="chrome-extension://"]');
+    const iframe = document.querySelector('iframe[src^="chrome-extension://"]') as HTMLIFrameElement | null;
     if (iframe) {
-      iframe.style.height = event.data.height + "px";
+      iframe.style.height = String(event.data.height) + "px";
     }
   }
-  
+
   if (event.data && event.data.type === "refreshPage") {
     window.location.reload();
   }
@@ -32,14 +54,25 @@ function handleMessage(event) {
     if (!(typeof event.origin === "string" && event.origin.startsWith("chrome-extension://"))) {
       return;
     }
-    const p = event.data.payload || {};
-    const doScrollBy = (dx, dy) => {
-      docViewer.scrollBy({ left: dx || 0, top: dy || 0, behavior: "auto" });
+    const p = (event.data && (event.data as IframeScrollMessage).payload) || ({} as IframeScrollPayload);
+    const hasScrollBy = (
+      el: Element
+    ): el is Element & { scrollBy: (opts: ScrollToOptions) => void } =>
+      "scrollBy" in el && typeof (el as unknown as { scrollBy?: unknown }).scrollBy === "function";
+    const doScrollBy = (dx?: number, dy?: number) => {
+      const el = docViewer;
+      if (el && hasScrollBy(el)) {
+        el.scrollBy({ left: dx || 0, top: dy || 0, behavior: "auto" });
+      } else {
+        window.scrollBy({ left: dx || 0, top: dy || 0, behavior: "auto" });
+      }
     };
 
     if (p.method === "wheel" || p.method === "touch") {
-      doScrollBy(p.deltaX || 0, p.deltaY || 0);
+      const { deltaX = 0, deltaY = 0 } = p as Extract<IframeScrollPayload, { method: "wheel" | "touch" }>;
+      doScrollBy(deltaX, deltaY);
     } else if (p.method === "key") {
+  const { shiftKey } = p as Extract<IframeScrollPayload, { method: "key" }>;
       const line = 40;
       const page = Math.max(window.innerHeight - 80, 200);
       switch (p.key) {
@@ -68,7 +101,7 @@ function handleMessage(event) {
           window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "auto" });
           break;
         case " ":
-          doScrollBy(0, p.shiftKey ? -page : page);
+          doScrollBy(0, shiftKey ? -page : page);
           break;
         default:
           break;
@@ -84,7 +117,7 @@ function handleMessage(event) {
   }
 }
 
-function createPanel(contentDiv) {
+function createPanel(contentDiv: HTMLElement) {
   // Check for existing panel in the content div
   const existingPanel = contentDiv.querySelector(".goose-glance-panel");
   if (existingPanel) existingPanel.remove();
@@ -109,13 +142,12 @@ function createPanel(contentDiv) {
   }
 }
 
-function sendJobDescriptionToIframe(jobId, description) {
-  const iframes = document.querySelectorAll(
-    'iframe[src^="chrome-extension://"]'
-  );
+function sendJobDescriptionToIframe(jobId: string | null, description: string) {
+  const iframes = document.querySelectorAll('iframe[src^="chrome-extension://"]');
   iframes.forEach((iframe) => {
-    if (iframe.contentWindow) {
-      iframe.contentWindow.postMessage(
+    const win = (iframe as HTMLIFrameElement).contentWindow;
+    if (win) {
+      win.postMessage(
         {
           type: "SET_JOB_DESCRIPTION",
           payload: { id: jobId, description: description },
@@ -127,15 +159,15 @@ function sendJobDescriptionToIframe(jobId, description) {
 }
 
 // Load the job posting into the iframe(s).
-function loadPosting(staticContentDiv) {
+function loadPosting(staticContentDiv: Element) {
   let fullDescription = "";
   // Find job ID
   const jobIdSpan = document.querySelector(
     ".doc-viewer__document-content .dashboard-header__posting-title .tag-label"
   );
-  let jobId = null;
+  let jobId: string | null = null;
   if (jobIdSpan) {
-    jobId = jobIdSpan.textContent.replace(/\D+/g, "");
+    jobId = (jobIdSpan.textContent || "").replace(/\D+/g, "");
   }
 
   const td = new TurndownService({ headingStyle: "atx" });
@@ -149,7 +181,7 @@ function loadPosting(staticContentDiv) {
   console.log("Loading new job posting:", jobId);
   pendingJobData = {
     jobId: jobId,
-    description: fullDescription
+    description: fullDescription,
   };
 }
 
@@ -163,26 +195,29 @@ async function processPageChanges() {
       currentJobId = null;
       return;
     }
-    const newJobId = jobIdSpan.textContent.trim();
+    const newJobId = (jobIdSpan.textContent || "").trim();
 
     if (newJobId === currentJobId) return;
     currentJobId = newJobId;
 
-    const longFormDiv = document.querySelector(".is--long-form-reading");
+    const longFormDiv = document.querySelector(".is--long-form-reading") as HTMLElement | null;
     if (!longFormDiv) return;
 
     const contentDivWrapper = longFormDiv.querySelector("div");
-    const contentDiv = contentDivWrapper.querySelector("div");
+    if (!contentDivWrapper) return;
+    const contentDiv = contentDivWrapper.querySelector("div") as HTMLElement | null;
+    if (!contentDiv) return;
     const panelDivs = Array.from(contentDiv.children).filter((child) =>
-      child.classList.contains("panel")
+      (child as HTMLElement).classList.contains("panel")
     );
     if (panelDivs.length < 1) {
       currentJobId = null;
       return;
     }
-    const staticContentDiv = contentDiv.cloneNode(true);
+    const staticContentDiv = contentDiv.cloneNode(true) as HTMLElement;
 
-    docViewer = document.querySelector(".doc-viewer__document-content").parentElement;
+    const dv = document.querySelector(".doc-viewer__document-content");
+    docViewer = dv ? (dv as HTMLElement).parentElement : null;
     createPanel(contentDiv);
     loadPosting(staticContentDiv);
   } catch (error) {
@@ -192,16 +227,17 @@ async function processPageChanges() {
 
 // MutationObserver for page DOM changes and call processPageChanges.
 function setupMutationObserver() {
-  const config = {
+  const config: MutationObserverInit = {
     childList: true,
     subtree: true,
     attributes: true,
     attributeFilter: ["class", "style", "id"],
   };
   // Debounce to limit the rate of processPageChanges calls
-  const callback = () => {
-    if (callback.timeout) clearTimeout(callback.timeout);
-    callback.timeout = setTimeout(processPageChanges, 100);
+  let debounceTimer: number | undefined;
+  const callback: MutationCallback = () => {
+    if (debounceTimer) window.clearTimeout(debounceTimer);
+    debounceTimer = window.setTimeout(processPageChanges, 100);
   };
   const observer = new MutationObserver(callback);
   observer.observe(document.body, config);

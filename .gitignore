@@ -28,3 +28,6 @@ dist-ssr
 
 # Build output
 dist/
+
+# Extension TS build artifacts
+public/extension/dist-types/

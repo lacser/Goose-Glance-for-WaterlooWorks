@@ -5,8 +5,7 @@
   "description": "AI-powered job description analyzer for WaterlooWorks",
   "permissions": ["activeTab", "storage", "tabs"],
   "background": {
-    "service_worker": "service_worker.js",
-    "type": "module"
+  "service_worker": "service_worker.js"
   },
   "action": {
     "default_popup": "popup/index.html",
@@ -24,8 +23,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.waterlooworks.uwaterloo.ca/*"],
-      "js": ["utils/turndown.js", "content_scripts.js"],
-      "type": "module"
+  "js": ["utils/turndown.js", "content_scripts.js"]
     }
   ],
   "web_accessible_resources": [

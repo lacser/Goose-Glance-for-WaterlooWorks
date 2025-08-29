@@ -1,11 +1,11 @@
+// Service worker (TypeScript)
 chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === 'openWelcomePage') {
-
+  if ((message as { action?: string }).action === 'openWelcomePage') {
     const extensionId = chrome.runtime.id;
     const welcomePageUrl = `chrome-extension://${extensionId}/pages/index.html`;
     chrome.tabs.create({
       url: welcomePageUrl,
-      active: true
+      active: true,
     });
   }
   return;
