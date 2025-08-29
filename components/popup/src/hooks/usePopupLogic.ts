@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useApiKeyTest } from '../hooks/useApiKeyTest';
+import { useApiKeyTest } from './useApiKeyTest';
 
 type AiProvider = 'OpenAI' | 'Gemini' | 'OpenRouter' | 'Local';
 

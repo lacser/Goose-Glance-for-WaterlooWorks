@@ -11,7 +11,7 @@ import {
   MessageBarTitle,
   MessageBarBody,
 } from "@fluentui/react-components";
-import { usePopupLogic } from "./utils/popupLogic";
+import { usePopupLogic } from "./hooks/usePopupLogic";
 
 function App() {
   const {
