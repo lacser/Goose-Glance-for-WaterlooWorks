@@ -6,13 +6,13 @@ try {
   execSync('tsc -p components/popup/tsconfig.node.json', { stdio: 'inherit' });
   execSync('tsc -p components/content/tsconfig.app.json', { stdio: 'inherit' });
   execSync('tsc -p components/content/tsconfig.node.json', { stdio: 'inherit' });
-  execSync('tsc -p components/welcomePage/tsconfig.app.json', { stdio: 'inherit' });
-  execSync('tsc -p components/welcomePage/tsconfig.node.json', { stdio: 'inherit' });
+  execSync('tsc -p components/pages/tsconfig.app.json', { stdio: 'inherit' });
+  execSync('tsc -p components/pages/tsconfig.node.json', { stdio: 'inherit' });
 
   // Build Vite
   execSync('vite build components/popup', { stdio: 'inherit' });
   execSync('vite build components/content', { stdio: 'inherit' });
-  execSync('vite build components/welcomePage', { stdio: 'inherit' });
+  execSync('vite build components/pages', { stdio: 'inherit' });
 
   // Copy public directory if it exists
   if (process.platform === 'win32') {

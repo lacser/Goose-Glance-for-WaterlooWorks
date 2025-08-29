@@ -5,7 +5,8 @@
   "description": "AI-powered job description analyzer for WaterlooWorks",
   "permissions": ["activeTab", "storage", "tabs"],
   "background": {
-    "service_worker": "service-worker.js"
+    "service_worker": "service-worker.js",
+    "type": "module"
   },
   "action": {
     "default_popup": "popup/index.html",
@@ -37,8 +38,8 @@
         "content/icons/*",
         "content/techIcons/*",
         "content/countryFlags/*",
-        "welcome/index.html",
-        "welcome/assets/*"
+        "pages/index.html",
+        "pages/assets/*"
       ],
       "matches": ["*://*.waterlooworks.uwaterloo.ca/*"]
     }
