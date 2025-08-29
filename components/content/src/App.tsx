@@ -1,6 +1,8 @@
 import { useContextService } from "./hooks/useContextService";
 import { useIndexedDB } from "./hooks/useIndexedDB";
 import { useSettingsSync } from "./hooks/useSettingsSync";
+import { useScrollForwarding } from "./hooks/useScrollForwarding";
+import { useAutoAnalysis } from "./hooks/useAutoAnalysis";
 import { useAppSelector } from "./store/hooks";
 import { useJobSummary } from "./hooks/useJobData";
 import { DevContent } from "./components/devContent";
@@ -14,14 +16,18 @@ import {
   GooseGlanceBanner,
   ErrorPage,
   NoAnalysisPage,
+  AnalyzingPage,
 } from "./components";
 
 function App() {
   useContextService();
   useIndexedDB();
   useSettingsSync();
+  useScrollForwarding();
+  useAutoAnalysis();
   const devMode = useAppSelector((state) => state.settings.devMode);
   const onJobId = useAppSelector((state) => state.waterlooworks.onJobId);
+  const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
   const { summary } = useJobSummary();
 
   if (devMode) {
@@ -36,12 +42,21 @@ function App() {
     );
   }
   if (!summary) {
-    return (
-      <>
-        <GooseGlanceBanner />
-        <NoAnalysisPage />
-      </>
-    );
+    if (isLoading) {
+      return (
+        <>
+          <GooseGlanceBanner />
+          <AnalyzingPage />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <GooseGlanceBanner />
+          <NoAnalysisPage />
+        </>
+      );
+    }
   }
 
   return (

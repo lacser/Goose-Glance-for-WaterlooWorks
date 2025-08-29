@@ -19,17 +19,29 @@ export const useSettingsSync = () => {
     // Check whether each field actually changed
     const hasChanged = 
       prevSettings.openaiApiKey !== settings.openaiApiKey ||
+      prevSettings.geminiApiKey !== settings.geminiApiKey ||
+      prevSettings.openRouterApiKey !== settings.openRouterApiKey ||
+      prevSettings.aiProvider !== settings.aiProvider ||
       prevSettings.autoAnalysis !== settings.autoAnalysis ||
       prevSettings.language !== settings.language ||
       prevSettings.devMode !== settings.devMode;
 
     if (hasChanged) {
       // Update chrome.storage only when values truly changed
+      const apiKeys = {
+        OpenAI: settings.openaiApiKey,
+        Gemini: settings.geminiApiKey,
+        OpenRouter: settings.openRouterApiKey,
+        Local: '' // Local doesn't need API key
+      };
+
       chrome.storage.sync.set({
-        openaiApiKey: settings.openaiApiKey,
+        apiKeys,
+        aiProvider: settings.aiProvider,
         autoAnalysis: settings.autoAnalysis,
         language: settings.language,
         devMode: settings.devMode,
+        openaiApiKey: settings.openaiApiKey,
       });
 
       // Update the previous settings reference

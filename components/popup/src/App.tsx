@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Combobox,
@@ -10,16 +11,19 @@ import {
   MessageBarTitle,
   MessageBarBody,
 } from "@fluentui/react-components";
-import { usePopupLogic } from "./utils/popupLogic";
+import { usePopupLogic } from "./hooks/usePopupLogic";
 
 function App() {
   const {
     apiKey,
     setApiKey,
+    aiProvider,
+    setAiProvider,
     language,
     setLanguage,
     testStatus,
     testMessage,
+    providerSwitchMessage,
     autoAnalysis,
     setAutoAnalysis,
     devMode,
@@ -28,6 +32,8 @@ function App() {
     saveSettings,
     testApiKey,
   } = usePopupLogic();
+
+  const [isAdvancedSettingsOpen, setIsAdvancedSettingsOpen] = useState(false);
 
   return (
     <div className="flex flex-col gap-4 w-[300px] p-5 min-h-[300px]">
@@ -45,14 +51,30 @@ function App() {
 
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
-          <Text font="base">OpenAI API Key</Text>
-          <Input
-            type="password"
-            value={apiKey}
-            onChange={setApiKey}
-            placeholder="Enter your OpenAI API key"
-          />
-          {(testStatus === "idle" || testStatus === "testing") && (
+          <Text font="base">AI Provider</Text>
+          <Combobox
+            value={aiProvider}
+            onOptionSelect={(_, data) =>
+              data.optionValue && setAiProvider(data.optionValue as 'OpenAI' | 'Gemini' | 'OpenRouter' | 'Local')
+            }
+          >
+            <Option value="OpenAI">OpenAI</Option>
+            <Option value="Gemini">Gemini</Option>
+            <Option value="OpenRouter">OpenRouter</Option>
+            <Option value="Local">Local</Option>
+          </Combobox>
+          {aiProvider !== 'Local' && (
+            <>
+              <Text font="base">{aiProvider} API Key</Text>
+              <Input
+                type="password"
+                value={apiKey}
+                onChange={setApiKey}
+                placeholder={`Enter your ${aiProvider} API key`}
+              />
+            </>
+          )}
+          {aiProvider !== 'Local' && (testStatus === "idle" || testStatus === "testing") && (
             <Button onClick={testApiKey} disabled={testStatus === "testing"}>
               <div className="flex items-center gap-2">
                 {testStatus === "testing" && <Spinner size="tiny" />}
@@ -60,10 +82,18 @@ function App() {
               </div>
             </Button>
           )}
-          {testMessage && (
-            <MessageBar intent={testStatus === "error" ? "error" : "success"}>
+          {(testMessage || providerSwitchMessage) && (
+            <MessageBar 
+              intent={
+                providerSwitchMessage 
+                  ? "info" 
+                  : (testStatus === "error" ? "error" : "success")
+              }
+            >
               <MessageBarBody>
-                <MessageBarTitle>{testMessage}</MessageBarTitle>
+                <MessageBarTitle>
+                  {providerSwitchMessage || testMessage}
+                </MessageBarTitle>
               </MessageBarBody>
             </MessageBar>
           )}
@@ -79,7 +109,8 @@ function App() {
           >
             <Option value="English">English</Option>
             <Option value="French">French</Option>
-            <Option value="Chinese">Chinese (Simplified)</Option>
+            <Option value="Chinese (Simplified)">Chinese (Simplified)</Option>
+            <Option value="Chinese (Traditional)">Chinese (Traditional)</Option>
           </Combobox>
         </div>
 
@@ -93,27 +124,35 @@ function App() {
               />
             </div>
           </div>
-
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <Text font="base">DEV Mode</Text>
-              <Switch
-                checked={devMode}
-                onChange={(e) => setDevMode(e.target.checked)}
-              />
+          {isAdvancedSettingsOpen && (
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <Text font="base">DEV Mode</Text>
+                <Switch
+                  checked={devMode}
+                  onChange={(e) => setDevMode(e.target.checked)}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
-      <Button
-        appearance="primary"
-        className="mt-4 self-end"
-        onClick={saveSettings}
-        disabled={saveStatus === "saved"}
-      >
-        {saveStatus === "saved" ? "Saved" : "Save"}
-      </Button>
+      <div className="flex justify-end items-center gap-2">
+        <Button
+          appearance="secondary"
+          onClick={() => setIsAdvancedSettingsOpen(!isAdvancedSettingsOpen)}
+        >
+          Advanced Settings
+        </Button>
+        <Button
+          appearance="primary"
+          onClick={saveSettings}
+          disabled={saveStatus === "saved"}
+        >
+          {saveStatus === "saved" ? "Saved" : "Save"}
+        </Button>
+      </div>
     </div>
   );
 }

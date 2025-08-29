@@ -1,4 +1,6 @@
 let currentJobId = null;
+let pendingJobData = null;
+let docViewer = null;
 
 // Inject additional CSS to job posting page
 function injectStyles() {
@@ -24,6 +26,61 @@ function handleMessage(event) {
   
   if (event.data && event.data.type === "refreshPage") {
     window.location.reload();
+  }
+
+  if (event.data && event.data.type === "IFRAME_SCROLL") {
+    if (!(typeof event.origin === "string" && event.origin.startsWith("chrome-extension://"))) {
+      return;
+    }
+    const p = event.data.payload || {};
+    const doScrollBy = (dx, dy) => {
+      docViewer.scrollBy({ left: dx || 0, top: dy || 0, behavior: "auto" });
+    };
+
+    if (p.method === "wheel" || p.method === "touch") {
+      doScrollBy(p.deltaX || 0, p.deltaY || 0);
+    } else if (p.method === "key") {
+      const line = 40;
+      const page = Math.max(window.innerHeight - 80, 200);
+      switch (p.key) {
+        case "ArrowDown":
+          doScrollBy(0, line);
+          break;
+        case "ArrowUp":
+          doScrollBy(0, -line);
+          break;
+        case "ArrowRight":
+          doScrollBy(line, 0);
+          break;
+        case "ArrowLeft":
+          doScrollBy(-line, 0);
+          break;
+        case "PageDown":
+          doScrollBy(0, page);
+          break;
+        case "PageUp":
+          doScrollBy(0, -page);
+          break;
+        case "Home":
+          window.scrollTo({ top: 0, behavior: "auto" });
+          break;
+        case "End":
+          window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "auto" });
+          break;
+        case " ":
+          doScrollBy(0, p.shiftKey ? -page : page);
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  if (event.data && event.data.type === "IFRAME_HOOK_READY") {
+    if (pendingJobData) {
+      sendJobDescriptionToIframe(pendingJobData.jobId, pendingJobData.description);
+      pendingJobData = null;
+    }
   }
 }
 
@@ -52,6 +109,23 @@ function createPanel(contentDiv) {
   }
 }
 
+function sendJobDescriptionToIframe(jobId, description) {
+  const iframes = document.querySelectorAll(
+    'iframe[src^="chrome-extension://"]'
+  );
+  iframes.forEach((iframe) => {
+    if (iframe.contentWindow) {
+      iframe.contentWindow.postMessage(
+        {
+          type: "SET_JOB_DESCRIPTION",
+          payload: { id: jobId, description: description },
+        },
+        `chrome-extension://${chrome.runtime.id}`
+      );
+    }
+  });
+}
+
 // Load the job posting into the iframe(s).
 function loadPosting(staticContentDiv) {
   let fullDescription = "";
@@ -73,23 +147,10 @@ function loadPosting(staticContentDiv) {
   }
 
   console.log("Loading new job posting:", jobId);
-
-  // Send job description to iframe
-  const iframes = document.querySelectorAll(
-    'iframe[src^="chrome-extension://"]'
-  );
-  iframes.forEach((iframe) => {
-    const postMessage = () => {
-      iframe.contentWindow.postMessage(
-        {
-          type: "SET_JOB_DESCRIPTION",
-          payload: { id: jobId, description: fullDescription },
-        },
-        `chrome-extension://${chrome.runtime.id}`
-      );
-    };
-    iframe.addEventListener("load", postMessage);
-  });
+  pendingJobData = {
+    jobId: jobId,
+    description: fullDescription
+  };
 }
 
 // Call function loadPosting only if the job ID has changed.
@@ -121,6 +182,7 @@ async function processPageChanges() {
     }
     const staticContentDiv = contentDiv.cloneNode(true);
 
+    docViewer = document.querySelector(".doc-viewer__document-content").parentElement;
     createPanel(contentDiv);
     loadPosting(staticContentDiv);
   } catch (error) {

@@ -10,6 +10,12 @@ export function DevContent() {
   const { error, handleAnalyze, jobData } = useJobAnalysis();
   const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
 
+  const handleWelcomePageClick = () => {
+    chrome.runtime.sendMessage(
+      { action: 'openWelcomePage' }
+    );
+  };
+
   const renderSummary = (summary: string) => {
     try {
       const summaryData = JSON.parse(summary);
@@ -146,6 +152,9 @@ export function DevContent() {
           <p className="block whitespace-normal">
             <strong>Job ID:</strong> {jobData?.id}
           </p>
+          <Button onClick={handleWelcomePageClick}>
+            Welcome Page
+          </Button>
         </div>
       </Card>
 

@@ -7,3 +7,4 @@ export { default as CompanyInfoCard } from "./analysisCards/companyInfoCard";
 export { default as GooseGlanceBanner } from "./gooseGlanceBanner";
 export { default as ErrorPage } from "./errorPage";
 export { default as NoAnalysisPage } from "./noAnalysisPage";
+export { default as AnalyzingPage } from "./analyzingPage";
