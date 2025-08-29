@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useApiKeyTest } from '../hooks/useApiKeyTest';
+import { useApiKeyTest } from './useApiKeyTest';
 
 type AiProvider = 'OpenAI' | 'Gemini' | 'OpenRouter' | 'Local';
 
@@ -86,7 +86,6 @@ export function usePopupLogic() {
     );
   };
 
-  // Create wrapper function that passes aiProvider to testApiKey
   const handleTestApiKey = () => {
     const currentApiKey = apiKeys[aiProvider];
     testApiKey(currentApiKey, aiProvider);
