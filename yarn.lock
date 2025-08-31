@@ -876,7 +876,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fluentui/react-components@npm:^9.58.3":
+"@fluentui/react-components@npm:^9.69.0":
   version: 9.69.0
   resolution: "@fluentui/react-components@npm:9.69.0"
   dependencies:
@@ -3989,7 +3989,7 @@ __metadata:
   resolution: "goose-glance-react@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.17.0"
-    "@fluentui/react-components": "npm:^9.58.3"
+    "@fluentui/react-components": "npm:^9.69.0"
     "@fluentui/react-icons": "npm:^2.0.308"
     "@mlc-ai/web-llm": "npm:^0.2.79"
     "@reduxjs/toolkit": "npm:^2.5.1"
