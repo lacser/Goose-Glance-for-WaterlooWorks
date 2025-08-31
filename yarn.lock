@@ -2192,6 +2192,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mlc-ai/web-llm@npm:^0.2.79":
+  version: 0.2.79
+  resolution: "@mlc-ai/web-llm@npm:0.2.79"
+  dependencies:
+    loglevel: "npm:^1.9.1"
+  checksum: 10c0/4ff32deee61f1c87625f01a430410b125fd624a1d2ec6fcb293ac4249094d1b280a62ec45ede1433b7e4b19e70c47f2f765414366bb3eab1f81305391f5be449
+  languageName: node
+  linkType: hard
+
 "@napi-rs/wasm-runtime@npm:^0.2.12":
   version: 0.2.12
   resolution: "@napi-rs/wasm-runtime@npm:0.2.12"
@@ -3982,6 +3991,7 @@ __metadata:
     "@eslint/js": "npm:^9.17.0"
     "@fluentui/react-components": "npm:^9.58.3"
     "@fluentui/react-icons": "npm:^2.0.308"
+    "@mlc-ai/web-llm": "npm:^0.2.79"
     "@reduxjs/toolkit": "npm:^2.5.1"
     "@tailwindcss/postcss": "npm:^4.0.6"
     "@types/chrome": "npm:^0.0.304"
@@ -4446,6 +4456,13 @@ __metadata:
   version: 4.6.2
   resolution: "lodash.merge@npm:4.6.2"
   checksum: 10c0/402fa16a1edd7538de5b5903a90228aa48eb5533986ba7fa26606a49db2572bf414ff73a2c9f5d5fd36b31c46a5d5c7e1527749c07cbcf965ccff5fbdf32c506
+  languageName: node
+  linkType: hard
+
+"loglevel@npm:^1.9.1":
+  version: 1.9.2
+  resolution: "loglevel@npm:1.9.2"
+  checksum: 10c0/1e317fa4648fe0b4a4cffef6de037340592cee8547b07d4ce97a487abe9153e704b98451100c799b032c72bb89c9366d71c9fb8192ada8703269263ae77acdc7
   languageName: node
   linkType: hard
 

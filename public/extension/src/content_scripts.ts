@@ -1,6 +1,4 @@
-// Content script (TypeScript)
 // Note: TurndownService is loaded via web_accessible_resources (public/utils/turndown.js)
-// so we declare a minimal global definition here for type-checking without bundling the library.
 declare class TurndownService {
   constructor(options?: { headingStyle?: string });
   turndown(input: string | Node): string;
