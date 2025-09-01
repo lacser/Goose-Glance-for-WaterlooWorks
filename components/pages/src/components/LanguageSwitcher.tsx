@@ -104,7 +104,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 
 
   return (
-    <div className={className} ref={menuRef}>
+    <div className={`${className} w-fit`} ref={menuRef}>
       <div className="relative" ref={anchorRef}>
         <button
           type="button"
