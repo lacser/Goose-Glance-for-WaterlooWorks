@@ -1,38 +1,65 @@
 {
   "welcome": {
     "title": "歡迎使用 Goose Glance",
-    "subtitle": "更快地理解 Waterloo Works 上的職位描述：本地大模型總結、自動緩存、無縫嵌入，為你的求職效率加速。",
+    "subtitle": "更快理解 Waterloo Works 上的職缺描述：本地大模型摘要、自動快取、無縫整合，為你的求職效率加速。",
     "features": {
       "openSource": "完全開源",
       "localFirst": "本地優先",
-      "seamlessIntegration": "無縫集成"
+      "seamlessIntegration": "無縫整合"
     },
     "coreFeatures": {
       "title": "核心特性",
       "openSource": {
         "title": "完全開源",
-        "description": "源碼開放並遵循 MIT 協議。\n在Github查看：",
+        "description": "原始碼開放並遵循 MIT 授權條款。\n在 GitHub 查看：",
         "githubLink": "github.com/lacser/Goose-Glance"
       },
       "aiModels": {
-        "title": "本地 雲端AI自由選擇",
-        "description": "在本地使用 Qwen3 進行總結；\n也支持自定義 API Key 通過 OpenAI、OpenRouter、Google Vertex 調用雲端模型。"
+        "title": "本地／雲端 AI 自由選擇",
+        "description": "在本地使用 Qwen3 進行摘要；\n亦支援自訂 API Key，透過 OpenAI、OpenRouter、Google Vertex 呼叫雲端模型。"
       },
       "cache": {
-        "title": "本地緩存",
-        "description": "基於 IndexedDB 在本地自動緩存已分析的職位描述與總結，避免重複分析，高效快捷。"
+        "title": "本地快取",
+        "description": "以 IndexedDB 為基礎，在本地自動快取已分析的職缺描述與摘要，避免重複分析，高效快捷。"
       },
       "ux": {
         "title": "快速上手",
-        "description": "完善的UI設計，在Waterloo Works中無縫集成，快速上手。"
+        "description": "完善的 UI 設計，於 Waterloo Works 中無縫整合，立即上手。"
       }
     },
-    "disclaimer": "Goose Glance is not affiliated with University of Waterloo.",
-    "getStarted": "開始設置"
+    "disclaimer": "Goose Glance 與滑鐵盧大學（University of Waterloo）無隸屬關係。",
+    "getStarted": "開始設定"
+  },
+  "privacy": {
+    "title": "隱私與資料說明",
+    "subtitle": "明察資料行止。閱讀下列隱私提示，瞭解你的資料去向。",
+    "sections": {
+      "noDataCollection": {
+        "title": "Goose Glance 不收集任何使用者資料",
+        "desc": "Goose Glance 本身不收集任何使用者資料。但若使用雲端 AI 模型，AI 供應商可能會接收到從 Waterloo Works Overview 頁面擷取的職缺描述文字。是否蒐集以及如何處理該資料，取決於你所選擇之 AI 供應商的隱私權政策。"
+      },
+      "indexedDb": {
+        "title": "本地 IndexedDB 快取",
+        "desc": "Goose Glance 使用 IndexedDB 在本地儲存已產生的職缺摘要，以避免對相同職缺重複分析。要檢視或刪除這些資料，請開啟瀏覽器開發人員工具 → 應用程式 (Application) → IndexedDB → gooseGlanceDB。此類資料體積很小，通常無需清理。"
+      },
+      "localModelCache": {
+        "title": "本地 AI 模型快取（WebLLM）",
+        "desc": "若使用本地 AI 模型，WebLLM 會在瀏覽器快取中儲存約 4GB 的模型（Qwen3 4B Q4）。所使用為預先訓練之模型，其權重不會因輸入而學習或改變。要刪除模型，可在瀏覽器開發人員工具 → 應用程式 (Application) → 儲存空間 (Storage) 中查看實際占用，並使用「清除網站資料」按鈕移除模型快取。下次再次使用本地 AI 時，模型會自動重新下載。"
+      },
+      "openSource": {
+        "title": "開源",
+        "desc": "Goose Glance 完全開源。前往儲存庫："
+      }
+    },
+    "actions": {
+      "continueSetup": "繼續設定"
+    }
   },
   "alt": {
-    "icon": "Goose Glance 圖標",
-    "heroImage": "三隻加拿大鵝，身穿不同職業服飾的插圖，背景為城市，色彩鮮明",
-    "imageRatio": "插圖比例 3:2"
+    "icon": "Goose Glance 圖示",
+    "heroImage": "三隻加拿大雁，身穿不同職業服飾的插畫，背景為城市，色彩鮮明",
+    "imageRatio": "插畫比例 3:2",
+    "privacyImage": "一隻手持盾牌的加拿大雁的正方形插畫",
+    "imageRatioSquare": "插畫比例 1:1"
   }
 }

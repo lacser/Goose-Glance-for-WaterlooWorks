@@ -30,9 +30,36 @@
     "disclaimer": "Goose Glance is not affiliated with University of Waterloo.",
     "getStarted": "开始设置"
   },
+  "privacy": {
+    "title": "隐私与数据说明",
+    "subtitle": "明察数据行止。阅读下方隐私提示，了解你的数据动向。",
+    "sections": {
+      "noDataCollection": {
+        "title": "Goose Glance 不收集任何用户数据",
+        "desc": "Goose Glance 本身不收集任何用户数据。但如果使用云端 AI 模型，AI 模型提供商可能会接收到从 Waterloo Works Overview 页面提取的职位描述文本。是否收集以及如何处理该数据，将取决于您所选择的 AI 提供商的隐私政策。"
+      },
+      "indexedDb": {
+        "title": "本地 IndexedDB 缓存",
+        "desc": "Goose Glance 使用 IndexedDB 在本地存储已分析的职位总结信息，以避免对相同职位进行重复分析。要查看或删除这些数据，可打开浏览器开发者工具 → 应用程序 → IndexedDB → gooseGlanceDB。此类数据体积很小，通常无需清理。"
+      },
+      "localModelCache": {
+        "title": "本地 AI 模型缓存（WebLLM）",
+        "desc": "如果使用本地 AI 模型，WebLLM 会在浏览器缓存中存储约 4GB 的模型（Qwen3 4B Q4）。所使用的模型为预训练模型，模型权重不会因输入而学习或改变。要删除模型，可在浏览器开发者工具 → 应用程序 → 存储 中查看实际占用，并使用「清除网站数据」按钮删除模型缓存。下次再次使用本地 AI 功能时，模型会自动重新下载。"
+      },
+      "openSource": {
+        "title": "开源",
+        "desc": "Goose Glance 完全开源。前往仓库："
+      }
+    },
+    "actions": {
+      "continueSetup": "继续设置"
+    }
+  },
   "alt": {
     "icon": "Goose Glance 图标",
     "heroImage": "三只加拿大鹅，身穿不同职业服饰的插图，背景为城市，色彩鲜明",
-    "imageRatio": "插图比例 3:2"
+    "imageRatio": "插图比例 3:2",
+    "privacyImage": "一只拿着盾牌的加拿大鹅的正方形插画",
+    "imageRatioSquare": "插图比例 1:1"
   }
 }

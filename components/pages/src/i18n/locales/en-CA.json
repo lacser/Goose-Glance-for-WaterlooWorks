@@ -30,9 +30,36 @@
     "disclaimer": "Goose Glance is not affiliated with University of Waterloo.",
     "getStarted": "Get Started"
   },
+  "privacy": {
+    "title": "Privacy & Data Notice",
+    "subtitle": "Discern the flow of your data. Read the following privacy notice to understand where your information goes.",
+    "sections": {
+      "noDataCollection": {
+        "title": "No Data Collected by Goose Glance",
+        "desc": "Goose Glance itself does not collect any user data. If you use a cloud AI model, the provider may receive job description text extracted from the Waterloo Works Overview page. This depends on your chosen provider’s privacy policy."
+      },
+      "indexedDb": {
+        "title": "Local IndexedDB Cache",
+        "desc": "Goose Glance stores analyzed job summaries in your browser’s IndexedDB to avoid re-analyzing the same job. You can view or delete this data via your browser DevTools → Application → IndexedDB → gooseGlanceDB. These entries are tiny and usually do not need cleaning."
+      },
+      "localModelCache": {
+        "title": "Local AI Model Cache (WebLLM)",
+        "desc": "When using a local AI model, WebLLM stores an approximately 4 GB model (Qwen3 4B Q4) in your browser cache. The model weights do not learn from your inputs. To remove it, open DevTools → Application → Storage to see the usage, and click “Clear site data”. The model will re-download next time you use local AI."
+      },
+      "openSource": {
+        "title": "Open Source",
+        "desc": "Goose Glance is fully open-source. Visit the repository:"
+      }
+    },
+    "actions": {
+      "continueSetup": "Continue Setup"
+    }
+  },
   "alt": {
     "icon": "Goose Glance Icon",
     "heroImage": "Illustration of three Canadian geese wearing different professional attire, with city background, vibrant colours",
-    "imageRatio": "Illustration ratio 3:2"
+    "imageRatio": "Illustration ratio 3:2",
+    "privacyImage": "Square illustration of a Canadian goose holding a shield",
+    "imageRatioSquare": "Illustration ratio 1:1"
   }
 }

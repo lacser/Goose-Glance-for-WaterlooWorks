@@ -1,38 +1,65 @@
 {
   "welcome": {
-    "title": "Bienvenue à Goose Glance",
-    "subtitle": "Comprendre les descriptions d'emploi sur Waterloo Works plus rapidement : résumé par modèle IA local, mise en cache automatique, intégration transparente pour améliorer l'efficacité de votre recherche d'emploi.",
+    "title": "Bienvenue sur Goose Glance",
+    "subtitle": "Comprenez plus rapidement les descriptions de poste sur Waterloo Works : synthèse par modèle IA local, mise en cache automatique, intégration transparente pour accélérer votre recherche d'emploi.",
     "features": {
-      "openSource": "Entièrement Open Source",
+      "openSource": "Entièrement open source",
       "localFirst": "Local d'abord",
       "seamlessIntegration": "Intégration transparente"
     },
     "coreFeatures": {
-      "title": "Fonctionnalités principales",
+      "title": "Fonctionnalités clés",
       "openSource": {
-        "title": "Entièrement Open Source",
-        "description": "Le code source est ouvert et suit la licence MIT.\nConsultez-le sur Github :",
+        "title": "Entièrement open source",
+        "description": "Code source ouvert sous licence MIT.\nVoir sur GitHub :",
         "githubLink": "github.com/lacser/Goose-Glance"
       },
       "aiModels": {
-        "title": "Liberté de choix IA locale et cloud",
-        "description": "Utilisez Qwen3 localement pour la synthèse ;\nprend également en charge les clés API personnalisées pour appeler les modèles cloud via OpenAI, OpenRouter, Google Vertex."
+        "title": "Choix libre entre IA locale et cloud",
+        "description": "Utilisez Qwen3 localement pour la synthèse;\naussi compatible avec des clés API personnalisées pour appeler des modèles cloud via OpenAI, OpenRouter et Google Vertex."
       },
       "cache": {
         "title": "Mise en cache locale",
-        "description": "Met automatiquement en cache les descriptions d'emploi analysées et les résumés localement basés sur IndexedDB, évitant l'analyse répétée pour l'efficacité et la rapidité."
+        "description": "Mise en cache automatique, en local via IndexedDB, des descriptions de poste analysées et de leurs résumés afin d'éviter les analyses répétées, pour plus d'efficacité."
       },
       "ux": {
-        "title": "Démarrage rapide",
-        "description": "Conception d'interface utilisateur complète, intégrée de manière transparente dans Waterloo Works, rapide à utiliser."
+        "title": "Prise en main rapide",
+        "description": "Conception UI soignée et intégration transparente dans Waterloo Works, pour démarrer rapidement."
       }
     },
-    "disclaimer": "Goose Glance n'est pas affilié à l'Université de Waterloo.",
-    "getStarted": "Commencer"
+    "disclaimer": "Goose Glance n’est pas affilié à l’Université de Waterloo.",
+    "getStarted": "Commencer la configuration"
+  },
+  "privacy": {
+    "title": "Confidentialité et données",
+    "subtitle": "Maîtrisez le parcours de vos données. Lisez les notes ci‑dessous pour comprendre où vont vos informations.",
+    "sections": {
+      "noDataCollection": {
+        "title": "Goose Glance ne collecte aucune donnée utilisateur",
+        "desc": "Goose Glance ne collecte aucune donnée utilisateur. Toutefois, si vous utilisez des modèles d’IA hébergés dans le cloud, le fournisseur d’IA peut recevoir le texte des descriptions de poste extrait de la page Waterloo Works Overview. La collecte et le traitement éventuels de ces données dépendent de la politique de confidentialité du fournisseur d’IA que vous avez choisi."
+      },
+      "indexedDb": {
+        "title": "Cache local IndexedDB",
+        "desc": "Goose Glance utilise IndexedDB pour stocker en local les résumés déjà générés, afin d’éviter d’analyser plusieurs fois les mêmes offres. Pour consulter ou supprimer ces données, ouvrez les outils de développement du navigateur → Application → IndexedDB → gooseGlanceDB. Le volume est faible et ne nécessite en général aucun nettoyage."
+      },
+      "localModelCache": {
+        "title": "Cache de modèle IA local (WebLLM)",
+        "desc": "Si vous utilisez un modèle IA local, WebLLM stocke environ 4 Go de modèle (Qwen3 4B Q4) dans le cache du navigateur. Il s’agit d’un modèle pré‑entraîné dont les poids ne changent pas en fonction des entrées. Pour le supprimer, consultez l’occupation réelle dans Outils de développement du navigateur → Application → Stockage, puis utilisez le bouton « Effacer les données du site ». Lors d’une prochaine utilisation de l’IA locale, le modèle sera retéléchargé automatiquement."
+      },
+      "openSource": {
+        "title": "Open source",
+        "desc": "Goose Glance est entièrement open source. Dépôt :"
+      }
+    },
+    "actions": {
+      "continueSetup": "Continuer la configuration"
+    }
   },
   "alt": {
     "icon": "Icône Goose Glance",
-    "heroImage": "Illustration de trois oies du Canada portant différentes tenues professionnelles, avec un arrière-plan urbain, couleurs vives",
-    "imageRatio": "Rapport d'illustration 3:2"
+    "heroImage": "Illustration de trois bernaches du Canada portant différentes tenues professionnelles, sur fond urbain aux couleurs vives",
+    "imageRatio": "Rapport d’illustration 3:2",
+    "privacyImage": "Illustration carrée d’une bernache du Canada tenant un bouclier",
+    "imageRatioSquare": "Rapport d’illustration 1:1"
   }
 }

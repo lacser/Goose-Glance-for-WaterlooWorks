@@ -1,7 +1,8 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import SymbolsProvider from '../symbols';
-import LanguageSwitcher from '../components/LanguageSwitcher';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import SymbolsProvider from "../symbols";
+import LanguageSwitcher from "../components/LanguageSwitcher";
 
 const WelcomePage: React.FC = () => {
   const { t } = useTranslation();
@@ -14,30 +15,46 @@ const WelcomePage: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
               <h1 className="text-3xl sm:text-4xl font-bold leading-tight flex items-center">
-                <span>{t('welcome.title')}</span>
-                <img src="./icon128.png" alt={t('alt.icon')} className="ml-1 h-10 w-10 sm:h-12 sm:w-12 rounded" />
+                <span>{t("welcome.title")}</span>
+                <img
+                  src="./icon128.png"
+                  alt={t("alt.icon")}
+                  className="ml-1 h-10 w-10 sm:h-12 sm:w-12 rounded"
+                />
               </h1>
               <p className="mt-3 text-lg text-gray-600 leading-relaxed">
-                {t('welcome.subtitle')}
+                {t("welcome.subtitle")}
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <span className="inline-flex items-center gap-1.5 text-sm px-2.5 py-1 rounded-md bg-white shadow-sm ring-1 ring-gray-200">
-                  <SymbolsProvider classname="text-brand-600" iconSize="16px" fill={1}>
+                  <SymbolsProvider
+                    classname="text-brand-600"
+                    iconSize="16px"
+                    fill={1}
+                  >
                     verified
                   </SymbolsProvider>
-                  {t('welcome.features.openSource')}
+                  {t("welcome.features.openSource")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-sm px-2.5 py-1 rounded-md bg-white shadow-sm ring-1 ring-gray-200">
-                  <SymbolsProvider classname="text-brand-600" iconSize="16px" fill={1}>
+                  <SymbolsProvider
+                    classname="text-brand-600"
+                    iconSize="16px"
+                    fill={1}
+                  >
                     lock
                   </SymbolsProvider>
-                  {t('welcome.features.localFirst')}
+                  {t("welcome.features.localFirst")}
                 </span>
                 <span className="inline-flex items-center gap-1.5 text-sm px-2.5 py-1 rounded-md bg-white shadow-sm ring-1 ring-gray-200">
-                  <SymbolsProvider classname="text-brand-600" iconSize="16px" fill={1}>
+                  <SymbolsProvider
+                    classname="text-brand-600"
+                    iconSize="16px"
+                    fill={1}
+                  >
                     auto_awesome
                   </SymbolsProvider>
-                  {t('welcome.features.seamlessIntegration')}
+                  {t("welcome.features.seamlessIntegration")}
                 </span>
               </div>
               <div className="mt-4">
@@ -46,9 +63,13 @@ const WelcomePage: React.FC = () => {
             </div>
             <div>
               <div className="aspect-[3/2] rounded-xl overflow-hidden shadow ring-1 ring-gray-200 bg-white">
-                <img src="./WelcomeImage.webp" alt={t('alt.heroImage')} className="h-full w-full object-cover" />
+                <img
+                  src="./WelcomeImage.webp"
+                  alt={t("alt.heroImage")}
+                  className="h-full w-full object-cover"
+                />
               </div>
-              <p className="sr-only">{t('alt.imageRatio')}</p>
+              <p className="sr-only">{t("alt.imageRatio")}</p>
             </div>
           </div>
         </div>
@@ -57,7 +78,9 @@ const WelcomePage: React.FC = () => {
       {/* Features */}
       <section>
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-12">
-          <h2 className="text-2xl font-semibold">{t('welcome.coreFeatures.title')}</h2>
+          <h2 className="text-2xl font-semibold">
+            {t("welcome.coreFeatures.title")}
+          </h2>
           <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {/* Open Source */}
             <div className="spotlight-card bg-white rounded-xl p-5 shadow-sm ring-1 ring-gray-200 transition-all duration-300 ease-out hover:shadow-md hover:ring-gray-200 hover:-translate-y-0.5">
@@ -65,17 +88,19 @@ const WelcomePage: React.FC = () => {
                 <SymbolsProvider classname="text-brand-600" fill={1}>
                   verified
                 </SymbolsProvider>
-                <div className="font-medium">{t('welcome.coreFeatures.openSource.title')}</div>
+                <div className="font-medium">
+                  {t("welcome.coreFeatures.openSource.title")}
+                </div>
               </div>
               <p className="mt-3 text-sm text-gray-600 whitespace-pre-line">
-                {t('welcome.coreFeatures.openSource.description')}
-                <a 
-                  href="https://github.com/lacser/Goose-Glance" 
+                {t("welcome.coreFeatures.openSource.description")}
+                <a
+                  href="https://github.com/lacser/Goose-Glance"
                   className="text-brand-700 hover:text-brand-800 font-medium"
-                  target="_blank" 
+                  target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {t('welcome.coreFeatures.openSource.githubLink')}
+                  {t("welcome.coreFeatures.openSource.githubLink")}
                 </a>
               </p>
             </div>
@@ -86,10 +111,12 @@ const WelcomePage: React.FC = () => {
                 <SymbolsProvider classname="text-brand-600" fill={1}>
                   memory
                 </SymbolsProvider>
-                <div className="font-medium">{t('welcome.coreFeatures.aiModels.title')}</div>
+                <div className="font-medium">
+                  {t("welcome.coreFeatures.aiModels.title")}
+                </div>
               </div>
               <p className="mt-3 text-sm text-gray-600 whitespace-pre-line">
-                {t('welcome.coreFeatures.aiModels.description')}
+                {t("welcome.coreFeatures.aiModels.description")}
               </p>
             </div>
 
@@ -99,10 +126,12 @@ const WelcomePage: React.FC = () => {
                 <SymbolsProvider classname="text-brand-600" fill={1}>
                   file_save
                 </SymbolsProvider>
-                <div className="font-medium">{t('welcome.coreFeatures.cache.title')}</div>
+                <div className="font-medium">
+                  {t("welcome.coreFeatures.cache.title")}
+                </div>
               </div>
               <p className="mt-3 text-sm text-gray-600">
-                {t('welcome.coreFeatures.cache.description')}
+                {t("welcome.coreFeatures.cache.description")}
               </p>
             </div>
 
@@ -112,10 +141,12 @@ const WelcomePage: React.FC = () => {
                 <SymbolsProvider classname="text-brand-600" fill={1}>
                   acute
                 </SymbolsProvider>
-                <div className="font-medium">{t('welcome.coreFeatures.ux.title')}</div>
+                <div className="font-medium">
+                  {t("welcome.coreFeatures.ux.title")}
+                </div>
               </div>
               <p className="mt-3 text-sm text-gray-600">
-                {t('welcome.coreFeatures.ux.description')}
+                {t("welcome.coreFeatures.ux.description")}
               </p>
             </div>
           </div>
@@ -132,18 +163,23 @@ const WelcomePage: React.FC = () => {
                   info
                 </SymbolsProvider>
                 <p className="text-sm text-gray-700 ml-2 text-left">
-                  {t('welcome.disclaimer')}
+                  {t("welcome.disclaimer")}
                 </p>
               </div>
             </div>
-            <a className="spotlight-card spotlight-white block w-full rounded-xl p-5 bg-gradient-to-r from-brand-600 to-brand-700 text-white ring-1 ring-brand-700/40 shadow-sm transition-all duration-300 ease-out hover:shadow-md hover:-translate-y-0.5">
-              <div className="flex items-center gap-3 justify-between w-full">
-                <span className="text-base font-medium">{t('welcome.getStarted')}</span>
+            <Link
+              to="/privacy"
+              className="spotlight-card spotlight-white block w-full rounded-xl p-5 bg-gradient-to-r from-brand-600 to-brand-700 text-white ring-1 ring-brand-700/40 shadow-sm transition-all duration-300 ease-out hover:shadow-md hover:-translate-y-0.5 relative overflow-visible z-0 after:content-[''] after:absolute after:-inset-1 after:rounded-xl after:bg-gradient-to-r after:from-brand-400/25 after:to-brand-600/25 after:blur-lg after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300 after:ease-out after:pointer-events-none after:-z-10 before:content-[''] before:absolute before:inset-0 before:rounded-xl before:bg-white before:opacity-0 hover:before:opacity-10 before:transition-opacity before:duration-300 before:ease-out before:pointer-events-none"
+            >
+              <div className="relative z-10 flex items-center gap-3 justify-between w-full">
+                <span className="text-base font-medium">
+                  {t("welcome.getStarted")}
+                </span>
                 <SymbolsProvider classname="ml-4" color="white" fill={1}>
                   arrow_forward
                 </SymbolsProvider>
               </div>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
