@@ -1,0 +1,38 @@
+{
+  "welcome": {
+    "title": "Bienvenue à Goose Glance",
+    "subtitle": "Comprendre les descriptions d'emploi sur Waterloo Works plus rapidement : résumé par modèle IA local, mise en cache automatique, intégration transparente pour améliorer l'efficacité de votre recherche d'emploi.",
+    "features": {
+      "openSource": "Entièrement Open Source",
+      "localFirst": "Local d'abord",
+      "seamlessIntegration": "Intégration transparente"
+    },
+    "coreFeatures": {
+      "title": "Fonctionnalités principales",
+      "openSource": {
+        "title": "Entièrement Open Source",
+        "description": "Le code source est ouvert et suit la licence MIT.\nConsultez-le sur Github :",
+        "githubLink": "github.com/lacser/Goose-Glance"
+      },
+      "aiModels": {
+        "title": "Liberté de choix IA locale et cloud",
+        "description": "Utilisez Qwen3 localement pour la synthèse ;\nprend également en charge les clés API personnalisées pour appeler les modèles cloud via OpenAI, OpenRouter, Google Vertex."
+      },
+      "cache": {
+        "title": "Mise en cache locale",
+        "description": "Met automatiquement en cache les descriptions d'emploi analysées et les résumés localement basés sur IndexedDB, évitant l'analyse répétée pour l'efficacité et la rapidité."
+      },
+      "ux": {
+        "title": "Démarrage rapide",
+        "description": "Conception d'interface utilisateur complète, intégrée de manière transparente dans Waterloo Works, rapide à utiliser."
+      }
+    },
+    "disclaimer": "Goose Glance n'est pas affilié à l'Université de Waterloo.",
+    "getStarted": "Commencer"
+  },
+  "alt": {
+    "icon": "Icône Goose Glance",
+    "heroImage": "Illustration de trois oies du Canada portant différentes tenues professionnelles, avec un arrière-plan urbain, couleurs vives",
+    "imageRatio": "Rapport d'illustration 3:2"
+  }
+}

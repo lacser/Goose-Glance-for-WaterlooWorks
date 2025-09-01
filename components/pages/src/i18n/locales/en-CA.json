@@ -1,0 +1,38 @@
+{
+  "welcome": {
+    "title": "Welcome to Goose Glance",
+    "subtitle": "Understand job descriptions on Waterloo Works faster: local AI model summarization, automatic caching, seamless integration to boost your job search efficiency.",
+    "features": {
+      "openSource": "Fully Open Source",
+      "localFirst": "Local First",
+      "seamlessIntegration": "Seamless Integration"
+    },
+    "coreFeatures": {
+      "title": "Core Features",
+      "openSource": {
+        "title": "Fully Open Source",
+        "description": "Source code is open and follows MIT licence.\nCheck it out on Github:",
+        "githubLink": "github.com/lacser/Goose-Glance"
+      },
+      "aiModels": {
+        "title": "Local & Cloud AI Freedom of Choice",
+        "description": "Use Qwen3 locally for summarization;\nalso supports custom API keys to call cloud models through OpenAI, OpenRouter, Google Vertex."
+      },
+      "cache": {
+        "title": "Local Caching",
+        "description": "Automatically cache analyzed job descriptions and summaries locally based on IndexedDB, avoiding repeated analysis for efficiency and speed."
+      },
+      "ux": {
+        "title": "Quick Start",
+        "description": "Complete UI design, seamlessly integrated into Waterloo Works, quick to get started."
+      }
+    },
+    "disclaimer": "Goose Glance is not affiliated with University of Waterloo.",
+    "getStarted": "Get Started"
+  },
+  "alt": {
+    "icon": "Goose Glance Icon",
+    "heroImage": "Illustration of three Canadian geese wearing different professional attire, with city background, vibrant colours",
+    "imageRatio": "Illustration ratio 3:2"
+  }
+}

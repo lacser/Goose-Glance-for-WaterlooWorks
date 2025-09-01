@@ -1,0 +1,38 @@
+{
+  "welcome": {
+    "title": "欢迎使用 Goose Glance",
+    "subtitle": "更快地理解 Waterloo Works 上的职位描述：本地大模型总结、自动缓存、无缝嵌入，为你的求职效率加速。",
+    "features": {
+      "openSource": "完全开源",
+      "localFirst": "本地优先",
+      "seamlessIntegration": "无缝集成"
+    },
+    "coreFeatures": {
+      "title": "核心特性",
+      "openSource": {
+        "title": "完全开源",
+        "description": "源码开放并遵循 MIT 协议。\n在Github查看：",
+        "githubLink": "github.com/lacser/Goose-Glance"
+      },
+      "aiModels": {
+        "title": "本地 云端AI自由选择",
+        "description": "在本地使用 Qwen3 进行总结；\n也支持自定义 API Key 通过 OpenAI、OpenRouter、Google Vertex 调用云端模型。"
+      },
+      "cache": {
+        "title": "本地缓存",
+        "description": "基于 IndexedDB 在本地自动缓存已分析的职位描述与总结，避免重复分析，高效快捷。"
+      },
+      "ux": {
+        "title": "快速上手",
+        "description": "完善的UI设计，在Waterloo Works中无缝集成，快速上手。"
+      }
+    },
+    "disclaimer": "Goose Glance is not affiliated with University of Waterloo.",
+    "getStarted": "开始设置"
+  },
+  "alt": {
+    "icon": "Goose Glance 图标",
+    "heroImage": "三只加拿大鹅，身穿不同职业服饰的插图，背景为城市，色彩鲜明",
+    "imageRatio": "插图比例 3:2"
+  }
+}
