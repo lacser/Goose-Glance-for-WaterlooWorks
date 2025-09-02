@@ -1,7 +1,7 @@
 {
   "welcome": {
     "title": "欢迎使用 Goose Glance",
-    "subtitle": "更快地理解 Waterloo Works 上的职位描述：本地大模型总结、自动缓存、无缝嵌入，为你的求职效率加速。",
+    "subtitle": "快速理解 Waterloo Works 上的职位描述：本地大模型总结、自动缓存、无缝嵌入，为你的求职效率加速。",
     "features": {
       "openSource": "完全开源",
       "localFirst": "本地优先",
