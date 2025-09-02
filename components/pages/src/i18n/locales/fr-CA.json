@@ -61,5 +61,66 @@
     "imageRatio": "Rapport d’illustration 3:2",
     "privacyImage": "Illustration carrée d’une bernache du Canada tenant un bouclier",
     "imageRatioSquare": "Rapport d’illustration 1:1"
+  },
+  "initialConfiguration": {
+    "title": "Configuration initiale",
+    "subtitle": "Choisissez et vérifiez une source de modèle IA pour l'extension et terminez la configuration initiale.",
+    "next": "Terminer la configuration",
+    "chooseProvider": "Choisir la source du modèle",
+    "mode": {
+      "cloud": "Modèle cloud",
+      "local": "Modèle local"
+    },
+    "cloud": {
+      "providerLabel": "Fournisseur",
+      "providerPlaceholder": "Choisir un fournisseur d'IA cloud",
+      "apiKeyLabel": "Clé API",
+      "apiKeyPlaceholder": "Collez votre clé API",
+      "testConnection": "Tester la connexion",
+      "testing": "Test en cours...",
+      "description": "Utilisez un modèle cloud pour une synthèse plus rapide. <br/>Si vous ne savez pas comment obtenir une clé API, vous pouvez basculer vers le modèle local pour essayer. <br/>Remarque : le modèle local requiert des ressources de calcul relativement élevées."
+    },
+    "local": {
+      "description": "Un modèle local ({{model}}) sera chargé et un court poème sera généré pour vérifier la connectivité.<br/>Le premier chargement télécharge environ 4 Go de fichiers de modèle et peut prendre plusieurs minutes selon la vitesse du réseau.",
+      "generating": "Génération...",
+      "testLocalModel": "Tester le modèle local",
+      "loadAndTest": "Charger et tester le modèle local",
+      "generatedPoemLabel": "Poème généré"
+    },
+    "testPassed": "Test réussi",
+    "testFailed": "Test échoué",
+    "settings": {
+      "languageLabel": "Langue du résumé AI",
+      "autoAnalysisLabel": "Analyse automatique",
+      "syncedMessage": "La langue et l'analyse automatique ont été synchronisées depuis les paramètres",
+      "autoAnalysisDesc": "Lorsque activé, génère automatiquement des résumés sur les pages d'offre d'emploi"
+    },
+    "alt": {
+      "imageAlt": "Image de configuration initiale",
+      "squareImage": "Image carrée"
+    }
+  },
+  "languages": {
+    "English": "English",
+    "French": "French",
+    "ChineseSimplified": "Chinese (Simplified)",
+    "ChineseTraditional": "Chinese (Traditional)"
+  },
+  "hooks": {
+    "modelTesting": {
+      "notStarted": "Non démarré",
+      "startingModelLoad": "Démarrage du chargement du modèle...",
+      "modelLoadFailed": "Échec du chargement du modèle. Veuillez consulter la console pour les journaux.",
+      "webGpuNotSupported": "Votre navigateur ne prend pas en charge WebGPU, les modèles locaux ne sont pas disponibles. Veuillez utiliser la dernière version de Chrome ou Edge.",
+      "webGpuUnsupportedShort": "WebGPU non pris en charge",
+      "engineNotReady": "Moteur non prêt",
+      "localTestSuccess": "Test du modèle local réussi",
+      "localTestFailed": "Échec du test du modèle local",
+      "localPerfSlowWarning": "Votre ordinateur pourrait manquer de puissance. L'utilisation du modèle local peut ralentir sensiblement la synthèse. Envisagez de passer à un modèle cloud.",
+      "apiKeyValid": "Clé API valide",
+      "apiKeyInvalid": "Clé API invalide",
+      "inputApiKey": "Veuillez saisir la clé API",
+      "testError": "Une erreur s'est produite lors du test"
+    }
   }
 }

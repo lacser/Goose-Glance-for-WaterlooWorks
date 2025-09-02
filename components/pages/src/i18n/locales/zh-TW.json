@@ -61,5 +61,66 @@
     "imageRatio": "插畫比例 3:2",
     "privacyImage": "一隻手持盾牌的加拿大雁的正方形插畫",
     "imageRatioSquare": "插畫比例 1:1"
+  },
+  "initialConfiguration": {
+    "title": "初始設定",
+    "subtitle": "為擴充功能選擇並驗證 AI 模型來源，完成必要的首次設定。",
+    "next": "完成設定",
+    "chooseProvider": "選擇模型來源",
+    "mode": {
+      "cloud": "雲端模型",
+      "local": "本地模型"
+    },
+    "cloud": {
+      "providerLabel": "服務商",
+      "providerPlaceholder": "選擇雲端 AI 服務商",
+      "apiKeyLabel": "API Key",
+      "apiKeyPlaceholder": "貼上你的 API key",
+      "testConnection": "測試連線",
+      "testing": "測試中…",
+      "description": "使用雲端模型可獲得更快的摘要速度。<br/>若你不熟悉如何取得 API Key，可先切換到本地模型試用。注意：本地模型需要較高的運算資源。"
+    },
+    "local": {
+      "description": "將載入本地模型（{{model}}），並生成一首小詩作為連通性測試。<br/>首次載入需要下載約 4GB 的模型檔案，視網路速度可能需要幾分鐘。",
+      "generating": "生成中…",
+      "testLocalModel": "測試本地模型",
+      "loadAndTest": "載入並測試本地模型",
+      "generatedPoemLabel": "生成的小詩"
+    },
+    "testPassed": "測試通過",
+    "testFailed": "測試失敗",
+    "settings": {
+      "languageLabel": "AI 摘要語言",
+      "autoAnalysisLabel": "自動分析",
+      "syncedMessage": "已從設定同步語言與自動分析開關",
+      "autoAnalysisDesc": "啟用後在職缺頁面自動生成摘要"
+    },
+    "alt": {
+      "imageAlt": "初始設定示意圖",
+      "squareImage": "正方形插圖"
+    }
+  },
+  "languages": {
+    "English": "English",
+    "French": "French",
+    "ChineseSimplified": "Chinese (Simplified)",
+    "ChineseTraditional": "Chinese (Traditional)"
+  },
+  "hooks": {
+    "modelTesting": {
+      "notStarted": "尚未開始",
+      "startingModelLoad": "開始載入模型...",
+      "modelLoadFailed": "模型載入失敗，請開啟主控台查看日誌。",
+      "webGpuNotSupported": "目前瀏覽器不支援 WebGPU，無法使用本地模型。請使用最新版 Chrome 或 Edge。",
+      "webGpuUnsupportedShort": "不支援 WebGPU",
+      "engineNotReady": "引擎尚未就緒",
+      "localTestSuccess": "本地模型測試成功",
+      "localTestFailed": "本地模型測試失敗",
+      "localPerfSlowWarning": "你的電腦運算能力可能不足。使用本地模型可能會明顯拖慢摘要速度，建議切換到雲端模型。",
+      "apiKeyValid": "API key 有效",
+      "apiKeyInvalid": "API key 無效",
+      "inputApiKey": "請輸入 API key",
+      "testError": "測試時發生錯誤"
+    }
   }
 }

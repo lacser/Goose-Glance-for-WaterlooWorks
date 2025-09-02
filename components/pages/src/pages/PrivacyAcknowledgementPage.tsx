@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import SymbolsProvider from "../symbols";
+import { Link } from "react-router-dom";
 import LanguageSwitcher from "../components/LanguageSwitcher";
 
 const PrivacyAcknowledgementPage: React.FC = () => {
@@ -30,8 +31,8 @@ const PrivacyAcknowledgementPage: React.FC = () => {
                 <LanguageSwitcher />
               </div>
               <div className="mt-8">
-                <button
-                  type="button"
+                <Link
+                  to="/initial-configuration"
                   className="spotlight-card spotlight-white block w-full lg:w-3/4 rounded-xl p-5 bg-gradient-to-r from-brand-600 to-brand-700 text-white ring-1 ring-brand-700/40 shadow-sm transition-all duration-300 ease-out hover:shadow-md hover:-translate-y-0.5 relative overflow-visible z-0 after:content-[''] after:absolute after:-inset-1 after:rounded-xl after:bg-gradient-to-r after:from-brand-400/25 after:to-brand-600/25 after:blur-lg after:opacity-0 hover:after:opacity-100 after:transition-opacity after:duration-300 after:ease-out after:pointer-events-none after:-z-10 before:content-[''] before:absolute before:inset-0 before:rounded-xl before:bg-white before:opacity-0 hover:before:opacity-10 before:transition-opacity before:duration-300 before:ease-out before:pointer-events-none"
                 >
                   <div className="relative z-10 flex items-center gap-3 justify-between w-full">
@@ -42,7 +43,7 @@ const PrivacyAcknowledgementPage: React.FC = () => {
                       arrow_forward
                     </SymbolsProvider>
                   </div>
-                </button>
+                </Link>
               </div>
             </div>
             <div className="flex justify-center md:justify-end">

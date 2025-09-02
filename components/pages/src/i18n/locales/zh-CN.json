@@ -61,5 +61,62 @@
     "imageRatio": "插图比例 3:2",
     "privacyImage": "一只拿着盾牌的加拿大鹅的正方形插画",
     "imageRatioSquare": "插图比例 1:1"
+  },
+  "initialConfiguration": {
+    "title": "初始配置",
+    "subtitle": "为插件选择并验证 AI 模型来源，完成必要的首次设置。",
+    "next": "完成设置",
+    "chooseProvider": "选择模型来源",
+    "mode": {
+      "cloud": "云端模型",
+      "local": "本地模型"
+    },
+    "cloud": {
+      "providerLabel": "服务商",
+      "providerPlaceholder": "选择云端AI服务商",
+      "apiKeyLabel": "API Key",
+      "apiKeyPlaceholder": "粘贴你的 API key",
+      "testConnection": "测试连接",
+      "testing": "测试中…",
+      "description": "使用云端模型以获得更快的总结速度。<br/>如果你不熟悉如何获取 API Key，可以切换到本地模型进行尝试。注意：本地模型需要较强的计算资源。"
+    },
+    "local": {
+      "description": "将加载本地模型（{{model}}），并生成一首小诗作为连通性测试。<br/>初次加载需要下载模型文件（约4GB），取决于网络连接速度，这可能需要几分钟。",
+      "generating": "生成中…",
+      "testLocalModel": "测试本地模型",
+      "loadAndTest": "加载并测试本地模型",
+      "generatedPoemLabel": "生成的小诗"
+    },
+    "testPassed": "测试通过",
+    "testFailed": "测试失败",
+    "settings": {
+      "languageLabel": "AI 总结语言",
+      "autoAnalysisLabel": "自动分析",
+      "syncedMessage": "已从设置同步语言与自动分析开关",
+      "autoAnalysisDesc": "开启后在职位页面自动生成总结"
+    }
+  },
+  "languages": {
+    "English": "English",
+    "French": "French",
+    "ChineseSimplified": "Chinese (Simplified)",
+    "ChineseTraditional": "Chinese (Traditional)"
+  },
+  "hooks": {
+    "modelTesting": {
+      "notStarted": "未开始",
+      "startingModelLoad": "开始加载模型...",
+      "modelLoadFailed": "模型加载失败，请打开控制台查看日志。",
+      "webGpuNotSupported": "当前浏览器不支持 WebGPU，无法使用本地模型。请使用最新的 Chrome 或 Edge。",
+      "webGpuUnsupportedShort": "不支持 WebGPU",
+      "engineNotReady": "引擎未就绪",
+      "localTestSuccess": "本地模型测试成功",
+      "localTestFailed": "本地模型测试失败",
+      "localPerfSlowWarning": "你的计算机算力可能不足。使用本地模型会显著拖慢总结速度，建议切换到云端模型。",
+      "apiKeyValid": "API key 有效",
+      "apiKeyInvalid": "API key 无效",
+      "inputApiKey": "请输入 API key",
+      "testError": "测试出现错误"
+    }
   }
 }

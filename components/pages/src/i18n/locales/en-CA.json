@@ -61,5 +61,66 @@
     "imageRatio": "Illustration ratio 3:2",
     "privacyImage": "Square illustration of a Canadian goose holding a shield",
     "imageRatioSquare": "Illustration ratio 1:1"
+  },
+  "initialConfiguration": {
+    "title": "Initial configuration",
+    "subtitle": "Choose and verify an AI model source for the extension and complete initial setup.",
+    "next": "Complete setup",
+    "chooseProvider": "Choose model source",
+    "mode": {
+      "cloud": "Cloud model",
+      "local": "Local model"
+    },
+    "cloud": {
+      "providerLabel": "Provider",
+      "providerPlaceholder": "Choose a cloud AI provider",
+      "apiKeyLabel": "API Key",
+      "apiKeyPlaceholder": "Paste your API key",
+      "testConnection": "Test connection",
+      "testing": "Testing...",
+      "description": "Use a cloud model for faster summarization. <br/>If you're unfamiliar with obtaining an API key, you can switch to the local model to try it out. <br/>Note: the local model requires relatively strong compute resources."
+    },
+    "local": {
+      "description": "A local model ({{model}}) will be loaded and a short poem will be generated to verify connectivity.<br/>The first-time load downloads roughly 4GB of model files and may take several minutes depending on network speed.",
+      "generating": "Generating...",
+      "testLocalModel": "Test local model",
+      "loadAndTest": "Load and test local model",
+      "generatedPoemLabel": "Generated poem"
+    },
+    "testPassed": "Test passed",
+    "testFailed": "Test failed",
+    "settings": {
+      "languageLabel": "AI summary language",
+      "autoAnalysisLabel": "Auto analysis",
+      "syncedMessage": "Language and auto-analysis have been synced from settings",
+      "autoAnalysisDesc": "When enabled, generate summaries automatically on job pages"
+    },
+    "alt": {
+      "imageAlt": "Initial setup image",
+      "squareImage": "Square image"
+    }
+  },
+  "languages": {
+    "English": "English",
+    "French": "French",
+    "ChineseSimplified": "Chinese (Simplified)",
+    "ChineseTraditional": "Chinese (Traditional)"
+  },
+  "hooks": {
+    "modelTesting": {
+      "notStarted": "Not started",
+      "startingModelLoad": "Starting model load...",
+      "modelLoadFailed": "Model load failed. Please check the console for logs.",
+      "webGpuNotSupported": "Your browser doesn't support WebGPU, local models are unavailable. Please use the latest Chrome or Edge.",
+      "webGpuUnsupportedShort": "WebGPU not supported",
+      "engineNotReady": "Engine not ready",
+      "localTestSuccess": "Local model test succeeded",
+      "localTestFailed": "Local model test failed",
+      "localPerfSlowWarning": "Your computer may be underpowered. Using the local model could significantly slow down summarization. Consider switching to a cloud model.",
+      "apiKeyValid": "API key is valid",
+      "apiKeyInvalid": "API key is invalid",
+      "inputApiKey": "Please enter API key",
+      "testError": "An error occurred during testing"
+    }
   }
 }
