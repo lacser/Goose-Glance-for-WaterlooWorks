@@ -122,5 +122,16 @@
       "inputApiKey": "Veuillez saisir la clé API",
       "testError": "Une erreur s'est produite lors du test"
     }
+  },
+  "setupFinish": {
+    "title": "Configuration initiale terminée",
+    "subtitle": "Ouvrez n'importe quelle page Overview de Waterloo Works pour commencer à utiliser Goose Glance.",
+    "actions": {
+      "openWaterlooWorks": "Ouvrir Waterloo Works"
+    },
+    "alt": {
+      "imageAlt": "Comment utiliser Goose Glance sur Waterloo Works",
+      "usageImageSrOnly": "Illustration d'utilisation"
+    }
   }
 }

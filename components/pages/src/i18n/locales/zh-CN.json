@@ -118,5 +118,16 @@
       "inputApiKey": "请输入 API key",
       "testError": "测试出现错误"
     }
+  },
+  "setupFinish": {
+    "title": "初始设置已完成",
+    "subtitle": "打开任意 Waterloo Works 的 Overview 页面，即可开始使用 Goose Glance。",
+    "actions": {
+      "openWaterlooWorks": "前往 WaterlooWorks"
+    },
+    "alt": {
+      "imageAlt": "如何在 WaterlooWorks 使用 Goose Glance",
+      "usageImageSrOnly": "使用说明示意图"
+    }
   }
 }

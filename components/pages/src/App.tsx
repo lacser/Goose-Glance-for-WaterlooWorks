@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import WelcomePage from "./pages/WelcomePage";
 import PrivacyAcknowledgementPage from "./pages/PrivacyAcknowledgementPage";
 import InitialConfigurationPage from "./pages/InitialConfigurationPage";
+import SetupFinishPage from "./pages/SetupFinishPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/webllm-test" element={<WebLlmTestPage />} />
       <Route path="/initial-configuration" element={<InitialConfigurationPage />} />
       <Route path="/privacy" element={<PrivacyAcknowledgementPage />} />
+      <Route path="/setup-finish" element={<SetupFinishPage />} />
     </Routes>
   );
 }

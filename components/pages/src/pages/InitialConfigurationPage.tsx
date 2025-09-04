@@ -177,7 +177,7 @@ const InitialConfigurationPage: React.FC = () => {
     } catch {
       // Ignore storage errors
     }
-    navigate("/welcome");
+    navigate("/setup-finish");
   };
 
   return (
