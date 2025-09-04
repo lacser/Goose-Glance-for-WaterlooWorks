@@ -15,7 +15,7 @@ function injectStyles() {
       .goose-glance-panel {
         overflow: hidden;
         padding: 0;
-        min-height: 300px;
+        min-height: 36px;
       }
     `;
   document.head.appendChild(style);

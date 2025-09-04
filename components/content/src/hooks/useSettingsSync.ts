@@ -9,7 +9,7 @@ export const useSettingsSync = () => {
   useEffect(() => {
     // Check if this is the initial load or the values actually changed
     const prevSettings = prevSettingsRef.current;
-    
+
     if (prevSettings === null) {
       // Initial load: don't update chrome.storage, just record current values
       prevSettingsRef.current = { ...settings };
@@ -17,14 +17,15 @@ export const useSettingsSync = () => {
     }
 
     // Check whether each field actually changed
-    const hasChanged = 
+    const hasChanged =
       prevSettings.openaiApiKey !== settings.openaiApiKey ||
       prevSettings.geminiApiKey !== settings.geminiApiKey ||
       prevSettings.openRouterApiKey !== settings.openRouterApiKey ||
       prevSettings.aiProvider !== settings.aiProvider ||
       prevSettings.autoAnalysis !== settings.autoAnalysis ||
       prevSettings.language !== settings.language ||
-      prevSettings.devMode !== settings.devMode;
+      prevSettings.devMode !== settings.devMode ||
+      prevSettings.collapsed !== settings.collapsed;
 
     if (hasChanged) {
       // Update chrome.storage only when values truly changed
@@ -32,7 +33,7 @@ export const useSettingsSync = () => {
         OpenAI: settings.openaiApiKey,
         Gemini: settings.geminiApiKey,
         OpenRouter: settings.openRouterApiKey,
-        Local: '' // Local doesn't need API key
+        Local: "", // Local doesn't need API key
       };
 
       chrome.storage.sync.set({
@@ -41,6 +42,7 @@ export const useSettingsSync = () => {
         autoAnalysis: settings.autoAnalysis,
         language: settings.language,
         devMode: settings.devMode,
+        collapsed: settings.collapsed,
         openaiApiKey: settings.openaiApiKey,
       });
 

@@ -8,6 +8,7 @@ export interface SettingsState {
   autoAnalysis: boolean;
   language: string;
   devMode: boolean;
+  collapsed: boolean;
 }
 
 const initialState: SettingsState = {
@@ -18,6 +19,7 @@ const initialState: SettingsState = {
   autoAnalysis: false,
   language: 'English',
   devMode: false,
+  collapsed: false,
 };
 
 export const settingsSlice = createSlice({
@@ -44,6 +46,9 @@ export const settingsSlice = createSlice({
     },
     setDevMode: (state, action: PayloadAction<boolean>) => {
       state.devMode = action.payload;
+    },
+    setCollapsed: (state, action: PayloadAction<boolean>) => {
+      state.collapsed = action.payload;
     }
   },
 });
@@ -55,6 +60,7 @@ export const {
   setAiProvider, 
   setAutoAnalysis, 
   setLanguage, 
-  setDevMode 
+  setDevMode,
+  setCollapsed
 } = settingsSlice.actions;
 export default settingsSlice.reducer;

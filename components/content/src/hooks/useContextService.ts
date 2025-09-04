@@ -9,6 +9,7 @@ import {
   setAutoAnalysis,
   setLanguage,
   setDevMode,
+  setCollapsed,
 } from "../store/slices/settingsSlice";
 import { setJobDescription as setJobDescriptionDB } from "./useIndexedDB";
 import { Dispatch } from "@reduxjs/toolkit";
@@ -103,24 +104,27 @@ const setupHeightObserver = () => {
 
 const setupChromeStorageListener = (dispatch: Dispatch) => {
   chrome.storage.sync.get(
-    ["apiKeys", "aiProvider", "autoAnalysis", "language", "devMode"],
+    ["apiKeys", "aiProvider", "autoAnalysis", "language", "devMode", "collapsed"],
     (result) => {
       if (result.apiKeys) {
         dispatch(setOpenAiApiKey(result.apiKeys.OpenAI || ''));
         dispatch(setGeminiApiKey(result.apiKeys.Gemini || ''));
         dispatch(setOpenRouterApiKey(result.apiKeys.OpenRouter || ''));
       }
-      if (result.aiProvider) {
+      if (typeof result.aiProvider !== "undefined") {
         dispatch(setAiProvider(result.aiProvider));
       }
       if (typeof result.autoAnalysis !== "undefined") {
         dispatch(setAutoAnalysis(result.autoAnalysis));
       }
-      if (result.language) {
+      if (typeof result.language !== "undefined") {
         dispatch(setLanguage(result.language));
       }
-      if (result.devMode) {
+      if (typeof result.devMode !== "undefined") {
         dispatch(setDevMode(result.devMode));
+      }
+      if (typeof result.collapsed !== "undefined") {
+        dispatch(setCollapsed(!!result.collapsed));
       }
     }
   );
@@ -137,17 +141,20 @@ const setupChromeStorageListener = (dispatch: Dispatch) => {
         dispatch(setOpenRouterApiKey(apiKeys.OpenRouter || ''));
       }
     }
-    if (changes.aiProvider) {
+    if (typeof changes.aiProvider !== "undefined") {
       dispatch(setAiProvider(changes.aiProvider.newValue));
     }
-    if (changes.autoAnalysis) {
+    if (typeof changes.autoAnalysis !== "undefined") {
       dispatch(setAutoAnalysis(changes.autoAnalysis.newValue));
     }
-    if (changes.language) {
+    if (typeof changes.language !== "undefined") {
       dispatch(setLanguage(changes.language.newValue));
     }
-    if (changes.devMode) {
+    if (typeof changes.devMode !== "undefined") {
       dispatch(setDevMode(changes.devMode.newValue));
+    }
+    if (typeof changes.collapsed !== "undefined") {
+      dispatch(setCollapsed(!!changes.collapsed.newValue));
     }
   };
 
