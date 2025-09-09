@@ -89,6 +89,8 @@ export default function WorkDurationCard({
   const startDate = workTermDates?.[0] || null;
   const endDate = workTermDates?.[1] || null;
 
+  if (!startMonth || !endMonth) return null;
+
   const calculateWorkTermLength = () => {
     let yearDiff = 0;
     if (workTermYears && startYear && endYear) {
