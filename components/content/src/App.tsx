@@ -18,7 +18,9 @@ import {
   GooseGlanceBanner,
   ErrorPage,
   NoAnalysisPage,
+  AnalysisErrorPage,
   AnalyzingPage,
+  NoConfigPage,
 } from "./components";
 
 function App() {
@@ -33,11 +35,32 @@ function App() {
   const devMode = useAppSelector((state) => state.settings.devMode);
   const onJobId = useAppSelector((state) => state.waterlooworks.onJobId);
   const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
+  const error = useAppSelector((state) => state.waterlooworks.error);
+  const aiProvider = useAppSelector((state) => state.settings.aiProvider);
+  const openaiApiKey = useAppSelector((state) => state.settings.openaiApiKey);
+  const geminiApiKey = useAppSelector((state) => state.settings.geminiApiKey);
+  const openRouterApiKey = useAppSelector((state) => state.settings.openRouterApiKey);
   const { summary } = useJobSummary();
 
   const onToggleCollapse = useCallback(() => {
     dispatch(setCollapsedAction(!collapsed));
   }, [dispatch, collapsed]);
+
+  // Check if AI provider is configured
+  const isAiConfigured = useCallback(() => {
+    switch (aiProvider) {
+      case 'OpenAI':
+        return openaiApiKey.trim() !== '';
+      case 'Gemini':
+        return geminiApiKey.trim() !== '';
+      case 'OpenRouter':
+        return openRouterApiKey.trim() !== '';
+      case 'Local':
+        return true;
+      default:
+        return false;
+    }
+  }, [aiProvider, openaiApiKey, geminiApiKey, openRouterApiKey]);
 
   if (devMode) {
     return <DevContent />;
@@ -50,8 +73,24 @@ function App() {
       </>
     );
   }
+  if (!isAiConfigured()) {
+    return (
+      <>
+        <GooseGlanceBanner collapsed={collapsed} onToggleCollapse={onToggleCollapse} />
+        {!collapsed && <NoConfigPage />}
+      </>
+    );
+  }
+  
   if (!summary) {
-    if (isLoading) {
+    if (error) {
+      return (
+        <>
+          <GooseGlanceBanner collapsed={collapsed} onToggleCollapse={onToggleCollapse} />
+          {!collapsed && <AnalysisErrorPage />}
+        </>
+      );
+    } else if (isLoading) {
       return (
         <>
           <GooseGlanceBanner collapsed={collapsed} onToggleCollapse={onToggleCollapse} />

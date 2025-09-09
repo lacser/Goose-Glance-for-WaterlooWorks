@@ -1,13 +1,11 @@
-import { useState } from "react";
 import { useJobSummarization } from "./useJobSummarization";
 import { useJobData } from "./useJobData";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { setIsLoading } from "../store/slices/waterlooworksSlice";
+import { setIsLoading, setError } from "../store/slices/waterlooworksSlice";
 
 export const useJobAnalysis = () => {
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
-  const [error, setError] = useState<string | null>(null);
 
   const job = useJobData();
   const jobData = job.id
@@ -23,13 +21,16 @@ export const useJobAnalysis = () => {
   const handleAnalyze = async () => {
     if (!jobData?.description) return;
 
+    dispatch(setError(null));
     dispatch(setIsLoading(true));
-    setError(null);
 
     try {
-      await summarizeJob(jobData.description);
+      const result = await summarizeJob(jobData.description);
+      if (result.status === "error") {
+        dispatch(setError(result.error));
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      dispatch(setError(err instanceof Error ? err.message : "An error occurred"));
     } finally {
       dispatch(setIsLoading(false));
     }
@@ -37,7 +38,6 @@ export const useJobAnalysis = () => {
 
   return {
     isLoading,
-    error,
     handleAnalyze,
     jobData,
   };

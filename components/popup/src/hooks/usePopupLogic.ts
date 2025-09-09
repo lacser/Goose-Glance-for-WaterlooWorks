@@ -84,7 +84,6 @@ export function usePopupLogic() {
     setLocalLoadProgress(0);
     setLocalProgressText("Starting model load...");
     try {
-      await unloadLocalEngine();
       const engine = await CreateExtensionServiceWorkerMLCEngine(
         LOCAL_MODEL_ID,
         {
@@ -99,7 +98,7 @@ export function usePopupLogic() {
       );
       setIsLoadingLocal(false);
     }
-  }, [LOCAL_MODEL_ID, localInitProgress, unloadLocalEngine]);
+  }, [LOCAL_MODEL_ID, localInitProgress]);
 
   // Handle AI Provider change with notification + local model handling
   const handleAiProviderChange = (newProvider: AiProvider) => {

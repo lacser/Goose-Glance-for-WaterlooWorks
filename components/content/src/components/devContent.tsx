@@ -7,8 +7,8 @@ export function DevContent() {
     (state) => state.settings
   );
 
-  const { error, handleAnalyze, jobData } = useJobAnalysis();
-  const isLoading = useAppSelector((state) => state.waterlooworks.isLoading);
+  const { handleAnalyze, jobData } = useJobAnalysis();
+  const { isLoading, error } = useAppSelector((state) => state.waterlooworks);
 
   const handleWelcomePageClick = () => {
     chrome.runtime.sendMessage(
