@@ -1,7 +1,21 @@
-# Goose Glance
+# Goose Glance <img src="./public/icons/icon128.png" alt="LOGO" width="30"> </br>Job details at a glance
+
+Translations: [简体中文](README.zh-CN.md) | [繁體中文](README.zh-TW.md) | [Français](README.fr.md)
+
+![Welcome Image](./components/pages/public/WelcomeImage.webp)
+
+## Quick Start
+Give it a try quickly? [![在 Chrome Web Store 中查看](https://img.shields.io/badge/Chrome%20Web%20Store-View-blue?logo=google-chrome&logoColor=white)](https://chromewebstore.google.com/detail/goose-glance-for-waterloo/hblfffccmiegiahkolkendnfkaegogjg)
 
 ### What is Goose Glance
 Goose Glance is a Chrome browser extension powered by LLM (Large Language Model) designed for Waterloo Works. It automatically extracts job posting content from Waterloo Works pages and leverages AI capabilities to summarize key information including job responsibilities, required qualifications, work term duration, and location. This information is then seamlessly injected into the job posting page, enabling quick review and efficient filtering of opportunities.
+
+## Privacy
+Not everyone is interested in reading every line of code to understand where does their data go. [Here](https://mango-ground-0bd6b9d0f.1.azurestaticapps.net/) is a quick summary of what data does Goose Glance use.
+
+Please do note Goose Glance is open source under the MIT License and is provided as‑is, without warranties or conditions of any kind.
+
+## DEV Notes
 
 ### Tech Stack of Goose Glance
 
