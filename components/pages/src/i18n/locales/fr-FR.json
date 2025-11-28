@@ -1,0 +1,137 @@
+{
+  "welcome": {
+    "title": "Bienvenue sur Goose Glance",
+    "subtitle": "Comprenez plus rapidement les descriptions de poste sur Waterloo Works : synthèse par modèle IA local, mise en cache automatique, intégration transparente pour accélérer votre recherche d'emploi.",
+    "features": {
+      "openSource": "Entièrement open source",
+      "localFirst": "Local d'abord",
+      "seamlessIntegration": "Intégration transparente"
+    },
+    "coreFeatures": {
+      "title": "Fonctionnalités clés",
+      "openSource": {
+        "title": "Entièrement open source",
+        "description": "Code source ouvert sous licence MIT.\nVoir sur GitHub :",
+        "githubLink": "github.com/lacser/Goose-Glance"
+      },
+      "aiModels": {
+        "title": "Choix libre entre IA locale et cloud",
+        "description": "Utilisez Qwen3 localement pour la synthèse;\naussi compatible avec des clés API personnalisées pour appeler des modèles cloud via OpenAI, OpenRouter et Google Vertex."
+      },
+      "cache": {
+        "title": "Mise en cache locale",
+        "description": "Mise en cache automatique, en local via IndexedDB, des descriptions de poste analysées et de leurs résumés afin d'éviter les analyses répétées, pour plus d'efficacité."
+      },
+      "ux": {
+        "title": "Prise en main rapide",
+        "description": "Conception UI soignée et intégration transparente dans Waterloo Works, pour démarrer rapidement."
+      }
+    },
+    "disclaimer": "Goose Glance n’est pas affilié à l’Université de Waterloo.",
+    "getStarted": "Commencer la configuration"
+  },
+  "privacy": {
+    "title": "Confidentialité et données",
+    "subtitle": "Maîtrisez le parcours de vos données. Lisez les notes ci‑dessous pour comprendre où vont vos informations.",
+    "sections": {
+      "noDataCollection": {
+        "title": "Goose Glance ne collecte aucune donnée utilisateur",
+        "desc": "Goose Glance ne collecte aucune donnée utilisateur. Toutefois, si vous utilisez des modèles d’IA hébergés dans le cloud, le fournisseur d’IA peut recevoir le texte des descriptions de poste extrait de la page Waterloo Works Overview. La collecte et le traitement éventuels de ces données dépendent de la politique de confidentialité du fournisseur d’IA que vous avez choisi."
+      },
+      "indexedDb": {
+        "title": "Cache local IndexedDB",
+        "desc": "Goose Glance utilise IndexedDB pour stocker en local les résumés déjà générés, afin d’éviter d’analyser plusieurs fois les mêmes offres. Pour consulter ou supprimer ces données, ouvrez les outils de développement du navigateur → Application → IndexedDB → gooseGlanceDB. Le volume est faible et ne nécessite en général aucun nettoyage."
+      },
+      "localModelCache": {
+        "title": "Cache de modèle IA local (WebLLM)",
+        "desc": "Si vous utilisez un modèle IA local, WebLLM stocke environ 4 Go de modèle (Qwen3 4B Q4) dans le cache du navigateur. Il s’agit d’un modèle pré‑entraîné dont les poids ne changent pas en fonction des entrées. Pour le supprimer, consultez l’occupation réelle dans Outils de développement du navigateur → Application → Stockage, puis utilisez le bouton « Effacer les données du site ». Lors d’une prochaine utilisation de l’IA locale, le modèle sera retéléchargé automatiquement."
+      },
+      "openSource": {
+        "title": "Open source",
+        "desc": "Goose Glance est entièrement open source. Dépôt :"
+      }
+    },
+    "actions": {
+      "continueSetup": "Continuer la configuration"
+    }
+  },
+  "alt": {
+    "icon": "Icône Goose Glance",
+    "heroImage": "Illustration de trois bernaches du Canada portant différentes tenues professionnelles, sur fond urbain aux couleurs vives",
+    "imageRatio": "Rapport d’illustration 3:2",
+    "privacyImage": "Illustration carrée d’une bernache du Canada tenant un bouclier",
+    "imageRatioSquare": "Rapport d’illustration 1:1"
+  },
+  "initialConfiguration": {
+    "title": "Configuration initiale",
+    "subtitle": "Choisissez et vérifiez une source de modèle IA pour l'extension et terminez la configuration initiale.",
+    "next": "Terminer la configuration",
+    "chooseProvider": "Choisir la source du modèle",
+    "mode": {
+      "cloud": "Modèle cloud",
+      "local": "Modèle local"
+    },
+    "cloud": {
+      "providerLabel": "Fournisseur",
+      "providerPlaceholder": "Choisir un fournisseur d'IA cloud",
+      "apiKeyLabel": "Clé API",
+      "apiKeyPlaceholder": "Collez votre clé API",
+      "testConnection": "Tester la connexion",
+      "testing": "Test en cours...",
+      "description": "Utilisez un modèle cloud pour une synthèse plus rapide. <br/>Si vous ne savez pas comment obtenir une clé API, vous pouvez basculer vers le modèle local pour essayer. <br/>Remarque : le modèle local requiert des ressources de calcul relativement élevées."
+    },
+    "local": {
+      "description": "Un modèle local ({{model}}) sera chargé et un court poème sera généré pour vérifier la connectivité.<br/>Le premier chargement télécharge environ 4 Go de fichiers de modèle et peut prendre plusieurs minutes selon la vitesse du réseau.",
+      "generating": "Génération...",
+      "testLocalModel": "Tester le modèle local",
+      "loadAndTest": "Charger et tester le modèle local",
+      "generatedPoemLabel": "Poème généré"
+    },
+    "testPassed": "Test réussi",
+    "testFailed": "Test échoué",
+    "settings": {
+      "languageLabel": "Langue du résumé AI",
+      "autoAnalysisLabel": "Analyse automatique",
+      "syncedMessage": "La langue et l'analyse automatique ont été synchronisées depuis les paramètres",
+      "autoAnalysisDesc": "Lorsque activé, génère automatiquement des résumés sur les pages d'offre d'emploi"
+    },
+    "alt": {
+      "imageAlt": "Image de configuration initiale",
+      "squareImage": "Image carrée"
+    }
+  },
+  "languages": {
+    "English": "English",
+    "French": "French",
+    "ChineseSimplified": "Chinese (Simplified)",
+    "ChineseTraditional": "Chinese (Traditional)"
+  },
+  "hooks": {
+    "modelTesting": {
+      "notStarted": "Non démarré",
+      "startingModelLoad": "Démarrage du chargement du modèle...",
+      "modelLoadFailed": "Échec du chargement du modèle. Veuillez consulter la console pour les journaux.",
+      "webGpuNotSupported": "Votre navigateur ne prend pas en charge WebGPU, les modèles locaux ne sont pas disponibles. Veuillez utiliser la dernière version de Chrome ou Edge.",
+      "webGpuUnsupportedShort": "WebGPU non pris en charge",
+      "engineNotReady": "Moteur non prêt",
+      "localTestSuccess": "Test du modèle local réussi",
+      "localTestFailed": "Échec du test du modèle local",
+      "localPerfSlowWarning": "Votre ordinateur pourrait manquer de puissance. L'utilisation du modèle local peut ralentir sensiblement la synthèse. Envisagez de passer à un modèle cloud.",
+      "apiKeyValid": "Clé API valide",
+      "apiKeyInvalid": "Clé API invalide",
+      "inputApiKey": "Veuillez saisir la clé API",
+      "testError": "Une erreur s'est produite lors du test"
+    }
+  },
+  "setupFinish": {
+    "title": "Configuration initiale terminée",
+    "subtitle": "Ouvrez n'importe quelle page Overview de Waterloo Works pour commencer à utiliser Goose Glance.",
+    "actions": {
+      "openWaterlooWorks": "Ouvrir Waterloo Works"
+    },
+    "alt": {
+      "imageAlt": "Comment utiliser Goose Glance sur Waterloo Works",
+      "usageImageSrOnly": "Illustration d'utilisation"
+    }
+  }
+}

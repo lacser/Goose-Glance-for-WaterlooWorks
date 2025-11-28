@@ -14,8 +14,11 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   const languages = [
     { code: "zh-CN", name: "简体中文" },
     { code: "zh-TW", name: "繁體中文" },
+    { code: "en-US", name: "English (US)" },
     { code: "en-CA", name: "English (CA)" },
+    { code: "en-GB", name: "English (UK)" },
     { code: "fr-CA", name: "Français (CA)" },
+    { code: "fr-FR", name: "Français (FR)" },
   ];
 
   const [open, setOpen] = React.useState(false);
