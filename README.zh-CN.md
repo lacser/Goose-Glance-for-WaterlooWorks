@@ -40,6 +40,6 @@ Goose Glance 是一款面向 Waterloo Works 的 Chrome 浏览器扩展，由大�
 2. **页面注入内容（Content）**：注入至 Waterloo Works 页面。见 `components/content` 目录。
 3. **独立页面（Pages）**：用于新安装引导与配置，在新标签页打开。见 `components/pages` 目录。
 
-运行 `npm run build` 会执行 `scripts/build.js`：分别构建上述部分，复制 `public` 目录内容，并输出到 `dist`。开发与测试时，可在浏览器中以“加载已解压的扩展程序”的方式，加载 `dist` 目录。
+运行 `yarn build` 会执行 `scripts/build.js`：分别构建上述部分，复制 `public` 目录内容，并输出到 `dist`。开发与测试时，可在浏览器中以“加载已解压的扩展程序”的方式，加载 `dist` 目录。
 
-运行 `npm run watch` 会执行 `scripts/watch.js`：它在检测到文件变更后自动调用 `scripts/build.js`。
+运行 `yarn watch` 会执行 `scripts/watch.js`：它在检测到文件变更后自动调用 `scripts/build.js`。

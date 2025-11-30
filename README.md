@@ -36,6 +36,6 @@ The extension consists of three parts:
 2. Content injected into the Waterloo Works page. See under `components/content` folder.
 3. Pages in new tabs for new install initialization and configuration. See under `components/pages` folder.
 
-Running `npm run build` executes `scripts/build.js`, which builds both parts separately, copies the contents of the `public` folder, and produces a `dist` directory. For development and testing, load the `dist` folder in the browser as an unpacked extension.
+Running `yarn build` executes `scripts/build.js`, which builds both parts separately, copies the contents of the `public` folder, and produces a `dist` directory. For development and testing, load the `dist` folder in the browser as an unpacked extension.
 
-Running `npm run watch` executes `scripts/watch.js`, this simply runs `scripts/build.js` automatically whenever it detects a file change. This provides convenience for development process.
+Running `yarn watch` executes `scripts/watch.js`, this simply runs `scripts/build.js` automatically whenever it detects a file change. This provides convenience for development process.
