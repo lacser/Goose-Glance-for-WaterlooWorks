@@ -1,9 +1,10 @@
 {
   "name": "goose-glance-react",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.2",
   "type": "module",
   "scripts": {
+    "preinstall": "node -e \"const ua = process.env.npm_config_user_agent || ''; if (!ua.includes('yarn/')) { console.error('Please use Yarn (corepack enable && yarn install)'); process.exit(1); }\"",
     "dev:popup": "vite components/popup",
     "dev:content": "vite components/content",
     "watch": "node scripts/watch.js",

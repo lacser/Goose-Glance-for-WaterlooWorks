@@ -36,7 +36,6 @@ L’extension se compose de trois parties :
 2. Contenu injecté dans la page Waterloo Works. Voir le dossier `components/content`.
 3. Pages ouvertes dans de nouveaux onglets pour l’initialisation et la configuration après une nouvelle installation. Voir le dossier `components/pages`.
 
-L’exécution de `npm run build` appelle `scripts/build.js`, qui construit séparément ces parties, copie le contenu du dossier `public` et produit un dossier `dist`. Pour le développement et les tests, chargez le dossier `dist` dans le navigateur comme extension non empaquetée.
+L’exécution de `yarn build` appelle `scripts/build.js`, qui construit séparément ces parties, copie le contenu du dossier `public` et produit un dossier `dist`. Pour le développement et les tests, chargez le dossier `dist` dans le navigateur comme extension non empaquetée.
 
-L’exécution de `npm run watch` appelle `scripts/watch.js`, qui relance automatiquement `scripts/build.js` à chaque modification de fichier pour faciliter le développement.
-
+L’exécution de `yarn watch` appelle `scripts/watch.js`, qui relance automatiquement `scripts/build.js` à chaque modification de fichier pour faciliter le développement.
