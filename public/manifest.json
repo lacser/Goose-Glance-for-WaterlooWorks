@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Goose Glance for WaterlooWorks",
-  "version": "1.0",
+  "version": "1.0.2",
   "description": "AI-powered job description analyzer for WaterlooWorks",
   "permissions": ["activeTab", "storage", "tabs"],
   "background": {
