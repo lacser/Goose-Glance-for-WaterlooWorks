@@ -125,7 +125,8 @@ function injectPreAnalyzeStyles() {
       font: 600 13px/1.2 Arial, sans-serif;
       gap: 6px;
       margin-left: auto;
-      padding: 5px 10px;
+      margin-right: 16px;
+      padding: 5px 10px 5px 5px;
       position: relative;
       z-index: 10000;
     }
@@ -136,6 +137,7 @@ function injectPreAnalyzeStyles() {
 
     .gg-pre-analyze-trigger--fixed {
       margin-left: 0;
+      margin-right: 0;
       position: fixed;
       right: 20px;
       top: 14px;
@@ -147,18 +149,20 @@ function injectPreAnalyzeStyles() {
     }
 
     .gg-pre-analyze-window {
+      box-sizing: border-box;
       background: #ffffff;
-      border: 1px solid #d8d8d8;
+      border: 1px solid #e0e0e0;
       border-radius: 8px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.14), 0 0 2px rgba(0, 0, 0, 0.12);
       color: #242424;
       display: none;
-      font-family: Arial, sans-serif;
-      padding: 14px 16px;
+      font-family: "Segoe UI", Arial, sans-serif;
+      margin: 0;
+      padding: 12px 14px 10px;
       position: fixed;
-      right: 24px;
+      right: 16px;
       top: 64px;
-      width: min(440px, calc(100vw - 32px));
+      width: min(360px, calc(100vw - 32px));
       z-index: 10001;
     }
 
@@ -181,7 +185,7 @@ function injectPreAnalyzeStyles() {
     .gg-pre-analyze-heading h2 {
       color: #1f1f1f;
       font-size: 16px;
-      font-weight: 700;
+      font-weight: 600;
       line-height: 1.2;
       margin: 0;
     }
@@ -203,37 +207,92 @@ function injectPreAnalyzeStyles() {
     }
 
     .gg-pre-analyze-description {
-      color: #555555;
-      font-size: 12px;
-      line-height: 1.4;
+      color: #616161;
+      font-size: 13px;
+      line-height: 1.5;
       margin: 0 0 10px;
+    }
+
+    .gg-pre-analyze-rows {
+      margin: 0;
+      padding: 0;
     }
 
     .gg-pre-analyze-row {
       align-items: center;
+      box-sizing: border-box;
       border-top: 1px solid #eeeeee;
       display: grid;
       gap: 8px;
-      grid-template-columns: minmax(0, 1fr) 22px 112px;
+      grid-template-columns: minmax(0, 1fr) 26px 100px;
+      margin: 0;
       min-height: 42px;
       padding: 4px 0;
+      position: relative;
+    }
+
+    .gg-pre-analyze-row:last-child {
+      min-height: 38px;
+      padding-bottom: 0;
     }
 
     .gg-pre-analyze-board-name {
       font-size: 14px;
       font-weight: 600;
+      line-height: 1.3;
     }
 
     .gg-pre-analyze-status {
       align-items: center;
       display: inline-flex;
-      height: 22px;
+      border-radius: 4px;
+      cursor: help;
+      height: 26px;
       justify-content: center;
-      width: 22px;
+      width: 26px;
+    }
+
+    .gg-pre-analyze-status:focus-visible {
+      outline: 2px solid #2457a7;
+      outline-offset: 2px;
+    }
+
+    .gg-pre-analyze-tooltip {
+      background: #242424;
+      border-radius: 6px;
+      bottom: calc(100% - 4px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+      box-sizing: border-box;
+      color: #ffffff;
+      font: 400 12px/1.4 "Segoe UI", Arial, sans-serif;
+      max-width: calc(100% - 100px);
+      padding: 7px 9px;
+      position: absolute;
+      right: 100px;
+      text-align: left;
+      visibility: hidden;
+      white-space: normal;
+      width: 220px;
+      z-index: 1;
+    }
+
+    /* The transparent bridge keeps the tooltip open as the pointer enters it. */
+    .gg-pre-analyze-tooltip::after {
+      content: "";
+      height: 12px;
+      left: 0;
+      position: absolute;
+      top: 100%;
+      width: 100%;
+    }
+
+    .gg-pre-analyze-status:not([data-tooltip-dismissed]):hover .gg-pre-analyze-tooltip,
+    .gg-pre-analyze-status:not([data-tooltip-dismissed]):focus .gg-pre-analyze-tooltip {
+      visibility: visible;
     }
 
     .gg-pre-analyze-status .gg-material-symbols {
-      font-size: 20px;
+      font-size: 24px;
     }
 
     .gg-pre-analyze-status--unavailable { color: #b42318; }
@@ -250,27 +309,45 @@ function injectPreAnalyzeStyles() {
     }
 
     .gg-pre-analyze-action {
-      background: #ffffff;
-      border: 1px solid #686868;
-      border-radius: 6px;
-      color: #242424;
+      box-sizing: border-box;
+      background: #0f6cbd;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: #ffffff;
       cursor: pointer;
-      font-size: 12px;
+      font-family: inherit;
+      font-size: 14px;
       font-weight: 600;
-      min-height: 30px;
-      padding: 4px 8px;
-      width: 112px;
+      line-height: 20px;
+      margin: 0;
+      min-height: 32px;
+      padding: 5px 8px;
+      transition: background-color 120ms ease, border-color 120ms ease;
+      width: 100%;
     }
 
     .gg-pre-analyze-action:hover:not(:disabled) {
-      background: #f1f1f1;
+      background: #115ea3;
+    }
+
+    .gg-pre-analyze-action:active:not(:disabled) {
+      background: #0c3b5e;
+    }
+
+    .gg-pre-analyze-action:focus-visible {
+      outline: 2px solid #242424;
+      outline-offset: 2px;
     }
 
     .gg-pre-analyze-action:disabled {
-      background: #eeeeee;
-      border-color: #c7c7c7;
-      color: #777777;
+      background: #f0f0f0;
+      border-color: #e0e0e0;
+      color: #707070;
       cursor: not-allowed;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gg-pre-analyze-action { transition: none; }
     }
 
     .gg-pre-analyze-board-frame,
@@ -308,22 +385,25 @@ function setStatusIcon(
   status: HTMLElement,
   iconName: string,
   variant: "unavailable" | "pending" | "complete" | "working",
-  label: string
+  label: string,
+  description: string
 ) {
   status.className = `gg-pre-analyze-status gg-pre-analyze-status--${variant}`;
   status.setAttribute("aria-label", label);
-  status.innerHTML = materialIconHtml(iconName);
+  status.querySelector<HTMLElement>(".gg-material-symbols")!.textContent = iconName;
+  status.querySelector<HTMLElement>(".gg-pre-analyze-tooltip")!.textContent = description;
 }
 
 function createTriggerAndPanel() {
   const iconUrl = chrome.runtime.getURL("icons/icon48.png");
+  const triggerIconUrl = chrome.runtime.getURL("icons/logo.svg");
   const header = findHeader();
 
   trigger = document.createElement("button");
   trigger.type = "button";
   trigger.className = "gg-pre-analyze-trigger";
   trigger.setAttribute("aria-expanded", "false");
-  trigger.innerHTML = `<img alt="" src="${iconUrl}"><span>Pre-analyze</span>`;
+  trigger.innerHTML = `<img alt="" src="${triggerIconUrl}"><span>Bulk analyze</span>`;
 
   if (header) {
     header.classList.add("gg-pre-analyze-header-host");
@@ -337,15 +417,15 @@ function createTriggerAndPanel() {
 
   panel = document.createElement("section");
   panel.className = "gg-pre-analyze-window";
-  panel.setAttribute("aria-label", "Pre-analyze status");
+  panel.setAttribute("aria-label", "Bulk analyze status");
   panel.innerHTML = `
     <div class="gg-pre-analyze-heading">
       <img alt="" src="${iconUrl}">
-      <h2>Pre-analyze status</h2>
+      <h2>Bulk analyze status</h2>
       <button class="gg-pre-analyze-close" type="button" aria-label="Close">${materialIconHtml("close")}</button>
     </div>
     <p class="gg-pre-analyze-description">
-      Pre-load and analyze jobs in bulk for a smoother experience and instant job insights.
+      Pre-load and analyze jobs in bulk to get instant job insights while you browse.
     </p>
     <div class="gg-pre-analyze-rows"></div>
   `;
@@ -357,10 +437,18 @@ function createTriggerAndPanel() {
     row.className = "gg-pre-analyze-row";
     row.innerHTML = `
       <span class="gg-pre-analyze-board-name">${board.label}</span>
-      <span class="gg-pre-analyze-status gg-pre-analyze-status--working" aria-label="Checking">${materialIconHtml("progress_activity")}</span>
+      <span class="gg-pre-analyze-status" tabindex="0" role="img" aria-describedby="gg-pre-analyze-tooltip-${board.id}">
+        ${materialIconHtml("progress_activity")}
+        <span class="gg-pre-analyze-tooltip" id="gg-pre-analyze-tooltip-${board.id}" role="tooltip"></span>
+      </span>
       <button class="gg-pre-analyze-action" type="button" disabled>Checking…</button>
     `;
     const status = row.querySelector<HTMLElement>(".gg-pre-analyze-status")!;
+    setStatusIcon(status, "progress_activity", "working", "Checking",
+      "Checking whether this section is available for analysis.");
+    const resetTooltip = () => delete status.dataset.tooltipDismissed;
+    status.addEventListener("mouseenter", resetTooltip);
+    status.addEventListener("focus", resetTooltip);
     const button = row.querySelector<HTMLButtonElement>(".gg-pre-analyze-action")!;
     button.addEventListener("click", () => void processBoard(board));
     rowElements.set(board.id, { status, button });
@@ -376,6 +464,12 @@ function createTriggerAndPanel() {
   };
 
   closeButton.addEventListener("click", closePanel);
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !panel?.classList.contains("gg-pre-analyze-window--open")) return;
+    rowElements.forEach(({ status }) => {
+      if (status.matches(":hover, :focus")) status.dataset.tooltipDismissed = "true";
+    });
+  });
   trigger.addEventListener("click", () => {
     const isOpen = panel?.classList.toggle("gg-pre-analyze-window--open") ?? false;
     trigger?.setAttribute("aria-expanded", String(isOpen));
@@ -394,31 +488,36 @@ function renderBoard(boardId: BoardId) {
   const { status, button } = elements;
 
   if (state.available === false) {
-    setStatusIcon(status, "cancel", "unavailable", "Unavailable");
+    setStatusIcon(status, "cancel", "unavailable", "Unavailable",
+      "This section is unavailable and cannot be analyzed.");
     button.textContent = "Unavailable";
     button.disabled = true;
     return;
   }
 
   if (state.progress) {
-    setStatusIcon(status, "progress_activity", "working", "Processing");
+    setStatusIcon(status, "progress_activity", "working", "Processing",
+      `Bulk analysis is in progress: ${state.progress}`);
     button.textContent = state.progress;
     button.disabled = true;
     return;
   }
 
   if (state.available === null) {
-    setStatusIcon(status, "progress_activity", "working", "Checking");
+    setStatusIcon(status, "progress_activity", "working", "Checking",
+      "Checking whether this section is available for analysis.");
     button.textContent = "Checking…";
     button.disabled = true;
     return;
   }
 
   if (state.processed) {
-    setStatusIcon(status, "check_circle", "complete", "Processed");
+    setStatusIcon(status, "check_circle", "complete", "Processed",
+      "Bulk analysis is complete. Select Refresh to analyze this section again.");
     button.textContent = "Refresh";
   } else {
-    setStatusIcon(status, "error", "pending", "Not processed");
+    setStatusIcon(status, "error", "pending", "Not processed",
+      "This section is available but has not been analyzed. Select Process to start.");
     button.textContent = "Process";
   }
 

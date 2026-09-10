@@ -48,7 +48,7 @@ function App() {
           Goose Glance
         </Text>
         <img
-          src="/icons/icon128.png"
+          src="/icons/logo.svg"
           width={30}
           height={30}
           alt="Goose Glance Logo"
