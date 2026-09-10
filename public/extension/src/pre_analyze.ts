@@ -74,29 +74,59 @@ let pendingBulkRequest: BulkRequest | null = null;
 let activeBoardId: BoardId | null = null;
 let availabilityChecked = false;
 
+function materialIconHtml(name: string, classname = ""): string {
+  return `<span class="gg-material-symbols ${classname}" aria-hidden="true">${name}</span>`;
+}
+
 function injectPreAnalyzeStyles() {
+  const materialFontUrl = chrome.runtime.getURL(
+    "content/icons/MaterialSymbolsRounded-VariableFont_FILL,GRAD,opsz,wght.ttf"
+  );
   const style = document.createElement("style");
   style.textContent = `
-    .gg-pre-analyze-header-host {
-      position: relative !important;
+    @font-face {
+      font-family: "Material Symbols Rounded";
+      font-style: normal;
+      font-display: block;
+      src: url("${materialFontUrl}") format("truetype");
+    }
+
+    .gg-material-symbols {
+      -webkit-font-smoothing: antialiased;
+      display: inline-block;
+      font-family: "Material Symbols Rounded";
+      font-style: normal;
+      font-weight: normal;
+      letter-spacing: normal;
+      line-height: 1;
+      user-select: none;
+      white-space: nowrap;
+      font-variation-settings: "FILL" 0, "GRAD" 0, "opsz" 24, "wght" 400;
+    }
+
+    /* Keep header positioning intact (do not override sticky/fixed). */
+    .gg-pre-analyze-mount {
+      align-items: center !important;
+      display: flex !important;
+      gap: 8px;
+      min-width: 0;
     }
 
     .gg-pre-analyze-trigger {
       align-items: center;
       background: #ffffff;
       border: 1px solid rgba(0, 0, 0, 0.22);
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      border-radius: 6px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
       color: #242424;
       cursor: pointer;
       display: inline-flex;
+      flex-shrink: 0;
       font: 600 13px/1.2 Arial, sans-serif;
-      gap: 8px;
-      padding: 7px 12px;
-      position: absolute;
-      right: 72px;
-      top: 50%;
-      transform: translateY(-50%);
+      gap: 6px;
+      margin-left: auto;
+      padding: 5px 10px;
+      position: relative;
       z-index: 10000;
     }
 
@@ -105,30 +135,30 @@ function injectPreAnalyzeStyles() {
     }
 
     .gg-pre-analyze-trigger--fixed {
+      margin-left: 0;
       position: fixed;
       right: 20px;
       top: 14px;
-      transform: none;
     }
 
     .gg-pre-analyze-trigger img {
-      height: 24px;
-      width: 24px;
+      height: 20px;
+      width: 20px;
     }
 
     .gg-pre-analyze-window {
       background: #ffffff;
       border: 1px solid #d8d8d8;
-      border-radius: 16px;
-      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
       color: #242424;
       display: none;
       font-family: Arial, sans-serif;
-      padding: 24px;
+      padding: 14px 16px;
       position: fixed;
       right: 24px;
-      top: 76px;
-      width: min(520px, calc(100vw - 48px));
+      top: 64px;
+      width: min(440px, calc(100vw - 32px));
       z-index: 10001;
     }
 
@@ -139,65 +169,71 @@ function injectPreAnalyzeStyles() {
     .gg-pre-analyze-heading {
       align-items: center;
       display: flex;
-      gap: 12px;
-      margin-bottom: 10px;
+      gap: 8px;
+      margin-bottom: 6px;
     }
 
     .gg-pre-analyze-heading img {
-      height: 42px;
-      width: 42px;
+      height: 28px;
+      width: 28px;
     }
 
     .gg-pre-analyze-heading h2 {
       color: #1f1f1f;
-      font-size: 24px;
+      font-size: 16px;
       font-weight: 700;
       line-height: 1.2;
       margin: 0;
     }
 
     .gg-pre-analyze-close {
+      align-items: center;
       background: transparent;
       border: 0;
       color: #555555;
       cursor: pointer;
-      font-size: 24px;
+      display: inline-flex;
+      justify-content: center;
       margin-left: auto;
-      padding: 2px 6px;
+      padding: 2px;
+    }
+
+    .gg-pre-analyze-close .gg-material-symbols {
+      font-size: 20px;
     }
 
     .gg-pre-analyze-description {
       color: #555555;
-      font-size: 14px;
-      line-height: 1.5;
-      margin: 0 0 22px;
+      font-size: 12px;
+      line-height: 1.4;
+      margin: 0 0 10px;
     }
 
     .gg-pre-analyze-row {
       align-items: center;
       border-top: 1px solid #eeeeee;
       display: grid;
-      gap: 14px;
-      grid-template-columns: minmax(0, 1fr) 34px 132px;
-      min-height: 64px;
+      gap: 8px;
+      grid-template-columns: minmax(0, 1fr) 22px 112px;
+      min-height: 42px;
+      padding: 4px 0;
     }
 
     .gg-pre-analyze-board-name {
-      font-size: 17px;
+      font-size: 14px;
       font-weight: 600;
     }
 
     .gg-pre-analyze-status {
       align-items: center;
-      border: 2px solid currentColor;
-      border-radius: 50%;
       display: inline-flex;
-      font-size: 20px;
-      font-weight: 700;
-      height: 28px;
+      height: 22px;
       justify-content: center;
-      line-height: 1;
-      width: 28px;
+      width: 22px;
+    }
+
+    .gg-pre-analyze-status .gg-material-symbols {
+      font-size: 20px;
     }
 
     .gg-pre-analyze-status--unavailable { color: #b42318; }
@@ -205,17 +241,25 @@ function injectPreAnalyzeStyles() {
     .gg-pre-analyze-status--complete { color: #137333; }
     .gg-pre-analyze-status--working { color: #2457a7; }
 
+    .gg-pre-analyze-status--working .gg-material-symbols {
+      animation: gg-pre-analyze-spin 1s linear infinite;
+    }
+
+    @keyframes gg-pre-analyze-spin {
+      to { transform: rotate(360deg); }
+    }
+
     .gg-pre-analyze-action {
       background: #ffffff;
       border: 1px solid #686868;
-      border-radius: 8px;
+      border-radius: 6px;
       color: #242424;
       cursor: pointer;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
-      min-height: 36px;
-      padding: 7px 10px;
-      width: 132px;
+      min-height: 30px;
+      padding: 4px 8px;
+      width: 112px;
     }
 
     .gg-pre-analyze-action:hover:not(:disabled) {
@@ -249,8 +293,26 @@ function findHeader(): HTMLElement | null {
   );
   return (
     waterlooWorksHeading?.closest("header") ??
-    document.querySelector<HTMLElement>("header, [role='banner']")
+    document.querySelector<HTMLElement>("header.header__container, header, [role='banner']")
   );
+}
+
+/** Prefer the first header child div (brand row) so the trigger sits on its right. */
+function findTriggerMount(header: HTMLElement): HTMLElement {
+  return (
+    header.querySelector<HTMLElement>(":scope > div:first-of-type") ?? header
+  );
+}
+
+function setStatusIcon(
+  status: HTMLElement,
+  iconName: string,
+  variant: "unavailable" | "pending" | "complete" | "working",
+  label: string
+) {
+  status.className = `gg-pre-analyze-status gg-pre-analyze-status--${variant}`;
+  status.setAttribute("aria-label", label);
+  status.innerHTML = materialIconHtml(iconName);
 }
 
 function createTriggerAndPanel() {
@@ -265,7 +327,9 @@ function createTriggerAndPanel() {
 
   if (header) {
     header.classList.add("gg-pre-analyze-header-host");
-    header.appendChild(trigger);
+    const mount = findTriggerMount(header);
+    mount.classList.add("gg-pre-analyze-mount");
+    mount.appendChild(trigger);
   } else {
     trigger.classList.add("gg-pre-analyze-trigger--fixed");
     document.body.appendChild(trigger);
@@ -278,7 +342,7 @@ function createTriggerAndPanel() {
     <div class="gg-pre-analyze-heading">
       <img alt="" src="${iconUrl}">
       <h2>Pre-analyze status</h2>
-      <button class="gg-pre-analyze-close" type="button" aria-label="Close">×</button>
+      <button class="gg-pre-analyze-close" type="button" aria-label="Close">${materialIconHtml("close")}</button>
     </div>
     <p class="gg-pre-analyze-description">
       Pre-load and analyze jobs in bulk for a smoother experience and instant job insights.
@@ -293,7 +357,7 @@ function createTriggerAndPanel() {
     row.className = "gg-pre-analyze-row";
     row.innerHTML = `
       <span class="gg-pre-analyze-board-name">${board.label}</span>
-      <span class="gg-pre-analyze-status" aria-label="Checking">…</span>
+      <span class="gg-pre-analyze-status gg-pre-analyze-status--working" aria-label="Checking">${materialIconHtml("progress_activity")}</span>
       <button class="gg-pre-analyze-action" type="button" disabled>Checking…</button>
     `;
     const status = row.querySelector<HTMLElement>(".gg-pre-analyze-status")!;
@@ -328,44 +392,33 @@ function renderBoard(boardId: BoardId) {
   if (!elements) return;
 
   const { status, button } = elements;
-  status.className = "gg-pre-analyze-status";
 
   if (state.available === false) {
-    status.textContent = "×";
-    status.classList.add("gg-pre-analyze-status--unavailable");
-    status.setAttribute("aria-label", "Unavailable");
+    setStatusIcon(status, "cancel", "unavailable", "Unavailable");
     button.textContent = "Unavailable";
     button.disabled = true;
     return;
   }
 
   if (state.progress) {
-    status.textContent = "…";
-    status.classList.add("gg-pre-analyze-status--working");
-    status.setAttribute("aria-label", "Processing");
+    setStatusIcon(status, "progress_activity", "working", "Processing");
     button.textContent = state.progress;
     button.disabled = true;
     return;
   }
 
   if (state.available === null) {
-    status.textContent = "…";
-    status.classList.add("gg-pre-analyze-status--working");
-    status.setAttribute("aria-label", "Checking");
+    setStatusIcon(status, "progress_activity", "working", "Checking");
     button.textContent = "Checking…";
     button.disabled = true;
     return;
   }
 
   if (state.processed) {
-    status.textContent = "✓";
-    status.classList.add("gg-pre-analyze-status--complete");
-    status.setAttribute("aria-label", "Processed");
+    setStatusIcon(status, "check_circle", "complete", "Processed");
     button.textContent = "Refresh";
   } else {
-    status.textContent = "!";
-    status.classList.add("gg-pre-analyze-status--pending");
-    status.setAttribute("aria-label", "Not processed");
+    setStatusIcon(status, "error", "pending", "Not processed");
     button.textContent = "Process";
   }
 
